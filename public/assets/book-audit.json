@@ -1,0 +1,442 @@
+[
+  {
+    "name": "book-1-cover",
+    "source": "Coleção de Livros Icônicos em PNG.png",
+    "index": 0,
+    "coreBox": [
+      55,
+      46,
+      418,
+      567
+    ],
+    "outputSize": [
+      389,
+      539
+    ],
+    "alphaBox": [
+      4,
+      4,
+      385,
+      535
+    ],
+    "corePixels": 186063
+  },
+  {
+    "name": "book-2-cover",
+    "source": "Coleção de Livros Icônicos em PNG.png",
+    "index": 1,
+    "coreBox": [
+      449,
+      44,
+      799,
+      566
+    ],
+    "outputSize": [
+      380,
+      546
+    ],
+    "alphaBox": [
+      4,
+      4,
+      376,
+      542
+    ],
+    "corePixels": 179179
+  },
+  {
+    "name": "book-3-cover",
+    "source": "Coleção de Livros Icônicos em PNG.png",
+    "index": 2,
+    "coreBox": [
+      828,
+      44,
+      1173,
+      566
+    ],
+    "outputSize": [
+      370,
+      546
+    ],
+    "alphaBox": [
+      4,
+      4,
+      366,
+      542
+    ],
+    "corePixels": 176783
+  },
+  {
+    "name": "book-4-cover",
+    "source": "Coleção de Livros Icônicos em PNG.png",
+    "index": 3,
+    "coreBox": [
+      1200,
+      44,
+      1550,
+      567
+    ],
+    "outputSize": [
+      373,
+      549
+    ],
+    "alphaBox": [
+      4,
+      4,
+      369,
+      545
+    ],
+    "corePixels": 179668
+  },
+  {
+    "name": "book-5-cover",
+    "source": "Coleção de Livros Icônicos em PNG.png",
+    "index": 4,
+    "coreBox": [
+      1579,
+      44,
+      1935,
+      567
+    ],
+    "outputSize": [
+      376,
+      543
+    ],
+    "alphaBox": [
+      4,
+      4,
+      372,
+      539
+    ],
+    "corePixels": 182824
+  },
+  {
+    "name": "book-1-spine",
+    "source": "Coleção de Livros Icônicos em PNG.png",
+    "index": 5,
+    "coreBox": [
+      53,
+      594,
+      422,
+      740
+    ],
+    "outputSize": [
+      393,
+      171
+    ],
+    "alphaBox": [
+      4,
+      4,
+      389,
+      167
+    ],
+    "corePixels": 52570
+  },
+  {
+    "name": "book-2-spine",
+    "source": "Coleção de Livros Icônicos em PNG.png",
+    "index": 6,
+    "coreBox": [
+      449,
+      594,
+      801,
+      740
+    ],
+    "outputSize": [
+      376,
+      166
+    ],
+    "alphaBox": [
+      4,
+      4,
+      372,
+      162
+    ],
+    "corePixels": 50166
+  },
+  {
+    "name": "book-3-spine",
+    "source": "Coleção de Livros Icônicos em PNG.png",
+    "index": 7,
+    "coreBox": [
+      828,
+      594,
+      1176,
+      740
+    ],
+    "outputSize": [
+      368,
+      164
+    ],
+    "alphaBox": [
+      4,
+      4,
+      364,
+      160
+    ],
+    "corePixels": 49444
+  },
+  {
+    "name": "book-4-spine",
+    "source": "Coleção de Livros Icônicos em PNG.png",
+    "index": 8,
+    "coreBox": [
+      1201,
+      595,
+      1553,
+      740
+    ],
+    "outputSize": [
+      381,
+      166
+    ],
+    "alphaBox": [
+      4,
+      4,
+      377,
+      162
+    ],
+    "corePixels": 49862
+  },
+  {
+    "name": "book-5-spine",
+    "source": "Coleção de Livros Icônicos em PNG.png",
+    "index": 9,
+    "coreBox": [
+      1577,
+      594,
+      1936,
+      740
+    ],
+    "outputSize": [
+      382,
+      168
+    ],
+    "alphaBox": [
+      4,
+      4,
+      378,
+      164
+    ],
+    "corePixels": 51120
+  },
+  {
+    "name": "book-6-cover",
+    "source": "Coleção de Livros Ilustrados em Destaque.png",
+    "index": 0,
+    "coreBox": [
+      28,
+      55,
+      414,
+      612
+    ],
+    "outputSize": [
+      411,
+      582
+    ],
+    "alphaBox": [
+      4,
+      4,
+      407,
+      578
+    ],
+    "corePixels": 202707
+  },
+  {
+    "name": "book-7-cover",
+    "source": "Coleção de Livros Ilustrados em Destaque.png",
+    "index": 1,
+    "coreBox": [
+      428,
+      59,
+      804,
+      613
+    ],
+    "outputSize": [
+      403,
+      573
+    ],
+    "alphaBox": [
+      4,
+      4,
+      399,
+      569
+    ],
+    "corePixels": 197343
+  },
+  {
+    "name": "book-8-cover",
+    "source": "Coleção de Livros Ilustrados em Destaque.png",
+    "index": 2,
+    "coreBox": [
+      820,
+      53,
+      1186,
+      616
+    ],
+    "outputSize": [
+      391,
+      582
+    ],
+    "alphaBox": [
+      4,
+      4,
+      387,
+      578
+    ],
+    "corePixels": 194643
+  },
+  {
+    "name": "book-9-cover",
+    "source": "Coleção de Livros Ilustrados em Destaque.png",
+    "index": 3,
+    "coreBox": [
+      1200,
+      56,
+      1574,
+      613
+    ],
+    "outputSize": [
+      400,
+      577
+    ],
+    "alphaBox": [
+      4,
+      4,
+      396,
+      573
+    ],
+    "corePixels": 195932
+  },
+  {
+    "name": "book-10-cover",
+    "source": "Coleção de Livros Ilustrados em Destaque.png",
+    "index": 4,
+    "coreBox": [
+      1589,
+      57,
+      1961,
+      614
+    ],
+    "outputSize": [
+      400,
+      577
+    ],
+    "alphaBox": [
+      4,
+      4,
+      396,
+      573
+    ],
+    "corePixels": 195790
+  },
+  {
+    "name": "book-6-spine",
+    "source": "Coleção de Livros Ilustrados em Destaque.png",
+    "index": 5,
+    "coreBox": [
+      28,
+      630,
+      415,
+      743
+    ],
+    "outputSize": [
+      407,
+      138
+    ],
+    "alphaBox": [
+      4,
+      4,
+      403,
+      134
+    ],
+    "corePixels": 42739
+  },
+  {
+    "name": "book-7-spine",
+    "source": "Coleção de Livros Ilustrados em Destaque.png",
+    "index": 6,
+    "coreBox": [
+      426,
+      631,
+      805,
+      744
+    ],
+    "outputSize": [
+      400,
+      137
+    ],
+    "alphaBox": [
+      4,
+      4,
+      396,
+      133
+    ],
+    "corePixels": 41817
+  },
+  {
+    "name": "book-8-spine",
+    "source": "Coleção de Livros Ilustrados em Destaque.png",
+    "index": 7,
+    "coreBox": [
+      818,
+      630,
+      1186,
+      745
+    ],
+    "outputSize": [
+      391,
+      145
+    ],
+    "alphaBox": [
+      4,
+      4,
+      387,
+      141
+    ],
+    "corePixels": 41199
+  },
+  {
+    "name": "book-9-spine",
+    "source": "Coleção de Livros Ilustrados em Destaque.png",
+    "index": 8,
+    "coreBox": [
+      1200,
+      631,
+      1572,
+      745
+    ],
+    "outputSize": [
+      395,
+      146
+    ],
+    "alphaBox": [
+      4,
+      4,
+      391,
+      142
+    ],
+    "corePixels": 41576
+  },
+  {
+    "name": "book-10-spine",
+    "source": "Coleção de Livros Ilustrados em Destaque.png",
+    "index": 9,
+    "coreBox": [
+      1586,
+      631,
+      1961,
+      745
+    ],
+    "outputSize": [
+      399,
+      137
+    ],
+    "alphaBox": [
+      4,
+      4,
+      395,
+      133
+    ],
+    "corePixels": 41861
+  }
+]

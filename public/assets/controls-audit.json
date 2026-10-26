@@ -1,0 +1,706 @@
+[
+  {
+    "index": 0,
+    "coreBox": [
+      28,
+      83,
+      364,
+      374
+    ],
+    "outputSize": [
+      375,
+      314
+    ],
+    "alphaBox": [
+      4,
+      4,
+      363,
+      302
+    ],
+    "corePixels": 73514,
+    "name": "power-0",
+    "source": "Cartela de Power-ups Florais Brilhantes.png"
+  },
+  {
+    "index": 1,
+    "coreBox": [
+      380,
+      67,
+      700,
+      368
+    ],
+    "outputSize": [
+      360,
+      334
+    ],
+    "alphaBox": [
+      4,
+      4,
+      348,
+      322
+    ],
+    "corePixels": 69003,
+    "name": "power-1",
+    "source": "Cartela de Power-ups Florais Brilhantes.png"
+  },
+  {
+    "index": 2,
+    "coreBox": [
+      726,
+      58,
+      1033,
+      381
+    ],
+    "outputSize": [
+      347,
+      363
+    ],
+    "alphaBox": [
+      4,
+      4,
+      335,
+      351
+    ],
+    "corePixels": 63979,
+    "name": "power-2",
+    "source": "Cartela de Power-ups Florais Brilhantes.png"
+  },
+  {
+    "index": 3,
+    "coreBox": [
+      1095,
+      71,
+      1417,
+      382
+    ],
+    "outputSize": [
+      362,
+      351
+    ],
+    "alphaBox": [
+      4,
+      4,
+      350,
+      339
+    ],
+    "corePixels": 73124,
+    "name": "power-3",
+    "source": "Cartela de Power-ups Florais Brilhantes.png"
+  },
+  {
+    "index": 4,
+    "coreBox": [
+      22,
+      472,
+      461,
+      646
+    ],
+    "outputSize": [
+      414,
+      184
+    ],
+    "alphaBox": [
+      4,
+      4,
+      467,
+      199
+    ],
+    "corePixels": 45016,
+    "name": "power-4",
+    "source": "Cartela de Power-ups Florais Brilhantes.png"
+  },
+  {
+    "index": 5,
+    "coreBox": [
+      497,
+      386,
+      678,
+      732
+    ],
+    "outputSize": [
+      221,
+      384
+    ],
+    "alphaBox": [
+      4,
+      4,
+      209,
+      372
+    ],
+    "corePixels": 41931,
+    "name": "power-5",
+    "source": "Cartela de Power-ups Florais Brilhantes.png"
+  },
+  {
+    "index": 6,
+    "coreBox": [
+      736,
+      411,
+      1050,
+      714
+    ],
+    "outputSize": [
+      354,
+      343
+    ],
+    "alphaBox": [
+      4,
+      4,
+      342,
+      331
+    ],
+    "corePixels": 70191,
+    "name": "power-6",
+    "source": "Cartela de Power-ups Florais Brilhantes.png"
+  },
+  {
+    "index": 7,
+    "coreBox": [
+      1093,
+      413,
+      1428,
+      707
+    ],
+    "outputSize": [
+      375,
+      334
+    ],
+    "alphaBox": [
+      4,
+      4,
+      363,
+      322
+    ],
+    "corePixels": 74383,
+    "name": "power-7",
+    "source": "Cartela de Power-ups Florais Brilhantes.png"
+  },
+  {
+    "index": 8,
+    "coreBox": [
+      80,
+      730,
+      353,
+      1007
+    ],
+    "outputSize": [
+      313,
+      317
+    ],
+    "alphaBox": [
+      4,
+      4,
+      301,
+      305
+    ],
+    "corePixels": 26255,
+    "name": "power-8",
+    "source": "Cartela de Power-ups Florais Brilhantes.png"
+  },
+  {
+    "index": 9,
+    "coreBox": [
+      409,
+      763,
+      695,
+      1009
+    ],
+    "outputSize": [
+      326,
+      286
+    ],
+    "alphaBox": [
+      4,
+      4,
+      314,
+      274
+    ],
+    "corePixels": 34877,
+    "name": "power-9",
+    "source": "Cartela de Power-ups Florais Brilhantes.png"
+  },
+  {
+    "index": 10,
+    "coreBox": [
+      728,
+      741,
+      1044,
+      1024
+    ],
+    "outputSize": [
+      356,
+      323
+    ],
+    "alphaBox": [
+      4,
+      4,
+      344,
+      311
+    ],
+    "corePixels": 62436,
+    "name": "power-10",
+    "source": "Cartela de Power-ups Florais Brilhantes.png"
+  },
+  {
+    "index": 11,
+    "coreBox": [
+      1067,
+      728,
+      1423,
+      1029
+    ],
+    "outputSize": [
+      390,
+      341
+    ],
+    "alphaBox": [
+      4,
+      4,
+      378,
+      329
+    ],
+    "corePixels": 74384,
+    "name": "power-11",
+    "source": "Cartela de Power-ups Florais Brilhantes.png"
+  },
+  {
+    "index": 0,
+    "coreBox": [
+      19,
+      19,
+      429,
+      361
+    ],
+    "outputSize": [
+      413,
+      350
+    ],
+    "alphaBox": [
+      4,
+      4,
+      423,
+      357
+    ],
+    "corePixels": 95740,
+    "name": "reward-0",
+    "source": "Coleção de Emblemas e Molduras Florais.png"
+  },
+  {
+    "index": 1,
+    "coreBox": [
+      425,
+      70,
+      1016,
+      351
+    ],
+    "outputSize": [
+      415,
+      206
+    ],
+    "alphaBox": [
+      4,
+      4,
+      611,
+      295
+    ],
+    "corePixels": 128359,
+    "name": "reward-1",
+    "source": "Coleção de Emblemas e Molduras Florais.png"
+  },
+  {
+    "index": 2,
+    "coreBox": [
+      15,
+      367,
+      430,
+      829
+    ],
+    "outputSize": [
+      362,
+      414
+    ],
+    "alphaBox": [
+      4,
+      4,
+      427,
+      490
+    ],
+    "corePixels": 151053,
+    "name": "reward-2",
+    "source": "Coleção de Emblemas e Molduras Florais.png"
+  },
+  {
+    "index": 3,
+    "coreBox": [
+      417,
+      450,
+      1024,
+      768
+    ],
+    "outputSize": [
+      418,
+      229
+    ],
+    "alphaBox": [
+      4,
+      4,
+      614,
+      331
+    ],
+    "corePixels": 164406,
+    "name": "reward-3",
+    "source": "Coleção de Emblemas e Molduras Florais.png"
+  },
+  {
+    "index": 4,
+    "coreBox": [
+      13,
+      841,
+      502,
+      1148
+    ],
+    "outputSize": [
+      414,
+      271
+    ],
+    "alphaBox": [
+      4,
+      4,
+      515,
+      331
+    ],
+    "corePixels": 106506,
+    "name": "reward-4",
+    "source": "Coleção de Emblemas e Molduras Florais.png"
+  },
+  {
+    "index": 5,
+    "coreBox": [
+      558,
+      796,
+      928,
+      1160
+    ],
+    "outputSize": [
+      396,
+      402
+    ],
+    "alphaBox": [
+      4,
+      4,
+      384,
+      390
+    ],
+    "corePixels": 104506,
+    "name": "reward-5",
+    "source": "Coleção de Emblemas e Molduras Florais.png"
+  },
+  {
+    "index": 6,
+    "coreBox": [
+      49,
+      1178,
+      381,
+      1462
+    ],
+    "outputSize": [
+      372,
+      324
+    ],
+    "alphaBox": [
+      4,
+      4,
+      360,
+      312
+    ],
+    "corePixels": 30099,
+    "name": "reward-6",
+    "source": "Coleção de Emblemas e Molduras Florais.png"
+  },
+  {
+    "index": 7,
+    "coreBox": [
+      412,
+      1228,
+      1016,
+      1461
+    ],
+    "outputSize": [
+      416,
+      176
+    ],
+    "alphaBox": [
+      4,
+      4,
+      628,
+      257
+    ],
+    "corePixels": 93942,
+    "name": "reward-7",
+    "source": "Coleção de Emblemas e Molduras Florais.png"
+  },
+  {
+    "index": 0,
+    "coreBox": [
+      16,
+      125,
+      362,
+      378
+    ],
+    "outputSize": [
+      294,
+      232
+    ],
+    "alphaBox": [
+      4,
+      4,
+      361,
+      281
+    ],
+    "corePixels": 69246,
+    "name": "ui-0",
+    "source": "Sprite de interface tropical para jogo casual.png"
+  },
+  {
+    "index": 1,
+    "coreBox": [
+      370,
+      117,
+      719,
+      379
+    ],
+    "outputSize": [
+      294,
+      224
+    ],
+    "alphaBox": [
+      4,
+      4,
+      375,
+      282
+    ],
+    "corePixels": 72111,
+    "name": "ui-1",
+    "source": "Sprite de interface tropical para jogo casual.png"
+  },
+  {
+    "index": 2,
+    "coreBox": [
+      725,
+      133,
+      1070,
+      379
+    ],
+    "outputSize": [
+      294,
+      222
+    ],
+    "alphaBox": [
+      4,
+      4,
+      356,
+      265
+    ],
+    "corePixels": 68878,
+    "name": "ui-2",
+    "source": "Sprite de interface tropical para jogo casual.png"
+  },
+  {
+    "index": 3,
+    "coreBox": [
+      18,
+      501,
+      408,
+      721
+    ],
+    "outputSize": [
+      294,
+      176
+    ],
+    "alphaBox": [
+      4,
+      4,
+      405,
+      234
+    ],
+    "corePixels": 70307,
+    "name": "ui-3",
+    "source": "Sprite de interface tropical para jogo casual.png"
+  },
+  {
+    "index": 4,
+    "coreBox": [
+      417,
+      473,
+      782,
+      726
+    ],
+    "outputSize": [
+      294,
+      214
+    ],
+    "alphaBox": [
+      4,
+      4,
+      387,
+      277
+    ],
+    "corePixels": 73913,
+    "name": "ui-4",
+    "source": "Sprite de interface tropical para jogo casual.png"
+  },
+  {
+    "index": 5,
+    "coreBox": [
+      793,
+      479,
+      1068,
+      747
+    ],
+    "outputSize": [
+      292,
+      286
+    ],
+    "alphaBox": [
+      4,
+      4,
+      287,
+      281
+    ],
+    "corePixels": 50007,
+    "name": "ui-5",
+    "source": "Sprite de interface tropical para jogo casual.png"
+  },
+  {
+    "index": 6,
+    "coreBox": [
+      32,
+      837,
+      361,
+      1087
+    ],
+    "outputSize": [
+      294,
+      220
+    ],
+    "alphaBox": [
+      4,
+      4,
+      355,
+      262
+    ],
+    "corePixels": 58447,
+    "name": "ui-6",
+    "source": "Sprite de interface tropical para jogo casual.png"
+  },
+  {
+    "index": 7,
+    "coreBox": [
+      385,
+      837,
+      705,
+      1085
+    ],
+    "outputSize": [
+      294,
+      231
+    ],
+    "alphaBox": [
+      4,
+      4,
+      340,
+      264
+    ],
+    "corePixels": 57449,
+    "name": "ui-7",
+    "source": "Sprite de interface tropical para jogo casual.png"
+  },
+  {
+    "index": 8,
+    "coreBox": [
+      735,
+      836,
+      1055,
+      1093
+    ],
+    "outputSize": [
+      294,
+      239
+    ],
+    "alphaBox": [
+      4,
+      4,
+      334,
+      269
+    ],
+    "corePixels": 59836,
+    "name": "ui-8",
+    "source": "Sprite de interface tropical para jogo casual.png"
+  },
+  {
+    "index": 9,
+    "coreBox": [
+      17,
+      1190,
+      350,
+      1377
+    ],
+    "outputSize": [
+      294,
+      173
+    ],
+    "alphaBox": [
+      4,
+      4,
+      353,
+      201
+    ],
+    "corePixels": 47669,
+    "name": "ui-9",
+    "source": "Sprite de interface tropical para jogo casual.png"
+  },
+  {
+    "index": 10,
+    "coreBox": [
+      360,
+      1197,
+      752,
+      1363
+    ],
+    "outputSize": [
+      295,
+      142
+    ],
+    "alphaBox": [
+      4,
+      4,
+      406,
+      186
+    ],
+    "corePixels": 46256,
+    "name": "ui-10",
+    "source": "Sprite de interface tropical para jogo casual.png"
+  },
+  {
+    "index": 11,
+    "coreBox": [
+      751,
+      1174,
+      1067,
+      1383
+    ],
+    "outputSize": [
+      294,
+      211
+    ],
+    "alphaBox": [
+      4,
+      4,
+      332,
+      234
+    ],
+    "corePixels": 48338,
+    "name": "ui-11",
+    "source": "Sprite de interface tropical para jogo casual.png"
+  }
+]

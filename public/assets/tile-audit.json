@@ -1,0 +1,1322 @@
+[
+  {
+    "name": "tile-1-0",
+    "source": "Cartela de Ícones Coloridos e Divertidos.png",
+    "index": 0,
+    "coreBox": [
+      84,
+      28,
+      215,
+      233
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      34,
+      10,
+      126,
+      150
+    ],
+    "corePixels": 13302
+  },
+  {
+    "name": "tile-1-1",
+    "source": "Cartela de Ícones Coloridos e Divertidos.png",
+    "index": 1,
+    "coreBox": [
+      269,
+      26,
+      429,
+      235
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      24,
+      10,
+      135,
+      150
+    ],
+    "corePixels": 20923
+  },
+  {
+    "name": "tile-1-2",
+    "source": "Cartela de Ícones Coloridos e Divertidos.png",
+    "index": 2,
+    "coreBox": [
+      482,
+      32,
+      686,
+      229
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      16,
+      150,
+      144
+    ],
+    "corePixels": 16663
+  },
+  {
+    "name": "tile-1-3",
+    "source": "Cartela de Ícones Coloridos e Divertidos.png",
+    "index": 3,
+    "coreBox": [
+      737,
+      34,
+      875,
+      233
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      30,
+      10,
+      129,
+      150
+    ],
+    "corePixels": 18439
+  },
+  {
+    "name": "tile-1-4",
+    "source": "Cartela de Ícones Coloridos e Divertidos.png",
+    "index": 4,
+    "coreBox": [
+      929,
+      23,
+      1131,
+      239
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      14,
+      10,
+      145,
+      150
+    ],
+    "corePixels": 19859
+  },
+  {
+    "name": "tile-1-5",
+    "source": "Cartela de Ícones Coloridos e Divertidos.png",
+    "index": 5,
+    "coreBox": [
+      1169,
+      40,
+      1344,
+      229
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      18,
+      10,
+      141,
+      150
+    ],
+    "corePixels": 26579
+  },
+  {
+    "name": "tile-2-0",
+    "source": "Cartela de Ícones Coloridos e Divertidos.png",
+    "index": 6,
+    "coreBox": [
+      35,
+      256,
+      222,
+      448
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      12,
+      10,
+      147,
+      150
+    ],
+    "corePixels": 31506
+  },
+  {
+    "name": "tile-2-1",
+    "source": "Cartela de Ícones Coloridos e Divertidos.png",
+    "index": 7,
+    "coreBox": [
+      270,
+      250,
+      422,
+      457
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      29,
+      10,
+      131,
+      150
+    ],
+    "corePixels": 15446
+  },
+  {
+    "name": "tile-2-2",
+    "source": "Cartela de Ícones Coloridos e Divertidos.png",
+    "index": 8,
+    "coreBox": [
+      461,
+      249,
+      674,
+      462
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      10,
+      150,
+      149
+    ],
+    "corePixels": 20197
+  },
+  {
+    "name": "tile-2-3",
+    "source": "Cartela de Ícones Coloridos e Divertidos.png",
+    "index": 9,
+    "coreBox": [
+      698,
+      271,
+      908,
+      450
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      21,
+      150,
+      138
+    ],
+    "corePixels": 27555
+  },
+  {
+    "name": "tile-2-4",
+    "source": "Cartela de Ícones Coloridos e Divertidos.png",
+    "index": 10,
+    "coreBox": [
+      925,
+      249,
+      1144,
+      468
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      11,
+      10,
+      148,
+      150
+    ],
+    "corePixels": 30988
+  },
+  {
+    "name": "tile-2-5",
+    "source": "Cartela de Ícones Coloridos e Divertidos.png",
+    "index": 11,
+    "coreBox": [
+      1152,
+      256,
+      1349,
+      449
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      11,
+      150,
+      149
+    ],
+    "corePixels": 23053
+  },
+  {
+    "name": "tile-3-0",
+    "source": "Cartela de Ícones Coloridos e Divertidos.png",
+    "index": 12,
+    "coreBox": [
+      17,
+      465,
+      234,
+      678
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      12,
+      150,
+      148
+    ],
+    "corePixels": 29261
+  },
+  {
+    "name": "tile-3-1",
+    "source": "Cartela de Ícones Coloridos e Divertidos.png",
+    "index": 13,
+    "coreBox": [
+      244,
+      481,
+      450,
+      661
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      19,
+      150,
+      140
+    ],
+    "corePixels": 25578
+  },
+  {
+    "name": "tile-3-2",
+    "source": "Cartela de Ícones Coloridos e Divertidos.png",
+    "index": 14,
+    "coreBox": [
+      481,
+      459,
+      661,
+      669
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      22,
+      10,
+      138,
+      150
+    ],
+    "corePixels": 22932
+  },
+  {
+    "name": "tile-3-3",
+    "source": "Cartela de Ícones Coloridos e Divertidos.png",
+    "index": 15,
+    "coreBox": [
+      694,
+      468,
+      917,
+      670
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      17,
+      150,
+      143
+    ],
+    "corePixels": 21627
+  },
+  {
+    "name": "tile-3-4",
+    "source": "Cartela de Ícones Coloridos e Divertidos.png",
+    "index": 16,
+    "coreBox": [
+      942,
+      477,
+      1142,
+      670
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      10,
+      149,
+      149
+    ],
+    "corePixels": 26750
+  },
+  {
+    "name": "tile-3-5",
+    "source": "Cartela de Ícones Coloridos e Divertidos.png",
+    "index": 17,
+    "coreBox": [
+      1160,
+      492,
+      1348,
+      662
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      11,
+      150,
+      148
+    ],
+    "corePixels": 23224
+  },
+  {
+    "name": "tile-4-0",
+    "source": "Cartela de Ícones Coloridos e Divertidos.png",
+    "index": 18,
+    "coreBox": [
+      21,
+      699,
+      238,
+      893
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      17,
+      150,
+      142
+    ],
+    "corePixels": 26029
+  },
+  {
+    "name": "tile-4-1",
+    "source": "Cartela de Ícones Coloridos e Divertidos.png",
+    "index": 19,
+    "coreBox": [
+      250,
+      692,
+      494,
+      870
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      30,
+      149,
+      129
+    ],
+    "corePixels": 29924
+  },
+  {
+    "name": "tile-4-2",
+    "source": "Cartela de Ícones Coloridos e Divertidos.png",
+    "index": 20,
+    "coreBox": [
+      483,
+      681,
+      658,
+      901
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      25,
+      10,
+      135,
+      150
+    ],
+    "corePixels": 15570
+  },
+  {
+    "name": "tile-4-3",
+    "source": "Cartela de Ícones Coloridos e Divertidos.png",
+    "index": 21,
+    "coreBox": [
+      681,
+      688,
+      920,
+      884
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      20,
+      150,
+      139
+    ],
+    "corePixels": 8033
+  },
+  {
+    "name": "tile-4-4",
+    "source": "Cartela de Ícones Coloridos e Divertidos.png",
+    "index": 22,
+    "coreBox": [
+      939,
+      688,
+      1130,
+      880
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      15,
+      10,
+      145,
+      150
+    ],
+    "corePixels": 28745
+  },
+  {
+    "name": "tile-4-5",
+    "source": "Cartela de Ícones Coloridos e Divertidos.png",
+    "index": 23,
+    "coreBox": [
+      1169,
+      679,
+      1342,
+      885
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      22,
+      10,
+      138,
+      150
+    ],
+    "corePixels": 25248
+  },
+  {
+    "name": "tile-5-0",
+    "source": "Cartela de Ícones Coloridos e Divertidos.png",
+    "index": 24,
+    "coreBox": [
+      32,
+      914,
+      223,
+      1090
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      13,
+      150,
+      147
+    ],
+    "corePixels": 24780
+  },
+  {
+    "name": "tile-5-1",
+    "source": "Cartela de Ícones Coloridos e Divertidos.png",
+    "index": 25,
+    "coreBox": [
+      243,
+      927,
+      452,
+      1085
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      26,
+      150,
+      133
+    ],
+    "corePixels": 16973
+  },
+  {
+    "name": "tile-5-2",
+    "source": "Cartela de Ícones Coloridos e Divertidos.png",
+    "index": 26,
+    "coreBox": [
+      483,
+      917,
+      653,
+      1087
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      12,
+      150,
+      147
+    ],
+    "corePixels": 22698
+  },
+  {
+    "name": "tile-5-3",
+    "source": "Cartela de Ícones Coloridos e Divertidos.png",
+    "index": 27,
+    "coreBox": [
+      680,
+      927,
+      910,
+      1104
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      24,
+      150,
+      135
+    ],
+    "corePixels": 26540
+  },
+  {
+    "name": "tile-5-4",
+    "source": "Cartela de Ícones Coloridos e Divertidos.png",
+    "index": 28,
+    "coreBox": [
+      922,
+      923,
+      1125,
+      1083
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      25,
+      150,
+      134
+    ],
+    "corePixels": 15969
+  },
+  {
+    "name": "tile-5-5",
+    "source": "Cartela de Ícones Coloridos e Divertidos.png",
+    "index": 29,
+    "coreBox": [
+      1132,
+      897,
+      1356,
+      1113
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      12,
+      150,
+      147
+    ],
+    "corePixels": 37910
+  },
+  {
+    "name": "tile-6-0",
+    "source": "Cartela de ícones 3D coloridos e brilhantes.png",
+    "index": 0,
+    "coreBox": [
+      17,
+      68,
+      269,
+      237
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      32,
+      150,
+      128
+    ],
+    "corePixels": 30045
+  },
+  {
+    "name": "tile-6-1",
+    "source": "Cartela de ícones 3D coloridos e brilhantes.png",
+    "index": 1,
+    "coreBox": [
+      279,
+      33,
+      491,
+      231
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      17,
+      150,
+      143
+    ],
+    "corePixels": 26842
+  },
+  {
+    "name": "tile-6-2",
+    "source": "Cartela de ícones 3D coloridos e brilhantes.png",
+    "index": 2,
+    "coreBox": [
+      498,
+      38,
+      698,
+      226
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      19,
+      150,
+      141
+    ],
+    "corePixels": 22427
+  },
+  {
+    "name": "tile-6-3",
+    "source": "Cartela de ícones 3D coloridos e brilhantes.png",
+    "index": 3,
+    "coreBox": [
+      723,
+      20,
+      950,
+      245
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      13,
+      150,
+      147
+    ],
+    "corePixels": 26948
+  },
+  {
+    "name": "tile-6-4",
+    "source": "Cartela de ícones 3D coloridos e brilhantes.png",
+    "index": 4,
+    "coreBox": [
+      975,
+      56,
+      1193,
+      233
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      22,
+      150,
+      138
+    ],
+    "corePixels": 26810
+  },
+  {
+    "name": "tile-6-5",
+    "source": "Cartela de ícones 3D coloridos e brilhantes.png",
+    "index": 5,
+    "coreBox": [
+      1224,
+      19,
+      1379,
+      233
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      26,
+      10,
+      133,
+      150
+    ],
+    "corePixels": 20310
+  },
+  {
+    "name": "tile-7-0",
+    "source": "Cartela de ícones 3D coloridos e brilhantes.png",
+    "index": 6,
+    "coreBox": [
+      16,
+      280,
+      288,
+      448
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      37,
+      149,
+      123
+    ],
+    "corePixels": 31970
+  },
+  {
+    "name": "tile-7-1",
+    "source": "Cartela de ícones 3D coloridos e brilhantes.png",
+    "index": 7,
+    "coreBox": [
+      303,
+      238,
+      458,
+      462
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      27,
+      10,
+      132,
+      150
+    ],
+    "corePixels": 20648
+  },
+  {
+    "name": "tile-7-2",
+    "source": "Cartela de ícones 3D coloridos e brilhantes.png",
+    "index": 8,
+    "coreBox": [
+      521,
+      253,
+      688,
+      461
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      24,
+      10,
+      136,
+      150
+    ],
+    "corePixels": 24381
+  },
+  {
+    "name": "tile-7-3",
+    "source": "Cartela de ícones 3D coloridos e brilhantes.png",
+    "index": 9,
+    "coreBox": [
+      711,
+      255,
+      962,
+      465
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      20,
+      150,
+      139
+    ],
+    "corePixels": 32559
+  },
+  {
+    "name": "tile-7-4",
+    "source": "Cartela de ícones 3D coloridos e brilhantes.png",
+    "index": 10,
+    "coreBox": [
+      977,
+      254,
+      1188,
+      464
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      11,
+      10,
+      149,
+      150
+    ],
+    "corePixels": 37349
+  },
+  {
+    "name": "tile-7-5",
+    "source": "Cartela de ícones 3D coloridos e brilhantes.png",
+    "index": 11,
+    "coreBox": [
+      1222,
+      247,
+      1385,
+      463
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      26,
+      10,
+      134,
+      150
+    ],
+    "corePixels": 18044
+  },
+  {
+    "name": "tile-8-0",
+    "source": "Cartela de ícones 3D coloridos e brilhantes.png",
+    "index": 12,
+    "coreBox": [
+      22,
+      477,
+      256,
+      676
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      18,
+      150,
+      142
+    ],
+    "corePixels": 32597
+  },
+  {
+    "name": "tile-8-1",
+    "source": "Cartela de ícones 3D coloridos e brilhantes.png",
+    "index": 13,
+    "coreBox": [
+      273,
+      457,
+      523,
+      682
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      15,
+      150,
+      145
+    ],
+    "corePixels": 24805
+  },
+  {
+    "name": "tile-8-2",
+    "source": "Cartela de ícones 3D coloridos e brilhantes.png",
+    "index": 14,
+    "coreBox": [
+      521,
+      482,
+      678,
+      677
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      26,
+      10,
+      134,
+      150
+    ],
+    "corePixels": 13833
+  },
+  {
+    "name": "tile-8-3",
+    "source": "Cartela de ícones 3D coloridos e brilhantes.png",
+    "index": 15,
+    "coreBox": [
+      743,
+      485,
+      914,
+      663
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      16,
+      10,
+      143,
+      150
+    ],
+    "corePixels": 17374
+  },
+  {
+    "name": "tile-8-4",
+    "source": "Cartela de ícones 3D coloridos e brilhantes.png",
+    "index": 16,
+    "coreBox": [
+      986,
+      477,
+      1165,
+      673
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      14,
+      10,
+      145,
+      150
+    ],
+    "corePixels": 23420
+  },
+  {
+    "name": "tile-8-5",
+    "source": "Cartela de ícones 3D coloridos e brilhantes.png",
+    "index": 17,
+    "coreBox": [
+      1213,
+      475,
+      1379,
+      679
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      25,
+      10,
+      135,
+      150
+    ],
+    "corePixels": 20046
+  },
+  {
+    "name": "tile-9-0",
+    "source": "Cartela de ícones 3D coloridos e brilhantes.png",
+    "index": 18,
+    "coreBox": [
+      32,
+      684,
+      226,
+      884
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      14,
+      10,
+      145,
+      150
+    ],
+    "corePixels": 31456
+  },
+  {
+    "name": "tile-9-1",
+    "source": "Cartela de ícones 3D coloridos e brilhantes.png",
+    "index": 19,
+    "coreBox": [
+      265,
+      685,
+      468,
+      877
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      13,
+      150,
+      147
+    ],
+    "corePixels": 30236
+  },
+  {
+    "name": "tile-9-2",
+    "source": "Cartela de ícones 3D coloridos e brilhantes.png",
+    "index": 20,
+    "coreBox": [
+      487,
+      698,
+      722,
+      882
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      25,
+      150,
+      134
+    ],
+    "corePixels": 28783
+  },
+  {
+    "name": "tile-9-3",
+    "source": "Cartela de ícones 3D coloridos e brilhantes.png",
+    "index": 21,
+    "coreBox": [
+      736,
+      684,
+      951,
+      888
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      13,
+      150,
+      146
+    ],
+    "corePixels": 33079
+  },
+  {
+    "name": "tile-9-4",
+    "source": "Cartela de ícones 3D coloridos e brilhantes.png",
+    "index": 22,
+    "coreBox": [
+      970,
+      678,
+      1170,
+      879
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      12,
+      150,
+      147
+    ],
+    "corePixels": 32115
+  },
+  {
+    "name": "tile-9-5",
+    "source": "Cartela de ícones 3D coloridos e brilhantes.png",
+    "index": 23,
+    "coreBox": [
+      1191,
+      691,
+      1394,
+      883
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      15,
+      150,
+      145
+    ],
+    "corePixels": 19081
+  },
+  {
+    "name": "tile-10-0",
+    "source": "Cartela de ícones 3D coloridos e brilhantes.png",
+    "index": 24,
+    "coreBox": [
+      24,
+      900,
+      240,
+      1083
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      23,
+      149,
+      136
+    ],
+    "corePixels": 28002
+  },
+  {
+    "name": "tile-10-1",
+    "source": "Cartela de ícones 3D coloridos e brilhantes.png",
+    "index": 25,
+    "coreBox": [
+      251,
+      887,
+      482,
+      1087
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      19,
+      150,
+      141
+    ],
+    "corePixels": 35359
+  },
+  {
+    "name": "tile-10-2",
+    "source": "Cartela de ícones 3D coloridos e brilhantes.png",
+    "index": 26,
+    "coreBox": [
+      487,
+      893,
+      725,
+      1082
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      23,
+      150,
+      136
+    ],
+    "corePixels": 27546
+  },
+  {
+    "name": "tile-10-3",
+    "source": "Cartela de ícones 3D coloridos e brilhantes.png",
+    "index": 27,
+    "coreBox": [
+      728,
+      898,
+      952,
+      1085
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      23,
+      150,
+      137
+    ],
+    "corePixels": 32026
+  },
+  {
+    "name": "tile-10-4",
+    "source": "Cartela de ícones 3D coloridos e brilhantes.png",
+    "index": 28,
+    "coreBox": [
+      968,
+      883,
+      1162,
+      1093
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      14,
+      10,
+      145,
+      150
+    ],
+    "corePixels": 28181
+  },
+  {
+    "name": "tile-10-5",
+    "source": "Cartela de ícones 3D coloridos e brilhantes.png",
+    "index": 29,
+    "coreBox": [
+      1175,
+      895,
+      1384,
+      1083
+    ],
+    "outputSize": [
+      160,
+      160
+    ],
+    "alphaBox": [
+      10,
+      14,
+      150,
+      146
+    ],
+    "corePixels": 25397
+  }
+]

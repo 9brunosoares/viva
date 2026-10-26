@@ -1,0 +1,11 @@
+node_modules/
+.pnpm-store/
+dist/
+test-results/
+*-audit.jpg
+*-audit.png
+audit.jpg
+
+dist-qa/
+fotos/
+scripts/__pycache__/

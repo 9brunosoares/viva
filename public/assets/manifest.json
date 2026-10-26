@@ -1,0 +1,1555 @@
+[
+  {
+    "name": "tile-1-0",
+    "file": "assets/tile-1-0.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 1,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-1-1",
+    "file": "assets/tile-1-1.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 1,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-1-2",
+    "file": "assets/tile-1-2.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 1,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-1-3",
+    "file": "assets/tile-1-3.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 1,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-1-4",
+    "file": "assets/tile-1-4.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 1,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-1-5",
+    "file": "assets/tile-1-5.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 1,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-2-0",
+    "file": "assets/tile-2-0.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 2,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-2-1",
+    "file": "assets/tile-2-1.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 2,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-2-2",
+    "file": "assets/tile-2-2.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 2,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-2-3",
+    "file": "assets/tile-2-3.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 2,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-2-4",
+    "file": "assets/tile-2-4.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 2,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-2-5",
+    "file": "assets/tile-2-5.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 2,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-3-0",
+    "file": "assets/tile-3-0.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 3,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-3-1",
+    "file": "assets/tile-3-1.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 3,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-3-2",
+    "file": "assets/tile-3-2.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 3,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-3-3",
+    "file": "assets/tile-3-3.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 3,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-3-4",
+    "file": "assets/tile-3-4.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 3,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-3-5",
+    "file": "assets/tile-3-5.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 3,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-4-0",
+    "file": "assets/tile-4-0.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 4,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-4-1",
+    "file": "assets/tile-4-1.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 4,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-4-2",
+    "file": "assets/tile-4-2.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 4,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-4-3",
+    "file": "assets/tile-4-3.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 4,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-4-4",
+    "file": "assets/tile-4-4.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 4,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-4-5",
+    "file": "assets/tile-4-5.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 4,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-5-0",
+    "file": "assets/tile-5-0.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 5,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-5-1",
+    "file": "assets/tile-5-1.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 5,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-5-2",
+    "file": "assets/tile-5-2.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 5,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-5-3",
+    "file": "assets/tile-5-3.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 5,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-5-4",
+    "file": "assets/tile-5-4.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 5,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-5-5",
+    "file": "assets/tile-5-5.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 5,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-6-0",
+    "file": "assets/tile-6-0.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 6,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-6-1",
+    "file": "assets/tile-6-1.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 6,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-6-2",
+    "file": "assets/tile-6-2.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 6,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-6-3",
+    "file": "assets/tile-6-3.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 6,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-6-4",
+    "file": "assets/tile-6-4.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 6,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-6-5",
+    "file": "assets/tile-6-5.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 6,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-7-0",
+    "file": "assets/tile-7-0.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 7,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-7-1",
+    "file": "assets/tile-7-1.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 7,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-7-2",
+    "file": "assets/tile-7-2.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 7,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-7-3",
+    "file": "assets/tile-7-3.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 7,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-7-4",
+    "file": "assets/tile-7-4.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 7,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-7-5",
+    "file": "assets/tile-7-5.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 7,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-8-0",
+    "file": "assets/tile-8-0.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 8,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-8-1",
+    "file": "assets/tile-8-1.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 8,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-8-2",
+    "file": "assets/tile-8-2.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 8,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-8-3",
+    "file": "assets/tile-8-3.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 8,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-8-4",
+    "file": "assets/tile-8-4.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 8,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-8-5",
+    "file": "assets/tile-8-5.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 8,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-9-0",
+    "file": "assets/tile-9-0.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 9,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-9-1",
+    "file": "assets/tile-9-1.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 9,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-9-2",
+    "file": "assets/tile-9-2.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 9,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-9-3",
+    "file": "assets/tile-9-3.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 9,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-9-4",
+    "file": "assets/tile-9-4.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 9,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-9-5",
+    "file": "assets/tile-9-5.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 9,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-10-0",
+    "file": "assets/tile-10-0.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 10,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-10-1",
+    "file": "assets/tile-10-1.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 10,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-10-2",
+    "file": "assets/tile-10-2.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 10,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-10-3",
+    "file": "assets/tile-10-3.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 10,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-10-4",
+    "file": "assets/tile-10-4.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 10,
+    "purpose": "tile"
+  },
+  {
+    "name": "tile-10-5",
+    "file": "assets/tile-10-5.webp",
+    "category": "tile",
+    "dimensions": [
+      160,
+      160
+    ],
+    "stage": 10,
+    "purpose": "tile"
+  },
+  {
+    "name": "scene-1",
+    "file": "assets/scene-1.webp",
+    "category": "scene",
+    "dimensions": [
+      285,
+      496
+    ],
+    "stage": 1,
+    "purpose": "scene"
+  },
+  {
+    "name": "scene-2",
+    "file": "assets/scene-2.webp",
+    "category": "scene",
+    "dimensions": [
+      285,
+      496
+    ],
+    "stage": 2,
+    "purpose": "scene"
+  },
+  {
+    "name": "scene-3",
+    "file": "assets/scene-3.webp",
+    "category": "scene",
+    "dimensions": [
+      286,
+      496
+    ],
+    "stage": 3,
+    "purpose": "scene"
+  },
+  {
+    "name": "scene-4",
+    "file": "assets/scene-4.webp",
+    "category": "scene",
+    "dimensions": [
+      285,
+      496
+    ],
+    "stage": 4,
+    "purpose": "scene"
+  },
+  {
+    "name": "scene-5",
+    "file": "assets/scene-5.webp",
+    "category": "scene",
+    "dimensions": [
+      285,
+      496
+    ],
+    "stage": 5,
+    "purpose": "scene"
+  },
+  {
+    "name": "scene-6",
+    "file": "assets/scene-6.webp",
+    "category": "scene",
+    "dimensions": [
+      285,
+      496
+    ],
+    "stage": 6,
+    "purpose": "scene"
+  },
+  {
+    "name": "scene-7",
+    "file": "assets/scene-7.webp",
+    "category": "scene",
+    "dimensions": [
+      285,
+      496
+    ],
+    "stage": 7,
+    "purpose": "scene"
+  },
+  {
+    "name": "scene-8",
+    "file": "assets/scene-8.webp",
+    "category": "scene",
+    "dimensions": [
+      286,
+      496
+    ],
+    "stage": 8,
+    "purpose": "scene"
+  },
+  {
+    "name": "scene-9",
+    "file": "assets/scene-9.webp",
+    "category": "scene",
+    "dimensions": [
+      285,
+      496
+    ],
+    "stage": 9,
+    "purpose": "scene"
+  },
+  {
+    "name": "scene-10",
+    "file": "assets/scene-10.webp",
+    "category": "scene",
+    "dimensions": [
+      285,
+      496
+    ],
+    "stage": 10,
+    "purpose": "scene"
+  },
+  {
+    "name": "power-0",
+    "file": "assets/power-0.webp",
+    "category": "power",
+    "dimensions": [
+      375,
+      314
+    ],
+    "stage": null,
+    "purpose": "power"
+  },
+  {
+    "name": "power-1",
+    "file": "assets/power-1.webp",
+    "category": "power",
+    "dimensions": [
+      360,
+      334
+    ],
+    "stage": null,
+    "purpose": "power"
+  },
+  {
+    "name": "power-2",
+    "file": "assets/power-2.webp",
+    "category": "power",
+    "dimensions": [
+      347,
+      363
+    ],
+    "stage": null,
+    "purpose": "power"
+  },
+  {
+    "name": "power-3",
+    "file": "assets/power-3.webp",
+    "category": "power",
+    "dimensions": [
+      362,
+      351
+    ],
+    "stage": null,
+    "purpose": "power"
+  },
+  {
+    "name": "power-4",
+    "file": "assets/power-4.webp",
+    "category": "power",
+    "dimensions": [
+      414,
+      184
+    ],
+    "stage": null,
+    "purpose": "power"
+  },
+  {
+    "name": "power-5",
+    "file": "assets/power-5.webp",
+    "category": "power",
+    "dimensions": [
+      221,
+      384
+    ],
+    "stage": null,
+    "purpose": "power"
+  },
+  {
+    "name": "power-6",
+    "file": "assets/power-6.webp",
+    "category": "power",
+    "dimensions": [
+      354,
+      343
+    ],
+    "stage": null,
+    "purpose": "power"
+  },
+  {
+    "name": "power-7",
+    "file": "assets/power-7.webp",
+    "category": "power",
+    "dimensions": [
+      375,
+      334
+    ],
+    "stage": null,
+    "purpose": "power"
+  },
+  {
+    "name": "power-8",
+    "file": "assets/power-8.webp",
+    "category": "power",
+    "dimensions": [
+      313,
+      317
+    ],
+    "stage": null,
+    "purpose": "power"
+  },
+  {
+    "name": "power-9",
+    "file": "assets/power-9.webp",
+    "category": "power",
+    "dimensions": [
+      326,
+      286
+    ],
+    "stage": null,
+    "purpose": "power"
+  },
+  {
+    "name": "power-10",
+    "file": "assets/power-10.webp",
+    "category": "power",
+    "dimensions": [
+      356,
+      323
+    ],
+    "stage": null,
+    "purpose": "power"
+  },
+  {
+    "name": "power-11",
+    "file": "assets/power-11.webp",
+    "category": "power",
+    "dimensions": [
+      390,
+      341
+    ],
+    "stage": null,
+    "purpose": "power"
+  },
+  {
+    "name": "reward-0",
+    "file": "assets/reward-0.webp",
+    "category": "reward",
+    "dimensions": [
+      413,
+      350
+    ],
+    "stage": null,
+    "purpose": "reward"
+  },
+  {
+    "name": "reward-1",
+    "file": "assets/reward-1.webp",
+    "category": "reward",
+    "dimensions": [
+      415,
+      206
+    ],
+    "stage": null,
+    "purpose": "reward"
+  },
+  {
+    "name": "reward-2",
+    "file": "assets/reward-2.webp",
+    "category": "reward",
+    "dimensions": [
+      362,
+      414
+    ],
+    "stage": null,
+    "purpose": "reward"
+  },
+  {
+    "name": "reward-3",
+    "file": "assets/reward-3.webp",
+    "category": "reward",
+    "dimensions": [
+      418,
+      229
+    ],
+    "stage": null,
+    "purpose": "reward"
+  },
+  {
+    "name": "reward-4",
+    "file": "assets/reward-4.webp",
+    "category": "reward",
+    "dimensions": [
+      414,
+      271
+    ],
+    "stage": null,
+    "purpose": "reward"
+  },
+  {
+    "name": "reward-5",
+    "file": "assets/reward-5.webp",
+    "category": "reward",
+    "dimensions": [
+      396,
+      402
+    ],
+    "stage": null,
+    "purpose": "reward"
+  },
+  {
+    "name": "reward-6",
+    "file": "assets/reward-6.webp",
+    "category": "reward",
+    "dimensions": [
+      372,
+      324
+    ],
+    "stage": null,
+    "purpose": "reward"
+  },
+  {
+    "name": "reward-7",
+    "file": "assets/reward-7.webp",
+    "category": "reward",
+    "dimensions": [
+      416,
+      176
+    ],
+    "stage": null,
+    "purpose": "reward"
+  },
+  {
+    "name": "ui-0",
+    "file": "assets/ui-0.webp",
+    "category": "ui",
+    "dimensions": [
+      294,
+      232
+    ],
+    "stage": null,
+    "purpose": "ui"
+  },
+  {
+    "name": "ui-1",
+    "file": "assets/ui-1.webp",
+    "category": "ui",
+    "dimensions": [
+      294,
+      224
+    ],
+    "stage": null,
+    "purpose": "ui"
+  },
+  {
+    "name": "ui-2",
+    "file": "assets/ui-2.webp",
+    "category": "ui",
+    "dimensions": [
+      294,
+      222
+    ],
+    "stage": null,
+    "purpose": "ui"
+  },
+  {
+    "name": "ui-3",
+    "file": "assets/ui-3.webp",
+    "category": "ui",
+    "dimensions": [
+      294,
+      176
+    ],
+    "stage": null,
+    "purpose": "ui"
+  },
+  {
+    "name": "ui-4",
+    "file": "assets/ui-4.webp",
+    "category": "ui",
+    "dimensions": [
+      294,
+      214
+    ],
+    "stage": null,
+    "purpose": "ui"
+  },
+  {
+    "name": "ui-5",
+    "file": "assets/ui-5.webp",
+    "category": "ui",
+    "dimensions": [
+      292,
+      286
+    ],
+    "stage": null,
+    "purpose": "ui"
+  },
+  {
+    "name": "ui-6",
+    "file": "assets/ui-6.webp",
+    "category": "ui",
+    "dimensions": [
+      294,
+      220
+    ],
+    "stage": null,
+    "purpose": "ui"
+  },
+  {
+    "name": "ui-7",
+    "file": "assets/ui-7.webp",
+    "category": "ui",
+    "dimensions": [
+      294,
+      231
+    ],
+    "stage": null,
+    "purpose": "ui"
+  },
+  {
+    "name": "ui-8",
+    "file": "assets/ui-8.webp",
+    "category": "ui",
+    "dimensions": [
+      294,
+      239
+    ],
+    "stage": null,
+    "purpose": "ui"
+  },
+  {
+    "name": "ui-9",
+    "file": "assets/ui-9.webp",
+    "category": "ui",
+    "dimensions": [
+      294,
+      173
+    ],
+    "stage": null,
+    "purpose": "ui"
+  },
+  {
+    "name": "ui-10",
+    "file": "assets/ui-10.webp",
+    "category": "ui",
+    "dimensions": [
+      295,
+      142
+    ],
+    "stage": null,
+    "purpose": "ui"
+  },
+  {
+    "name": "ui-11",
+    "file": "assets/ui-11.webp",
+    "category": "ui",
+    "dimensions": [
+      294,
+      211
+    ],
+    "stage": null,
+    "purpose": "ui"
+  },
+  {
+    "name": "control-pause",
+    "file": "assets/control-pause.webp",
+    "category": "ui",
+    "dimensions": [
+      256,
+      256
+    ],
+    "stage": null,
+    "purpose": "ui"
+  },
+  {
+    "name": "control-back",
+    "file": "assets/control-back.webp",
+    "category": "ui",
+    "dimensions": [
+      256,
+      256
+    ],
+    "stage": null,
+    "purpose": "ui"
+  },
+  {
+    "name": "control-settings",
+    "file": "assets/control-settings.webp",
+    "category": "ui",
+    "dimensions": [
+      256,
+      256
+    ],
+    "stage": null,
+    "purpose": "ui"
+  },
+  {
+    "name": "blade-0",
+    "file": "assets/blade-0.webp",
+    "category": "blade",
+    "dimensions": [
+      394,
+      400
+    ],
+    "stage": null,
+    "purpose": "blade"
+  },
+  {
+    "name": "blade-1",
+    "file": "assets/blade-1.webp",
+    "category": "blade",
+    "dimensions": [
+      314,
+      400
+    ],
+    "stage": null,
+    "purpose": "blade"
+  },
+  {
+    "name": "blade-2",
+    "file": "assets/blade-2.webp",
+    "category": "blade",
+    "dimensions": [
+      366,
+      400
+    ],
+    "stage": null,
+    "purpose": "blade"
+  },
+  {
+    "name": "blade-3",
+    "file": "assets/blade-3.webp",
+    "category": "blade",
+    "dimensions": [
+      400,
+      377
+    ],
+    "stage": null,
+    "purpose": "blade"
+  },
+  {
+    "name": "blade-4",
+    "file": "assets/blade-4.webp",
+    "category": "blade",
+    "dimensions": [
+      400,
+      266
+    ],
+    "stage": null,
+    "purpose": "blade"
+  },
+  {
+    "name": "blade-5",
+    "file": "assets/blade-5.webp",
+    "category": "blade",
+    "dimensions": [
+      376,
+      273
+    ],
+    "stage": null,
+    "purpose": "blade"
+  },
+  {
+    "name": "blade-6",
+    "file": "assets/blade-6.webp",
+    "category": "blade",
+    "dimensions": [
+      400,
+      174
+    ],
+    "stage": null,
+    "purpose": "blade"
+  },
+  {
+    "name": "blade-7",
+    "file": "assets/blade-7.webp",
+    "category": "blade",
+    "dimensions": [
+      400,
+      353
+    ],
+    "stage": null,
+    "purpose": "blade"
+  },
+  {
+    "name": "book-1-cover",
+    "file": "assets/book-1-cover.webp",
+    "category": "book",
+    "dimensions": [
+      389,
+      539
+    ],
+    "stage": null,
+    "purpose": "book"
+  },
+  {
+    "name": "book-2-cover",
+    "file": "assets/book-2-cover.webp",
+    "category": "book",
+    "dimensions": [
+      380,
+      546
+    ],
+    "stage": null,
+    "purpose": "book"
+  },
+  {
+    "name": "book-3-cover",
+    "file": "assets/book-3-cover.webp",
+    "category": "book",
+    "dimensions": [
+      370,
+      546
+    ],
+    "stage": null,
+    "purpose": "book"
+  },
+  {
+    "name": "book-4-cover",
+    "file": "assets/book-4-cover.webp",
+    "category": "book",
+    "dimensions": [
+      373,
+      549
+    ],
+    "stage": null,
+    "purpose": "book"
+  },
+  {
+    "name": "book-5-cover",
+    "file": "assets/book-5-cover.webp",
+    "category": "book",
+    "dimensions": [
+      376,
+      543
+    ],
+    "stage": null,
+    "purpose": "book"
+  },
+  {
+    "name": "book-1-spine",
+    "file": "assets/book-1-spine.webp",
+    "category": "book",
+    "dimensions": [
+      171,
+      393
+    ],
+    "stage": null,
+    "purpose": "book"
+  },
+  {
+    "name": "book-2-spine",
+    "file": "assets/book-2-spine.webp",
+    "category": "book",
+    "dimensions": [
+      166,
+      376
+    ],
+    "stage": null,
+    "purpose": "book"
+  },
+  {
+    "name": "book-3-spine",
+    "file": "assets/book-3-spine.webp",
+    "category": "book",
+    "dimensions": [
+      164,
+      368
+    ],
+    "stage": null,
+    "purpose": "book"
+  },
+  {
+    "name": "book-4-spine",
+    "file": "assets/book-4-spine.webp",
+    "category": "book",
+    "dimensions": [
+      166,
+      381
+    ],
+    "stage": null,
+    "purpose": "book"
+  },
+  {
+    "name": "book-5-spine",
+    "file": "assets/book-5-spine.webp",
+    "category": "book",
+    "dimensions": [
+      168,
+      382
+    ],
+    "stage": null,
+    "purpose": "book"
+  },
+  {
+    "name": "book-6-cover",
+    "file": "assets/book-6-cover.webp",
+    "category": "book",
+    "dimensions": [
+      411,
+      582
+    ],
+    "stage": null,
+    "purpose": "book"
+  },
+  {
+    "name": "book-7-cover",
+    "file": "assets/book-7-cover.webp",
+    "category": "book",
+    "dimensions": [
+      403,
+      573
+    ],
+    "stage": null,
+    "purpose": "book"
+  },
+  {
+    "name": "book-8-cover",
+    "file": "assets/book-8-cover.webp",
+    "category": "book",
+    "dimensions": [
+      391,
+      582
+    ],
+    "stage": null,
+    "purpose": "book"
+  },
+  {
+    "name": "book-9-cover",
+    "file": "assets/book-9-cover.webp",
+    "category": "book",
+    "dimensions": [
+      400,
+      577
+    ],
+    "stage": null,
+    "purpose": "book"
+  },
+  {
+    "name": "book-10-cover",
+    "file": "assets/book-10-cover.webp",
+    "category": "book",
+    "dimensions": [
+      400,
+      577
+    ],
+    "stage": null,
+    "purpose": "book"
+  },
+  {
+    "name": "book-6-spine",
+    "file": "assets/book-6-spine.webp",
+    "category": "book",
+    "dimensions": [
+      138,
+      407
+    ],
+    "stage": null,
+    "purpose": "book"
+  },
+  {
+    "name": "book-7-spine",
+    "file": "assets/book-7-spine.webp",
+    "category": "book",
+    "dimensions": [
+      137,
+      400
+    ],
+    "stage": null,
+    "purpose": "book"
+  },
+  {
+    "name": "book-8-spine",
+    "file": "assets/book-8-spine.webp",
+    "category": "book",
+    "dimensions": [
+      145,
+      391
+    ],
+    "stage": null,
+    "purpose": "book"
+  },
+  {
+    "name": "book-9-spine",
+    "file": "assets/book-9-spine.webp",
+    "category": "book",
+    "dimensions": [
+      146,
+      395
+    ],
+    "stage": null,
+    "purpose": "book"
+  },
+  {
+    "name": "book-10-spine",
+    "file": "assets/book-10-spine.webp",
+    "category": "book",
+    "dimensions": [
+      137,
+      399
+    ],
+    "stage": null,
+    "purpose": "book"
+  },
+  {
+    "name": "library-0",
+    "file": "assets/library-0.webp",
+    "category": "library",
+    "dimensions": [
+      496,
+      756
+    ],
+    "stage": null,
+    "purpose": "library"
+  },
+  {
+    "name": "library-1",
+    "file": "assets/library-1.webp",
+    "category": "library",
+    "dimensions": [
+      496,
+      756
+    ],
+    "stage": null,
+    "purpose": "library"
+  },
+  {
+    "name": "library-2",
+    "file": "assets/library-2.webp",
+    "category": "library",
+    "dimensions": [
+      496,
+      756
+    ],
+    "stage": null,
+    "purpose": "library"
+  },
+  {
+    "name": "library-3",
+    "file": "assets/library-3.webp",
+    "category": "library",
+    "dimensions": [
+      496,
+      756
+    ],
+    "stage": null,
+    "purpose": "library"
+  },
+  {
+    "name": "library-foreground",
+    "file": "assets/library-foreground.webp",
+    "category": "library",
+    "dimensions": [
+      496,
+      756
+    ],
+    "stage": null,
+    "purpose": "library"
+  },
+  {
+    "name": "family",
+    "file": "assets/family.webp",
+    "category": "family",
+    "dimensions": [
+      1448,
+      1086
+    ],
+    "stage": null,
+    "purpose": "family",
+    "source": "Retrato de Família com Cachorro Fofinho.png"
+  },
+  {
+    "name": "family-object",
+    "file": "assets/family-object.webp",
+    "category": "family",
+    "dimensions": [
+      1439,
+      993
+    ],
+    "stage": null,
+    "purpose": "family",
+    "source": "Retrato de Família com Cachorro Fofinho.png"
+  },
+  {
+    "name": "logo",
+    "file": "assets/logo.webp",
+    "category": "identity",
+    "dimensions": [
+      800,
+      342
+    ],
+    "stage": null,
+    "purpose": "identity"
+  }
+]
