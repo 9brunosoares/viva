@@ -112,8 +112,15 @@ while cursor<len(queue):
 alpha=Image.frombytes('L',family.size,bytes(0 if v else 255 for v in seen));family.putalpha(alpha)
 save(family,'family-object','family',size=1448,quality=95)
 logo=Image.open(find('Logo')); save(logo.crop((0,0,1448,640)),'logo','identity',size=800)
-icon=logo.crop((970,665,1448,1086)); icon=ImageOps.pad(icon,(512,512),color='#194b37')
-for size in [192,512]: icon.resize((size,size)).save(out/f'icon-{size}.png')
+# iOS paints transparent icon pixels white. Flatten the existing floral mark on
+# the library green, preserving its own gold frame while filling the whole tile.
+icon=logo.crop((970,665,1448,1086)).convert('RGBA')
+box=icon.getchannel('A').getbbox()
+if box: icon=icon.crop(box)
+icon=ImageOps.contain(icon,(488,488),Image.Resampling.LANCZOS)
+tile=Image.new('RGB',(512,512),'#194b37')
+tile.paste(icon,((512-icon.width)//2,(512-icon.height)//2),icon)
+for size in [192,512]: tile.resize((size,size),Image.Resampling.LANCZOS).save(out/f'icon-{size}.png')
 manifest=list({a['name']:a for a in manifest}.values())
 for entry in manifest:
     if entry['category']=='family':entry['source']=official.name
