@@ -23,8 +23,16 @@ type Props = {
   motion: boolean;
   onWin: () => void;
   onExit: () => void;
+  endless?: boolean;
 };
-export default function Game({ level, audio, motion, onWin, onExit }: Props) {
+export default function Game({
+  level,
+  audio,
+  motion,
+  onWin,
+  onExit,
+  endless = false,
+}: Props) {
   const [board, setBoard] = useState<Board>(() => createBoard());
   const current = useRef(board);
   const [selected, select] = useState<number | null>(null),
@@ -45,6 +53,11 @@ export default function Game({ level, audio, motion, onWin, onExit }: Props) {
     [created, setCreated] = useState<number[]>([]);
   const [effectCount, setEffectCount] = useState(0);
   const [clearDelays, setClearDelays] = useState<Record<number, number>>({});
+  const [victory, setVictory] = useState<"" | "shine" | "leave">("");
+  const [lastItems, setLastItems] = useState<{ index: number; kind: number }[]>(
+    [],
+  );
+  const [round, setRound] = useState(1);
   const drag = useRef<{ i: number; x: number; y: number } | null>(null),
     suppress = useRef(false);
   const grid = useRef<HTMLDivElement>(null),
@@ -56,11 +69,10 @@ export default function Game({ level, audio, motion, onWin, onExit }: Props) {
         const before = positions.get(board[i].id);
         if (before === undefined || before === i) return;
         const el = node as HTMLElement;
-        const rect = el.getBoundingClientRect();
         el.animate(
           [
             {
-              transform: `translate(${((before % COLS) - (i % COLS)) * (rect.width + 3)}px,${(Math.floor(before / COLS) - Math.floor(i / COLS)) * (rect.height + 3)}px)`,
+              transform: `translate(${((before % COLS) - (i % COLS)) * (el.offsetWidth + 3)}px,${(Math.floor(before / COLS) - Math.floor(i / COLS)) * (el.offsetHeight + 3)}px)`,
             },
             { transform: "translate(0,0)" },
           ],
@@ -97,6 +109,8 @@ export default function Game({ level, audio, motion, onWin, onExit }: Props) {
     setCreated([]);
     setClearDelays({});
     setLost(false);
+    setVictory("");
+    setRound(1);
     pause(false);
     setMessage("Um novo começo. Vamos juntas!");
   }
@@ -140,6 +154,12 @@ export default function Game({ level, audio, motion, onWin, onExit }: Props) {
         active.length ? colorKind : undefined,
       );
       active = [];
+      if (wave.clear.length)
+        setLastItems(
+          wave.clear
+            .slice(0, 8)
+            .map((index) => ({ index, kind: next[index].kind })),
+        );
       setClearing(wave.clear);
       setEffects(wave.effects);
       setEffectCount(wave.powers);
@@ -224,16 +244,33 @@ export default function Game({ level, audio, motion, onWin, onExit }: Props) {
     }
     const left = remaining - 1;
     setRemaining(left);
-    lock.current = false;
-    setBusy(false);
     if (
       level.targets.every((t) => total[t.kind] >= t.amount) &&
       power >= level.powers &&
       chain >= level.cascades
     ) {
       sound(audio, "win");
-      onWin();
-    } else if (left <= 0) setLost(true);
+      setVictory("shine");
+      setMessage("Conseguiu!");
+      await new Promise((r) => setTimeout(r, depth >= 4 ? 2600 : 2200));
+      if (!alive.current) return;
+      if (endless) {
+        setCounts([0, 0, 0, 0, 0, 0]);
+        setPowers(0);
+        setCascades(0);
+        setRound((n) => n + 1);
+        setRemaining(level.moves);
+        setVictory("");
+        setMessage("Mais um momento de alegria. Sem pressa.");
+      } else {
+        setVictory("leave");
+        await wait(320);
+        if (alive.current) onWin();
+        return;
+      }
+    } else if (left <= 0 && !endless) setLost(true);
+    lock.current = false;
+    setBusy(false);
   }
   function tap(i: number) {
     if (lock.current || paused || lost) return;
@@ -256,7 +293,7 @@ export default function Game({ level, audio, motion, onWin, onExit }: Props) {
   }
   return (
     <section
-      className="game-screen"
+      className={`game-screen ${victory ? `victory-${victory}` : ""}`}
       style={{
         backgroundImage: `linear-gradient(#102e2980,#102e29b0),url('${asset(`scene-${level.id}`)}')`,
       }}
@@ -275,11 +312,13 @@ export default function Game({ level, audio, motion, onWin, onExit }: Props) {
         </button>
         <div>
           <h1>{level.name}</h1>
-          <span>Fase {level.id}</span>
+          <span>
+            {endless ? `Modo infinito · Momento ${round}` : `Fase ${level.id}`}
+          </span>
         </div>
         <div className="moves">
-          <strong>{remaining}</strong>
-          <small>jogadas</small>
+          <strong>{endless ? "∞" : remaining}</strong>
+          <small>{endless ? "sem pressa" : "jogadas"}</small>
         </div>
       </header>
       <div className="objectives" aria-label="Objetivos">
@@ -298,7 +337,7 @@ export default function Game({ level, audio, motion, onWin, onExit }: Props) {
           </div>
         ))}
         {level.powers > 0 && (
-          <div>
+          <div className={powers >= level.powers ? "done" : ""}>
             <img src={asset("power-0")} alt="Ativar poderes" />
             <strong>
               {Math.min(powers, level.powers)}/{level.powers}
@@ -306,7 +345,7 @@ export default function Game({ level, audio, motion, onWin, onExit }: Props) {
           </div>
         )}
         {level.cascades > 0 && (
-          <div>
+          <div className={cascades >= level.cascades ? "done" : ""}>
             <span>Sequências</span>
             <strong>
               {Math.min(cascades, level.cascades)}/{level.cascades}
@@ -363,8 +402,12 @@ export default function Game({ level, audio, motion, onWin, onExit }: Props) {
                 const d = drag.current;
                 drag.current = null;
                 if (!d || lock.current) return;
-                const dx = e.clientX - d.x,
-                  dy = e.clientY - d.y;
+                const rotated =
+                  document.documentElement.classList.contains(
+                    "portrait-fallback",
+                  );
+                const dx = rotated ? e.clientY - d.y : e.clientX - d.x,
+                  dy = rotated ? -(e.clientX - d.x) : e.clientY - d.y;
                 if (Math.max(Math.abs(dx), Math.abs(dy)) < 18) return;
                 const target =
                   d.i +
@@ -403,6 +446,26 @@ export default function Game({ level, audio, motion, onWin, onExit }: Props) {
           ))}
         </div>
         <ComboEffects effects={effects} affected={clearing} />
+        {victory && (
+          <div className="victory-light" aria-hidden="true">
+            <span className="victory-sweep" />
+            {lastItems.map(({ index, kind }) => (
+              <img
+                key={index}
+                src={asset(`tile-${level.id}-${kind}`)}
+                alt=""
+                style={
+                  {
+                    left: `${(((index % COLS) + 0.5) * 100) / COLS}%`,
+                    top: `${((Math.floor(index / COLS) + 0.5) * 100) / 8}%`,
+                    "--n": index % 5,
+                  } as React.CSSProperties
+                }
+              />
+            ))}
+            <span className="victory-word">Conseguiu!</span>
+          </div>
+        )}
       </div>
       <p className="game-message" role="status">
         {message}

@@ -18,8 +18,23 @@ import { BRUNO_SIGNATURE } from "./narrative";
 import { useDialog } from "./useDialog";
 import { shelfPositions } from "./libraryLayout";
 import Celebration from "./Celebration";
+import BookViewer from "./BookViewer";
+import {
+  balancedLevel,
+  difficulties,
+  Difficulty,
+  DIFFICULTY_KEY,
+  readDifficulty,
+} from "./difficulty";
+import { usePortrait } from "./usePortrait";
 type Screen = "home" | "levels" | "library" | "game" | "reward" | "celebration";
 export default function App() {
+  usePortrait();
+  const [difficulty, setDifficulty] = useState<Difficulty>(readDifficulty);
+  const [difficultyOpen, setDifficultyOpen] = useState(false);
+  const [playingLevel, setPlayingLevel] = useState(levels[0]);
+  const [firstGift, setFirstGift] = useState(false);
+  const [giftIntro, setGiftIntro] = useState(false);
   const initial = useRef<ReturnType<typeof load> | null>(null);
   if (!initial.current) {
     try {
@@ -60,7 +75,7 @@ export default function App() {
       () => initial.current!.progress.pendingCelebration?.bookId ?? null,
     );
   const [blade, setBlade] = useState(5),
-    [bladeText, setBladeText] = useState("Blade descansa pertinho de você.");
+    [bladeText, setBladeText] = useState("");
   const count = progress.completed.length,
     next = Math.min(10, count + 1),
     acquired = progress.order.slice(0, count);
@@ -98,12 +113,21 @@ export default function App() {
       return;
     }
     setStage(id);
+    setPlayingLevel(
+      balancedLevel(
+        { ...levels[id - 1], name: titleFor(id) },
+        difficulty,
+        endless,
+      ),
+    );
     setInfinite(endless);
     setSession((n) => n + 1);
     setScreen("game");
   }
   function win() {
     const first = !infinite && !progress.completed.includes(stage);
+    setFirstGift(first && count === 0);
+    setGiftIntro(first && count === 0);
     setReward(first ? progress.order[count] : null);
     if (!infinite) setProgress((p) => complete(p, stage));
     setScreen("reward");
@@ -152,21 +176,8 @@ export default function App() {
       {screen === "game" ? (
         <Game
           key={session}
-          level={
-            infinite
-              ? {
-                  ...levels[stage - 1],
-                  name: titleFor(stage),
-                  moves: 42,
-                  powers: 0,
-                  cascades: 0,
-                  targets: [
-                    { kind: 0, amount: 20 },
-                    { kind: 3, amount: 20 },
-                  ],
-                }
-              : { ...levels[stage - 1], name: titleFor(stage) }
-          }
+          level={playingLevel}
+          endless={infinite}
           audio={true}
           motion={!reduced}
           onWin={win}
@@ -247,7 +258,14 @@ export default function App() {
           </div>
         </section>
       ) : screen === "library" ? (
-        <section className="page library">
+        <section
+          className="page library immersive"
+          style={
+            {
+              "--room-art": `url('${asset(`library-${libraryState(count)}`)}')`,
+            } as React.CSSProperties
+          }
+        >
           <header className="page-header hub-header">
             <div>
               <h1>Minha biblioteca</h1>
@@ -262,6 +280,9 @@ export default function App() {
                 Meus livros · {count}/10
               </button>
             </div>
+            <button className="hub-map" onClick={() => setScreen("levels")}>
+              Ver fases <span aria-hidden="true">›</span>
+            </button>
           </header>
           <nav className="hub-actions" aria-label="Sua jornada">
             <button className="primary" onClick={() => start(next)}>
@@ -270,10 +291,42 @@ export default function App() {
                 Fase {next} · {titleFor(next)}
               </span>
             </button>
-            <button onClick={() => setScreen("levels")}>
-              Ver fases <span aria-hidden="true">›</span>
-            </button>
           </nav>
+          <button
+            className="difficulty-trigger"
+            aria-expanded={difficultyOpen}
+            aria-label={`Dificuldade: ${difficulties.find((d) => d.id === difficulty)!.label}`}
+            onClick={() => setDifficultyOpen(!difficultyOpen)}
+          >
+            {difficulties.find((d) => d.id === difficulty)!.label}{" "}
+            <span aria-hidden="true">⌄</span>
+          </button>
+          {difficultyOpen && (
+            <fieldset className="difficulty-picker">
+              <legend className="visually-hidden">Dificuldade</legend>
+              <div>
+                {difficulties.map((d) => (
+                  <button
+                    key={d.id}
+                    type="button"
+                    aria-pressed={difficulty === d.id}
+                    onClick={() => {
+                      setDifficulty(d.id);
+                      setDifficultyOpen(false);
+                      try {
+                        localStorage.setItem(DIFFICULTY_KEY, d.id);
+                      } catch {}
+                    }}
+                  >
+                    {d.label}
+                  </button>
+                ))}
+              </div>
+              <p>
+                {difficulties.find((d) => d.id === difficulty)!.description}
+              </p>
+            </fieldset>
+          )}
           {count === 10 && (
             <button
               className="gold hub-infinite"
@@ -375,53 +428,92 @@ export default function App() {
             </div>
           )}
           <p id="blade-status" className="library-caption" role="status">
-            {bladeKnown
-              ? bladeText
-              : "Cada nova história deixa este cantinho mais seu."}
+            {bladeKnown ? bladeText : ""}
           </p>
         </section>
       ) : (
         <section className="page reward">
-          <img
-            className="reward-badge"
-            src={asset("reward-5")}
-            alt="Emblema floral de conquista"
-          />
-
-          <h1>Fase concluída!</h1>
-          {reward ? (
+          {giftIntro ? (
+            <div className="reward-intro">
+              <img src={asset("reward-5")} alt="Emblema floral de conquista" />
+              <h1>Uma surpresa pra você!</h1>
+              <p className="collection-intro">
+                Cada fase concluída revela um novo livro para sua coleção. São
+                dez histórias esperando por você na sua biblioteca.
+              </p>
+              <button
+                className="primary"
+                onClick={() => {
+                  sound(true, "book");
+                  setGiftIntro(false);
+                }}
+              >
+                Descobrir meu livro
+              </button>
+            </div>
+          ) : (
             <>
               <img
-                className="reward-book"
-                src={asset(`book-${reward}-cover`)}
-                alt={`Capa de ${books[reward - 1].title}`}
+                className="reward-badge"
+                src={asset("reward-5")}
+                alt="Emblema floral de conquista"
               />
-              <h2>{books[reward - 1].title}</h2>
-              <p className="author">{books[reward - 1].author}</p>
+
+              <h1>Fase concluída!</h1>
+              {reward && (
+                <p className="collection-intro">
+                  {firstGift
+                    ? "Sua primeira história chegou!"
+                    : [
+                        "Mais uma história para sua coleção!",
+                        "Um novo livro chegou!",
+                        "Tem uma nova história esperando por você.",
+                      ][(count - 1) % 3]}
+                </p>
+              )}
+              {reward ? (
+                <>
+                  <img
+                    className="reward-book"
+                    src={asset(`book-${reward}-cover`)}
+                    alt={`Capa de ${books[reward - 1].title}`}
+                  />
+                  <h2>{books[reward - 1].title}</h2>
+                  <p className="author">{books[reward - 1].author}</p>
+                  <div
+                    className="reward-synopsis"
+                    tabIndex={0}
+                    role="region"
+                    aria-label="Sinopse"
+                  >
+                    <p>{books[reward - 1].synopsis}</p>
+                  </div>
+                </>
+              ) : (
+                <p>
+                  {infinite
+                    ? "Que bom ter um momento só seu. Vamos a mais uma?"
+                    : "É sempre bom revisitar um lugar querido."}
+                </p>
+              )}
+              <button
+                className="primary"
+                onClick={() =>
+                  infinite && !reward
+                    ? start(1 + Math.floor(Math.random() * 10), true)
+                    : acceptReward()
+                }
+              >
+                {reward
+                  ? "Guardar na biblioteca"
+                  : infinite
+                    ? "Mais um momento"
+                    : "Voltar à biblioteca"}
+              </button>
+              {infinite && (
+                <button onClick={visitLibrary}>Voltar à biblioteca</button>
+              )}
             </>
-          ) : (
-            <p>
-              {infinite
-                ? "Que bom ter um momento só seu. Vamos a mais uma?"
-                : "É sempre bom revisitar um lugar querido."}
-            </p>
-          )}
-          <button
-            className="primary"
-            onClick={() =>
-              infinite && !reward
-                ? start(1 + Math.floor(Math.random() * 10), true)
-                : acceptReward()
-            }
-          >
-            {reward
-              ? "Guardar livro"
-              : infinite
-                ? "Mais um momento"
-                : "Voltar à biblioteca"}
-          </button>
-          {infinite && (
-            <button onClick={visitLibrary}>Voltar à biblioteca</button>
           )}
         </section>
       )}
@@ -434,53 +526,12 @@ export default function App() {
         </div>
       )}
       {selectedBook && (
-        <div className="modal-backdrop">
-          <div className="modal book-modal">
-            <img
-              src={asset(`book-${selectedBook.id}-cover`)}
-              alt={`Capa de ${selectedBook.title}`}
-            />
-            <h2 aria-live="polite">{selectedBook.title}</h2>
-            <p className="author">{selectedBook.author}</p>
-            <div
-              key={selectedBook.id}
-              className="book-synopsis"
-              tabIndex={0}
-              role="region"
-              aria-label="Sinopse"
-            >
-              <p>{selectedBook.synopsis}</p>
-            </div>
-            {acquired.length > 1 && (
-              <nav className="book-navigation" aria-label="Seus livros">
-                <button
-                  disabled={acquired.indexOf(selectedBook.id) === 0}
-                  aria-label="Livro anterior"
-                  onClick={() =>
-                    setBook(acquired[acquired.indexOf(selectedBook.id) - 1])
-                  }
-                >
-                  ‹
-                </button>
-                <span>
-                  {acquired.indexOf(selectedBook.id) + 1} de {count}
-                </span>
-                <button
-                  disabled={acquired.indexOf(selectedBook.id) === count - 1}
-                  aria-label="Próximo livro"
-                  onClick={() =>
-                    setBook(acquired[acquired.indexOf(selectedBook.id) + 1])
-                  }
-                >
-                  ›
-                </button>
-              </nav>
-            )}
-            <button className="primary" onClick={() => setBook(null)}>
-              Voltar à biblioteca
-            </button>
-          </div>
-        </div>
+        <BookViewer
+          id={selectedBook.id}
+          acquired={acquired}
+          onSelect={setBook}
+          onClose={() => setBook(null)}
+        />
       )}
       {portrait && (
         <div className="modal-backdrop">
@@ -497,9 +548,6 @@ export default function App() {
           </div>
         </div>
       )}
-      <div className="landscape-note">
-        Vire o celular para aproveitar seu cantinho na vertical.
-      </div>
     </main>
   );
 }

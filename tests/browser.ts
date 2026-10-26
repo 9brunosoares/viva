@@ -105,7 +105,7 @@ for (let stage = 1; stage <= 10; stage++) {
     totalMoves++;
     assert.ok(totalMoves < 1800);
   }
-  await page.getByText("Fase concluída!", { exact: true }).waitFor();
+  await page.locator(".reward").waitFor();
   const saved = await page.evaluate(() =>
     JSON.parse(localStorage.getItem("viva-progress-v1")!),
   );
@@ -125,14 +125,14 @@ for (let stage = 1; stage <= 10; stage++) {
     await page.getByRole("button", { name: /^Continuar/ }).click();
   } else if (stage < 10) {
     await page
-      .getByRole("button", { name: "Guardar livro", exact: true })
+      .getByRole("button", { name: "Guardar na biblioteca", exact: true })
       .click();
     if (stage === 5) await page.locator(".celebration .primary").click();
     await page.getByRole("button", { name: /^Continuar/ }).click();
   }
 }
 await page.screenshot({ path: "test-results/finale.png", fullPage: true });
-await page.getByRole("button", { name: "Guardar livro" }).click();
+await page.getByRole("button", { name: "Guardar na biblioteca" }).click();
 await page.locator(".celebration .primary").click();
 await page.screenshot({ path: "test-results/library.png", fullPage: true });
 assert.equal(await page.locator(".shelf-books button").count(), 10);
@@ -140,7 +140,7 @@ await page.getByRole("button", { name: "Fazer carinho no Blade" }).click();
 await page
   .getByText("Blade ficou feliz com seu carinho.", { exact: true })
   .waitFor();
-await page.locator(".shelf-books button").first().click();
+await page.getByRole("button", { name: /Meus livros/ }).click();
 await page.locator(".book-modal").waitFor();
 await page.getByRole("button", { name: "Voltar à biblioteca" }).click();
 await page.getByRole("button", { name: "Ampliar retrato da família" }).click();

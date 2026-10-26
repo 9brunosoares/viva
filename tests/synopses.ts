@@ -42,11 +42,20 @@ async function saved(order: number[], count: number) {
     { order, count },
   );
   await page.reload();
+  await page.locator('.library').evaluate(el => Promise.all(el.getAnimations().map(a => a.finished)));
 }
 async function checkBook(id: number) {
   const book = books[id - 1],
     modal = page.locator(".book-modal");
   await modal.waitFor();
+  assert.equal(
+    (await modal.locator(".book-turn").getAttribute("class"))?.trim(),
+    "book-turn",
+  );
+  await modal.getByRole("button", { name: "Ler sinopse", exact: true }).click();
+  await modal
+    .getByRole("button", { name: "Voltar à capa", exact: true })
+    .waitFor();
   assert.equal(await modal.locator("h2").innerText(), book.title);
   assert.equal(await modal.locator(".author").innerText(), book.author);
   assert.equal(
@@ -62,7 +71,7 @@ async function checkBook(id: number) {
   const sizes = await modal.evaluate((m) => {
     const r = m.getBoundingClientRect(),
       s = m.querySelector(".book-synopsis")!,
-      b = m.querySelector("button.primary")!.getBoundingClientRect();
+      b = m.querySelector(".book-flip")!.getBoundingClientRect();
     return {
       top: r.top,
       bottom: r.bottom,
@@ -100,6 +109,8 @@ for (const order of orders) {
     { width: 430, height: 932 },
   ]) {
     await page.setViewportSize(size);
+    await page.waitForFunction(() => Math.abs(parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--vh')) - innerHeight / 100) < .02);
+    await page.waitForTimeout(150);
     for (const id of order) {
       const spine = page.locator(".shelf-books button").nth(order.indexOf(id));
       const point = await spine.evaluate((el) => {

@@ -1,3 +1,20 @@
+# Refinamento premium — biblioteca, vitória e dificuldade
+
+Esta seção descreve a versão local mais recente. Os registros seguintes são históricos.
+
+- Biblioteca sem card, com cenário aprovado como ambiente e HUD sobreposto. Cinco estados (0, 2, 5, 8 e 10 livros) em três viewports (320×568, 390×844 e 430×932) aprovados nos dois motores: 15 verificações por motor. Livros, duas poses de Blade e retrato sobre a mesa preservados; respostas e frases integram o cenário. O seletor compacto de dificuldade abre ao lado de Jogar.
+- Fácil reproduz exatamente o balanceamento anterior. Médio usa +35% nas coleções e +5 jogadas; Difícil usa +65% e +3 jogadas. Metas de ativação e cascatas foram adaptadas nas fases que já as possuíam. Motor, distribuição e criação de poderes não foram alterados. Preferência em chave separada `viva-difficulty-v1`; o save antigo permanece intacto.
+- 720 simulações determinísticas (24 por fase/dificuldade), com robô guloso: Fácil 240/240 vitórias e média 21,3 jogadas; Médio 239/240 e 28,6; Difícil 224/240 e 34,8. São comparações entre os mesmos conjuntos de sementes, não previsão de desempenho humano. A estimativa de tempo no relatório assume 3 segundos por jogada e exclui reflexão e tempo adicional de efeitos.
+- Vitória após todas as cascatas, com objetivos completos, última coleta destacada, luz e mensagem no tabuleiro por 2,2–2,6 segundos. O tabuleiro permanece visível e bloqueia toques até a transição. A primeira recompensa explica a coleção antes de mostrar o livro. Demais recompensas variam a frase, mantêm a sinopse e usam “Guardar na biblioteca”. Repetição não concede outro livro.
+- Campanha completa por jogadas reais: 10 fases, 212 movimentos, nenhuma repetição e nenhum erro. Ordem salva, dez livros únicos, chegada de Blade, retrato final e offline aprovados. Testes de regras/marcos continuam cobrindo as etapas de revelação; conteúdo emocional e assinatura permanecem iguais.
+- No navegador, três dificuldades jogadas até a recompensa nos dois motores, vitória em movimento normal e reduzido, introdução da coleção e leitura de capa/verso aprovadas. Chromium também verificou repetição e renovação do primeiro objetivo infinito no mesmo tabuleiro. O infinito exibe ∞, renova objetivos sem fim obrigatório e conserva conquistas.
+- Livro conquistado abre somente a capa; “Ler sinopse” vira em 500 ms e mostra uma superfície de verso com título, autor e texto oficial. Só o texto rola. Face oculta usa `inert`/`aria-hidden`; navegação assistiva permanece no mesmo diálogo. As dez sinopses, autorias e IDs foram preservados. Os roteiros de sinopses foram adaptados à nova interação.
+- Rotação em viewport mobile aprovada no Chromium e WebKit. O manifesto segue em retrato; quando `screen.orientation.lock` é recusado, a composição vertical gira com os controles e ajusta a direção dos gestos. O site não pode obrigar a orientação das barras do Safari/sistema; a validação física das safe areas, áudio, vibração e instalação no iPhone continua necessária.
+- TypeScript, build e 21 testes unitários aprovados. Derrota/nova tentativa, release sem atalhos QA, manifesto/ícones, saves antigos e retrato offline aprovados. WebKit também recarregou do cache após desligar o servidor de teste. Nenhum progresso real foi reiniciado; contextos de teste são isolados. Nenhum asset aprovado foi refeito nesta rodada.
+- Evidências em `test-results/`: `balance-report.json`, `premium-chromium-report.json`, `premium-webkit-report.json`, capturas `premium-*-library-*.png`, `premium-*-book-*.png`, `premium-*-victory-*.png`, `premium-*-intro-*.png`, `premium-*-reward-*.png`, `synopses-*-report.json`, `browser-report.json`, `release-report.json` e `webkit-no-server-report.json`.
+
+---
+
 # Atualização final — sinopses e remoção dos atalhos
 
 - Dez sinopses oficiais incluídas por ID fixo, com títulos e autores fornecidos. A recompensa mantém sua apresentação; apenas o modal de leitura recebe o texto completo. Capas, lombadas, prateleiras e todos os demais assets foram preservados.

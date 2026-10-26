@@ -83,7 +83,7 @@ for (let attempt = 0; attempt < 4 && !failed; attempt++) {
     );
   }
   if (!failed) {
-    await page.getByRole("button", { name: "Guardar livro" }).click();
+    await page.getByRole("button", { name: "Guardar na biblioteca" }).click();
     await page.getByRole("button", { name: "Ver fases" }).click();
     await page.getByRole("button", { name: /4 CONCLUÍDA Kung Fu/ }).click();
   }

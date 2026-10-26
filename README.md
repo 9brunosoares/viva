@@ -32,11 +32,15 @@ Os botões de concluir fase e as prévias de QA foram removidos do código da in
 
 ## Experiência e progresso
 
-A biblioteca é o hub, com Jogar/Continuar, fases, coleção e infinito quando desbloqueado. Fases bloqueadas ocultam nomes, temas e imagens. “Meus livros” abre a coleção com navegação por botões; tocar nas lombadas continua funcionando. Cada livro conquistado abre capa, título, autor e sua sinopse oficial. Apenas a sinopse tem rolagem dentro da janela; livros bloqueados não a revelam.
+A biblioteca ocupa a tela como ambiente, com controles flutuantes de Jogar/Continuar, fases, coleção e infinito quando desbloqueado. As artes e posições relativas de livros, Blade e quadro são preservadas. Fases bloqueadas ocultam nomes, temas e imagens. “Meus livros” e as lombadas abrem a capa do livro; “Ler sinopse” vira o volume e mostra título, autor e texto no verso. “Voltar à capa” desfaz o movimento. Somente a sinopse rola; a face oculta fica fora da navegação assistiva.
 
 Toque em peças vizinhas ou arraste para trocar. Três combinam; quatro criam limpeza de linha/coluna; cinco criam poder de cor; interseções criam área. Poderes podem ser ativados e encadeados. Uma dica não gasta jogada. Não há tempo ou vidas. Cascatas terminam antes de avaliar vitória. Pausar mantém a partida nesta sessão; sair ou fechar o jogo inicia outro tabuleiro ao retornar.
 
 Cada fase inédita concede um livro. A ordem é sorteada uma vez e salva. Repetições e infinito não duplicam livros. A chave `viva-progress-v1` permanece compatível com campanhas anteriores. Testes automatizados usam contextos isolados, sem apagar o progresso do usuário.
+
+Depois da última cascata, o tabuleiro permanece visível por 2,2 a 2,6 segundos para celebrar os objetivos, com luz dourada e “Conseguiu!”. A transição leva à recompensa. A primeira conquista explica a coleção em uma apresentação curta antes de mostrar o livro. As seguintes variam a mensagem; repetir fase celebra sem duplicar livro. A capa, autoria e sinopse aparecem na recompensa, com “Guardar na biblioteca”. Movimento reduzido conserva a mensagem e remove a animação.
+
+Ao lado de Jogar, o botão de dificuldade abre Fácil, Médio e Difícil. Fácil usa exatamente os objetivos e jogadas anteriores; Médio aumenta coleções em 35% e soma cinco jogadas; Difícil aumenta em 65% e soma três. Fases com objetivos de poderes/cascatas recebem metas próprias. A seleção é salva separadamente em `viva-difficulty-v1`; não modifica `viva-progress-v1`. Cada partida congela seu balanceamento ao começar. O infinito renova objetivos no mesmo tabuleiro, sem limite de jogadas, derrota obrigatória ou livros adicionais.
 
 Depois da fase 5, guardar o livro abre a chegada de Blade. Ele possui uma pose dormindo e uma acordado, proporcionais. Toque nele, em “Blade, vamos passear?” ou “Quer petisco?” para acordá-lo; “Blade, boa noite.” o faz dormir.
 
@@ -70,10 +74,12 @@ Resultados e limitações estão em `VALIDACAO.md`; capturas e relatórios ficam
 
 ## Publicação e iPhone
 
-O workflow `.github/workflows/pages.yml` instala dependências, testa e publica `dist/` na branch main, usando o nome do repositório como caminho-base. Configure Settings → Pages → GitHub Actions depois de enviar o projeto a um repositório. Nenhum remoto foi configurado ou publicado nesta entrega.
+O workflow `.github/workflows/pages.yml` instala dependências, testa e publica `dist/` quando a branch main é enviada, usando o nome do repositório como caminho-base. O repositório configurado é `https://github.com/9brunosoares/viva`; a publicação é `https://9brunosoares.github.io/viva/`. Esta rodada de refinamento é verificada localmente antes de um novo envio.
 
 Para outro caminho, defina `VIVA_BASE='/nome-do-repositorio/'` antes de `pnpm build`. Para domínio raiz, use `/`; o padrão `./` gera caminhos relativos.
 
 No iPhone, abra o endereço HTTPS publicado no Safari, aguarde o carregamento inicial e use Compartilhar → Adicionar à Tela de Início. Depois de o cache ser instalado, o jogo funciona offline. As instruções técnicas ficam aqui, fora da interface do jogo.
+
+O manifesto continua em retrato. O jogo tenta o bloqueio de orientação quando a API existe. Se o Safari recusar, um canvas vertical gira em conjunto com a composição, incluindo controles, diálogos e direção dos gestos. As barras do navegador e a orientação do sistema continuam sob controle do iOS; não é possível forçá-las pelo site. A verificação física de notch e gestos continua necessária.
 
 O progresso é local ao navegador/app instalado. Prefira começar pelo ícone instalado; contextos de armazenamento podem diferir. Apagar os dados do site pode remover conquistas. Não há sincronização ou exportação. Instalação, áudio, vibração, áreas seguras e desempenho no iPhone físico exigem verificação no aparelho. WebKit automatizado em Windows não substitui essa etapa.

@@ -2056,3 +2056,686 @@ small,
   font-size: 16px;
   line-height: 1.6;
 }
+
+/* The room is the home surface; every control belongs to its floating HUD. */
+.library.immersive {
+  position: relative;
+  isolation: isolate;
+  padding: 0;
+  display: block;
+  background: #302818;
+  container-type: size;
+  animation: room-arrival 0.65s ease-out both;
+}
+.immersive::before {
+  content: "";
+  position: absolute;
+  inset: -30px;
+  background: var(--room-art) center / cover;
+  filter: blur(18px) brightness(0.68);
+  z-index: -1;
+}
+.immersive .library-stage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  container-type: size;
+  pointer-events: none;
+}
+.immersive .library-room {
+  width: min(112cqw, calc(100cqh * 496 / 756));
+  max-width: none;
+  height: auto;
+  aspect-ratio: 496 / 756;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+  pointer-events: auto;
+}
+.immersive .room-image {
+  height: 100%;
+  object-fit: contain;
+}
+.immersive .room-label {
+  display: none;
+}
+.immersive .hub-header {
+  position: absolute;
+  top: max(12px, env(safe-area-inset-top));
+  left: 14px;
+  right: 14px;
+  padding: 8px 12px;
+  z-index: 5;
+  color: #fff4dc;
+  background: #183d30dc;
+  border: 1px solid #d7b27370;
+  border-radius: 18px;
+  box-shadow: 0 4px 20px #20160735;
+  align-items: center;
+}
+.immersive .hub-header h1 {
+  font-size: 22px;
+  margin: 0;
+}
+.immersive .collection-link {
+  color: #ffe2a1;
+  min-height: 36px;
+  padding: 4px 0;
+}
+.immersive .hub-map {
+  background: #fff2d719;
+  color: #fff4dc;
+  border-color: #d4b68170;
+  padding: 6px 12px;
+  min-height: 44px;
+  font-size: 14px;
+}
+.immersive .hub-actions {
+  position: absolute;
+  bottom: calc(max(12px, env(safe-area-inset-bottom)) + 68px);
+  left: 24%;
+  right: 24%;
+  z-index: 5;
+  display: block;
+}
+.immersive .hub-actions .primary {
+  width: 100%;
+  min-height: 52px;
+  font-size: 21px;
+  box-shadow: 0 4px 12px #10291c70;
+}
+.immersive .hub-actions .primary span {
+  display: none;
+}
+.difficulty-picker {
+  position: absolute;
+  bottom: max(8px, env(safe-area-inset-bottom));
+  width: 260px;
+  max-width: calc(100% - 32px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  margin: 0;
+  padding: 4px;
+  border: 1px solid #dac09265;
+  border-radius: 18px;
+  background: #163a2ee8;
+  color: #fff5dc;
+}
+.difficulty-picker > div {
+  display: flex;
+  gap: 3px;
+}
+.difficulty-picker button {
+  min-height: 38px;
+  padding: 4px 10px;
+  flex: 1;
+  border: 0;
+  border-radius: 12px;
+  color: #f9e8c4;
+  background: transparent;
+  font-size: 14px;
+}
+.difficulty-picker button[aria-pressed="true"] {
+  background: #edcf85;
+  color: #254334;
+}
+.difficulty-picker p {
+  font-size: 12px;
+  text-align: center;
+  min-height: 18px;
+  line-height: 1.4;
+  padding-top: 3px;
+}
+.immersive .hub-infinite {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(max(12px, env(safe-area-inset-bottom)) + 124px);
+  z-index: 5;
+  padding: 4px 16px;
+  min-height: 36px;
+  font-size: 13px;
+  background: #183d30ed;
+  color: #ffe3a4;
+}
+.immersive .blade-prompts {
+  position: absolute;
+  bottom: calc(max(12px, env(safe-area-inset-bottom)) + 169px);
+  left: 12px;
+  right: 12px;
+  z-index: 5;
+  gap: 5px;
+}
+.immersive .blade-prompts button {
+  background: #fff4dae8;
+  border-radius: 16px;
+  box-shadow: 0 3px 9px #20160740;
+  font-size: 12px;
+  min-height: 44px;
+  padding: 5px;
+}
+.immersive .library-caption {
+  position: absolute;
+  bottom: calc(max(12px, env(safe-area-inset-bottom)) + 217px);
+  left: 24px;
+  right: 24px;
+  z-index: 5;
+  padding: 5px 8px;
+  border-radius: 12px;
+  font-size: 13px;
+  color: #fff8de;
+  background: #12372ac7;
+  text-shadow: 0 1px 3px #000;
+  text-align: center;
+}
+.immersive:has(.blade-prompts) .library-caption {
+  pointer-events: none;
+}
+.immersive:not(:has(.blade-prompts)) .library-caption {
+  bottom: calc(max(12px, env(safe-area-inset-bottom)) + 128px);
+}
+.immersive .shelf-books button::before {
+  inset: -3px;
+}
+@keyframes room-arrival {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* The last move resolves fully before this light touches the settled board. */
+.victory-light {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  pointer-events: none;
+  border-radius: 22px;
+  overflow: hidden;
+}
+.victory-sweep {
+  position: absolute;
+  inset: -30%;
+  background: linear-gradient(
+    110deg,
+    transparent 30%,
+    #fff4a288 48%,
+    transparent 64%
+  );
+  animation: victory-sweep 1.8s ease-out both;
+}
+.victory-light > img {
+  position: absolute;
+  width: 12%;
+  height: 12%;
+  object-fit: contain;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 0 9px #ffeb8d);
+  animation: victory-item 1.3s ease-out both;
+  animation-delay: calc(var(--n) * 60ms);
+}
+.victory-word {
+  position: absolute;
+  top: 45%;
+  left: 6%;
+  right: 6%;
+  text-align: center;
+  padding: 12px;
+  border-radius: 22px;
+  background: #174731db;
+  color: #ffe69e;
+  border: 1px solid #f5d788;
+  font:
+    32px Georgia,
+    serif;
+  box-shadow: 0 5px 30px #11351f70;
+  animation: victory-word 0.5s 0.4s ease-out both;
+}
+.victory-shine .objectives .done {
+  box-shadow: 0 0 16px #ffe38d;
+  border-color: #fff0a3;
+  transition: box-shadow 0.5s;
+}
+.game-screen.victory-leave {
+  opacity: 0;
+  transform: scale(1.015);
+  transition:
+    opacity 0.32s ease,
+    transform 0.32s ease;
+}
+@keyframes victory-sweep {
+  from {
+    transform: translateX(-90%);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  to {
+    transform: translateX(85%);
+    opacity: 0;
+  }
+}
+@keyframes victory-item {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -30%) scale(0.85);
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -180%) scale(0.6);
+  }
+}
+@keyframes victory-word {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.reward {
+  animation: room-arrival 0.5s ease-out both;
+  gap: 10px;
+}
+.reward .reward-badge {
+  width: 54px;
+  height: 46px;
+}
+.reward h1 {
+  font-size: clamp(25px, calc(var(--vh, 1dvh) * 4), 32px);
+}
+.collection-intro {
+  font-size: 15px;
+  line-height: 1.45;
+  max-width: 360px;
+}
+.reward .reward-book {
+  max-height: calc(var(--vh, 1dvh) * 24);
+  flex: 0 1 auto;
+  animation: gift-arrival 0.8s ease-out both;
+}
+.reward h2 {
+  font-size: 22px;
+}
+.reward-synopsis {
+  flex: 1;
+  min-height: 44px;
+  max-height: 180px;
+  overflow-y: auto;
+  text-align: left;
+  padding: 4px 8px;
+  font-size: 16px;
+  scrollbar-width: thin;
+}
+.reward > .primary {
+  font-size: 18px;
+  min-height: 52px;
+}
+@keyframes gift-arrival {
+  from {
+    opacity: 0;
+    transform: translateY(22px) perspective(500px) rotateY(-13deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotateY(0);
+  }
+}
+
+/* A cover first; its reverse is a quiet illustrated reading surface. */
+.book-backdrop {
+  background: #0a201be8;
+}
+.book-viewer.book-modal {
+  position: relative;
+  max-width: 420px;
+  width: 100%;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 44px 12px 8px;
+  gap: 10px;
+  height: min(780px, calc(var(--vh, 1dvh) * 100 - 40px));
+  max-height: calc(var(--vh, 1dvh) * 100 - 40px);
+}
+.book-close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-size: 27px;
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  background: #fff4d7;
+  padding: 0;
+}
+.book-turn {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  perspective: 1400px;
+}
+.book-turn-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.2, 0.65, 0.25, 1);
+}
+.book-turn.is-back .book-turn-inner {
+  transform: rotateY(180deg);
+}
+.book-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.book-front {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.book-front > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(6px 12px 20px #0008);
+}
+.book-back {
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px 22px;
+  background:
+    linear-gradient(90deg, #b59b6380, transparent 6%),
+    repeating-linear-gradient(0deg, #fff2d9, #fff2d9 3px, #f7e8cb 4px);
+  border: 2px solid #c8a15b;
+  border-left: 7px solid #54704b;
+  outline: 1px solid #75572c;
+  border-radius: 4px 13px 13px 4px;
+  box-shadow:
+    inset 0 0 0 6px #f3dfb4,
+    8px 8px 24px #0005;
+}
+.book-back h3 {
+  font:
+    23px/1.2 Georgia,
+    serif;
+  color: #244832;
+  margin: 0;
+}
+.book-back .author {
+  font-size: 14px !important;
+  line-height: 1.35;
+}
+.book-back .book-synopsis {
+  padding: 0 4px;
+  color: #354633;
+}
+.book-ornament {
+  color: #a28242;
+  font:
+    22px Georgia,
+    serif;
+  line-height: 1;
+}
+.book-flip {
+  min-height: 44px;
+  font-size: 15px;
+  padding: 6px 24px;
+  align-self: center;
+  background: #fff1d6;
+  border-radius: 20px;
+}
+.book-viewer .book-navigation {
+  color: #fff1d5;
+}
+.book-viewer .book-navigation button {
+  background: #fff1d6;
+}
+.book-viewer .book-navigation button:disabled {
+  opacity: 0.35;
+}
+
+/* Viewport variables also drive the portrait canvas when the phone rotates. */
+.app {
+  min-height: calc(var(--vh, 1dvh) * 100);
+}
+.home,
+.library,
+.journey,
+.game-screen,
+.reward,
+.celebration {
+  height: calc(var(--vh, 1dvh) * 100);
+  min-height: 0;
+}
+.board-wrap {
+  width: min(
+    100%,
+    420px,
+    calc(
+      (
+          var(--vh, 1dvh) * 100 - 226px - env(safe-area-inset-top) -
+            env(safe-area-inset-bottom)
+        ) *
+        7 / 8
+    )
+  );
+}
+.portrait-fallback {
+  overflow: hidden;
+}
+.portrait-fallback body {
+  overflow: hidden;
+}
+.portrait-fallback .app {
+  position: fixed;
+  width: calc(var(--vw) * 100);
+  height: calc(var(--vh) * 100);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(90deg);
+  transform-origin: center;
+  margin: 0;
+  overflow: hidden;
+}
+.portrait-fallback .app::before {
+  display: none;
+}
+.portrait-fallback .modal-backdrop {
+  padding: 20px;
+}
+.portrait-fallback .modal {
+  max-height: calc(var(--vh) * 100 - 40px);
+}
+.portrait-fallback .landscape-note {
+  display: none;
+}
+.reduced .victory-light > img,
+.reduced .victory-sweep {
+  display: none;
+}
+.reduced .book-turn-inner {
+  transition: none;
+}
+.immersive .hub-actions {
+  bottom: max(16px, env(safe-area-inset-bottom));
+  left: 16px;
+  right: 31%;
+}
+.difficulty-trigger {
+  position: absolute;
+  z-index: 6;
+  right: 16px;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  width: 25%;
+  min-height: 52px;
+  padding: 8px;
+  color: #fff1d5;
+  background: #183d30ee;
+  border-color: #d8b977;
+}
+.difficulty-picker {
+  bottom: calc(max(16px, env(safe-area-inset-bottom)) + 62px);
+  z-index: 8;
+}
+.immersive .hub-infinite {
+  bottom: calc(max(16px, env(safe-area-inset-bottom)) + 62px);
+  right: 16px;
+  left: auto;
+  width: auto;
+  min-width: 0;
+  transform: none;
+  min-height: 36px;
+}
+.immersive .blade-prompts {
+  top: calc(max(12px, env(safe-area-inset-top)) + 86px);
+  bottom: auto;
+}
+.immersive .library-caption,
+.immersive:not(:has(.blade-prompts)) .library-caption {
+  top: calc(max(12px, env(safe-area-inset-top)) + 136px);
+  bottom: auto;
+}
+.immersive .library-caption:empty {
+  display: none;
+}
+.immersive .hub-header {
+  gap: 8px;
+}
+.immersive .hub-header > div {
+  min-width: 0;
+}
+.immersive .hub-header h1 {
+  font-size: 20px;
+  white-space: nowrap;
+}
+.immersive .hub-map {
+  flex: none;
+  white-space: nowrap;
+  padding: 6px 9px;
+  font-size: 13px;
+}
+.immersive .blade-prompts {
+  top: 42%;
+  left: 10px;
+  right: auto;
+  width: 145px;
+  grid-template-columns: 1fr;
+}
+.immersive .blade-prompts button {
+  min-height: 40px;
+  justify-self: stretch;
+  font-size: 12px;
+  padding: 6px;
+  background: #fff4dada;
+}
+.immersive .library-caption {
+  top: calc(42% - 80px);
+  left: 10px;
+  right: auto;
+  width: 145px;
+  max-height: 74px;
+  overflow: auto;
+  font-size: 12px;
+}
+@media (max-height: 650px) and (orientation: portrait) {
+  .immersive .library-room {
+    transform: translateY(30px);
+  }
+  .immersive .blade-prompts {
+    top: 32%;
+    width: 138px;
+  }
+  .immersive .library-caption {
+    top: calc(32% - 70px);
+    width: 138px;
+  }
+}
+.portrait-fallback .home,
+.portrait-fallback .game-screen,
+.portrait-fallback .journey,
+.portrait-fallback .reward,
+.portrait-fallback .celebration {
+  padding-top: max(12px, env(safe-area-inset-left), env(safe-area-inset-right));
+  padding-bottom: max(
+    12px,
+    env(safe-area-inset-left),
+    env(safe-area-inset-right)
+  );
+}
+.portrait-fallback .immersive .hub-header {
+  top: max(12px, env(safe-area-inset-left), env(safe-area-inset-right));
+}
+.portrait-fallback .immersive .hub-actions,
+.portrait-fallback .difficulty-trigger {
+  bottom: max(16px, env(safe-area-inset-left), env(safe-area-inset-right));
+}
+.portrait-fallback .book-viewer {
+  height: min(
+    780px,
+    calc(
+      var(--vh) * 100 - 40px -
+        max(env(safe-area-inset-left), env(safe-area-inset-right)) * 2
+    )
+  );
+}
+.reward-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  max-width: 360px;
+}
+.reward-intro > img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  animation: gift-arrival 0.8s ease-out both;
+}
+.reward-intro h1 {
+  font-size: 32px;
+}
+.reward-intro .collection-intro {
+  font-size: 17px;
+  line-height: 1.65;
+}
+.reward-intro .primary {
+  width: 100%;
+  min-height: 56px;
+  font-size: 18px;
+}
+.reward:has(.reward-book) {
+  gap: 8px;
+}
+.reward:has(.reward-book) .collection-intro {
+  font-size: 14px;
+}
+.reward-synopsis p {
+  font-size: 16px;
+  line-height: 1.55;
+}
+.immersive .collection-link {
+  min-height: 44px;
+}
+.immersive .blade-prompts button {
+  min-height: 44px;
+  font-size: 13px;
+}
+.difficulty-picker button {
+  min-height: 44px;
+}
