@@ -540,6 +540,7 @@ export default function App() {
               <LibraryAtmosphere
                 stage={libraryState(count)}
                 limited={libraryActivity.mode !== "full"}
+                still={libraryActivity.mode === "still"}
               />
               <div className="shelf-books">
                 {acquired.map((id, i) => (

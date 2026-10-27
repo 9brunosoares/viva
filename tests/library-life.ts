@@ -374,8 +374,8 @@ try {
     await page.locator(".library-room").getAttribute("data-motion"),
     "limited",
   );
-  assert.equal(await page.locator(".library-dust i").count(), 0);
-  assert.equal(
+  assert.equal(await page.locator(".library-dust i").count(), 3);
+  assert.notEqual(
     await page
       .locator(".library-window-light")
       .evaluate((e) => getComputedStyle(e).animationName),
@@ -412,6 +412,23 @@ try {
     `test-results/library-alive-${engine}-report.json`,
     JSON.stringify(report, null, 2),
   );
+} catch (error) {
+  await page
+    .screenshot({ path: `test-results/library-life-${engine}-failure.png` })
+    .catch(() => {});
+  console.log(
+    await page
+      .locator(".blade-context")
+      .evaluateAll((elements) =>
+        elements.map((e) => ({
+          bounds: e.getBoundingClientRect().toJSON(),
+          animation: getComputedStyle(e).animationName,
+          state: getComputedStyle(e).animationPlayState,
+        })),
+      )
+      .catch(() => []),
+  );
+  throw error;
 } finally {
   await browser.close();
 }

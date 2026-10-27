@@ -12,7 +12,7 @@
 .library-light-entry {
   position: absolute;
   inset: 0;
-  animation: library-light-arrival 900ms ease-out both;
+  animation: library-light-arrival 1400ms ease-out both;
 }
 .library-window-light,
 .library-lamp-light {
@@ -21,11 +21,11 @@
 }
 .library-window-light {
   background: radial-gradient(
-    ellipse 13% 24% at var(--window-x) var(--window-y),
-    #fff0c730,
+    ellipse 27% 38% at var(--window-x) var(--window-y),
+    #fff0c72e,
     #fff0c700 100%
   );
-  animation: library-daylight 17s ease-in-out infinite alternate;
+  animation: library-daylight 8s -2s ease-in-out infinite alternate;
 }
 .library-lamp-light {
   background: radial-gradient(
@@ -36,14 +36,44 @@
   opacity: 0.65;
   animation: library-lamplight 13s -6s ease-in-out infinite alternate;
 }
+.library-sunrays {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.library-sunbeam {
+  animation: library-sunbeam 7s -2s ease-in-out infinite alternate;
+}
+.library-sunbeam-1 {
+  animation-duration: 9s;
+  animation-delay: -6s;
+}
+.library-sunbeam-2 {
+  animation-duration: 11s;
+  animation-delay: -3s;
+}
+/* A moving reflection confined to the existing curtain, never a moving cutout. */
+.library-curtain-light {
+  position: absolute;
+  left: 15%;
+  top: 7%;
+  width: 14%;
+  height: 32%;
+  background: radial-gradient(ellipse at 45% 40%, #fff5d824, transparent 70%);
+  animation: library-curtain-reflection 9s -4s ease-in-out infinite alternate;
+}
 .library-dust {
   position: absolute;
   inset: 0;
+  animation: library-light-arrival 1100ms ease-out both;
 }
 .library-dust i {
   position: absolute;
   border-radius: 50%;
   background: #fff3ce;
+  box-shadow: 0 0 3px #fff0c74a;
   opacity: 0;
   animation: library-drift ease-in-out infinite;
 }
@@ -129,10 +159,28 @@
 .library-alive:has(.blade-context.is-open) .library-atmosphere * {
   animation-play-state: paused;
 }
-.library-alive[data-motion="limited"] .library-window-light,
+.library-alive[data-motion="limited"] .library-curtain-light {
+  display: none;
+}
+.library-alive[data-motion="limited"] .library-sunbeam {
+  animation: none;
+  opacity: 0.65;
+}
+.library-alive[data-motion="limited"] .library-sunbeam-1 {
+  animation: library-sunbeam 9s -6s ease-in-out infinite alternate;
+}
 .library-alive[data-motion="limited"] .library-lamp-light,
 .library-alive[data-motion="still"] .library-atmosphere * {
   animation: none;
+}
+.library-alive[data-motion="still"] .library-window-light {
+  opacity: 0.65;
+}
+.library-alive[data-motion="still"] .library-sunbeam {
+  opacity: 0.65;
+}
+.library-alive[data-motion="still"] .library-curtain-light {
+  opacity: 0.45;
 }
 .library-alive[data-motion="still"] .blade-layer,
 .library-alive[data-motion="still"] .blade-layer img,
@@ -142,10 +190,30 @@
 }
 @keyframes library-daylight {
   from {
-    opacity: 0.58;
+    opacity: 0.45;
   }
   to {
-    opacity: 0.82;
+    opacity: 0.9;
+  }
+}
+@keyframes library-sunbeam {
+  from {
+    opacity: 0.42;
+    transform: translate(0, 0);
+  }
+  to {
+    opacity: 0.88;
+    transform: translate(2px, 1px);
+  }
+}
+@keyframes library-curtain-reflection {
+  from {
+    opacity: 0.3;
+    transform: translate(0, 0);
+  }
+  to {
+    opacity: 0.72;
+    transform: translate(3px, -2px);
   }
 }
 @keyframes library-lamplight {
@@ -158,7 +226,7 @@
 }
 @keyframes library-light-arrival {
   from {
-    opacity: 0.3;
+    opacity: 0.1;
   }
   to {
     opacity: 1;
@@ -168,17 +236,23 @@
   0%,
   100% {
     opacity: 0;
-    transform: translate3d(0, 8px, 0);
+    transform: translate3d(0, 12px, 0);
   }
-  24% {
-    opacity: 0.21;
+  20% {
+    opacity: 0.62;
+    transform: translate3d(calc(var(--drift) * 0.4), 0, 0);
   }
-  72% {
-    opacity: 0.13;
+  52% {
+    opacity: 0.46;
+    transform: translate3d(var(--drift), -14px, 0);
   }
-  95% {
+  82% {
+    opacity: 0.58;
+    transform: translate3d(calc(var(--drift) * 0.6), -29px, 0);
+  }
+  96% {
     opacity: 0;
-    transform: translate3d(var(--drift), -20px, 0);
+    transform: translate3d(calc(var(--drift) * 0.3), -37px, 0);
   }
 }
 @keyframes library-breath {

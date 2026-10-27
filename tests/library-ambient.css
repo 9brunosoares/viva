@@ -1,0 +1,73 @@
+/* Diagnostic controls/selectors exist only in this development fixture. */
+.ambient-inspector {
+  position: fixed;
+  z-index: 999;
+  top: 12px;
+  left: 12px;
+  width: min(320px, calc(100vw - 24px));
+  padding: 16px;
+  border: 1px solid #c9a366;
+  border-radius: 18px;
+  background: #fff5e6f5;
+  color: #254334;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font:
+    14px/1.4 Arial,
+    sans-serif;
+  box-shadow: 0 4px 20px #0004;
+}
+.ambient-inspector small {
+  font-size: 12px;
+  letter-spacing: 0;
+  font-weight: 400;
+}
+.ambient-inspector label {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+.ambient-inspector select {
+  font: inherit;
+  padding: 8px;
+  border-radius: 8px;
+  background: #fff5e6;
+  color: #254334;
+}
+.ambient-layer-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.ambient-inspector button {
+  font-size: 13px;
+  padding: 6px 10px;
+  min-height: 40px;
+  border-radius: 10px;
+}
+.ambient-inspector [aria-pressed="true"] {
+  background: #315d3b;
+  color: #fff4dc;
+}
+[data-diagnostic-paused="true"] .library-atmosphere * {
+  animation-play-state: paused !important;
+}
+[data-diagnostic-layer="none"] .library-atmosphere {
+  visibility: hidden;
+}
+[data-diagnostic-layer="rays"] .library-window-light,
+[data-diagnostic-layer="rays"] .library-lamp-light,
+[data-diagnostic-layer="rays"] .library-curtain-light,
+[data-diagnostic-layer="rays"] .library-dust,
+[data-diagnostic-layer="dust"] .library-light-entry,
+[data-diagnostic-layer="light"] .library-sunrays,
+[data-diagnostic-layer="light"] .library-dust,
+[data-diagnostic-layer="light"] .library-curtain-light,
+[data-diagnostic-layer="reflection"] .library-window-light,
+[data-diagnostic-layer="reflection"] .library-lamp-light,
+[data-diagnostic-layer="reflection"] .library-sunrays,
+[data-diagnostic-layer="reflection"] .library-dust {
+  visibility: hidden;
+}

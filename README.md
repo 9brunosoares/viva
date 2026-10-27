@@ -62,7 +62,7 @@ Não há tela de configurações. Os efeitos sonoros e as animações ficam ativ
 
 Os efeitos e as melodias curtas de Blade/família foram restaurados da versão anterior ao Upgrade 2/5. Não há trilha contínua, samples Kenney ou sons automáticos de ambiente. O botão Áudio conserva volume e silêncio, sem modificar o progresso. Detalhes e testes: [AUDIO.md](AUDIO.md).
 
-O Upgrade 3/5 acrescenta iluminação localizada na janela e luminária, oito pontos lentos de poeira, entrada e seleção delicadas dos livros, respiração de Blade e crossfade entre poses originais. As posições, imagens e os quatro estágios são preservados. Segundo plano pausa os efeitos; movimento reduzido e indicadores de recursos limitados simplificam a ambientação. Tecnologias nativas, sem novas dependências. Arquitetura e arquivos: [BIBLIOTECA.md](BIBLIOTECA.md).
+O Upgrade 3/5 acrescenta iluminação localizada, entrada e seleção delicadas dos livros, respiração de Blade e crossfade entre poses originais. A ambientação foi recalibrada após comparação de capturas reais: três feixes solares suaves, oito pontos de poeira visíveis na faixa de sol e reflexo delicado na cortina. O modo simplificado mantém três pontos e um feixe animado; movimento reduzido conserva luz estática. Posições, imagens e quatro estágios preservados. Tecnologias nativas, sem novas dependências. Arquitetura: [BIBLIOTECA.md](BIBLIOTECA.md); diagnóstico, intensidades, gravação e testes: [AMBIENTACAO.md](AMBIENTACAO.md).
 
 ## Controle e ritmo — Upgrade 4/5
 

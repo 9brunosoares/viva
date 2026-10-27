@@ -1,3 +1,18 @@
+# Reavaliação do Upgrade 3/5 — ambientação da biblioteca
+
+- Base preservada: publicação `bbe29b6`; correção local em `codex/library-atmosphere`, sem publicação automática ou auditoria das outras etapas.
+- Antes: dois gradientes radiais e oito pontos minúsculos efetivamente em execução, porém sem feixes. Em quatro segundos, apenas 0,013% dos pixels variava mais de três níveis RGB. Dois núcleos simulados ativavam modo simplificado sem poeira ou luz animada.
+- Depois: três feixes nativos SVG com bordas/dissipação suaves, oito partículas de 1,8–2,8 px na faixa de sol, luz diurna localizada e reflexo de 3×2 px na cortina. Entrada de 1,4 s para luz e 1,1 s para poeira. Modo simplificado mantém três partículas e um feixe em movimento. Movimento reduzido continua estático, sem poeira; segundo plano e menus prioritários pausam.
+- Pixel check dos dois motores confirmou raios, poeira, luz e reflexo isoladamente sobre fundo neutro. Comparação em tempo real de 0/4/8 s: cerca de 5% dos pixels muda acima do limiar em quatro segundos. Isso comprova movimento renderizado e não mede qualidade artística ou FPS.
+- `library-atmosphere.ts`: 12 composições por motor (quatro estágios, três dimensões), Chromium/Edge e WebKit; geometria, execução, pausas, acessibilidade, modo simplificado e diagnóstico fora do release aprovados. WebKit Retina 3× também conferido. Nenhum erro de página.
+- `library-life.ts`: 15 composições, dez sinopses, Blade/poses, retrato, chegadas, áudio, offline e progresso aprovados na execução isolada. Um timeout do teste no menu de Blade sob execução paralela não se repetiu; acrescentada captura em falhas, sem alterar o personagem.
+- Offline: Chromium e WebKit; neste último, servidor HTTP realmente desligado. Arquivos do diagnóstico não integram `dist` nem o cache.
+- Desempenho indicativo: p95 de 18,3 ms com cena parada e animada, 75 nós, zero mutações DOM por frame e zero frames acima de 50 ms na amostra de 180 frames por estado. Sem iPhone físico, garantia de FPS ou medição de bateria/temperatura.
+- TypeScript, build e 36 testes unitários aprovados. Cache `fc37e087b75c`, 147 arquivos, JS 302,09 kB (97,48 gzip), CSS 67,35 kB (14,94 gzip). Nenhuma dependência ou imagem nova; livros, Blade, retrato, áudio, gameplay e progresso preservados.
+- Evidência: gravação `test-results/library-atmosphere.webm`, prévias GIF e quadros de 0/4/8 s, `ambient-*-report.json`, `ambient-pixel-report.json`, `library-performance-report.json` e relatórios de regressão. Documentação e instruções: [AMBIENTACAO.md](AMBIENTACAO.md).
+
+---
+
 # Upgrade 5/5 — acabamento de aplicativo e UX mobile (27/10/2026)
 
 - Ponto de restauração anterior às alterações: commit **0c96512**, tag `viva-pre-premium-5-20261027`, branch `codex/premium-5-mobile`. Alterações anteriores preservadas integralmente.

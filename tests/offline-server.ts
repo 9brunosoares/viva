@@ -89,6 +89,12 @@ try {
     .evaluate((img: HTMLImageElement) => img.decode());
   assert.equal(await page.locator(".library-atmosphere").count(), 1);
   assert.equal(await page.locator(".library-dust i").count(), 8);
+  assert.equal(await page.locator(".library-sunbeam").count(), 3);
+  await page.waitForFunction(
+    () =>
+      document.querySelector(".library-sunbeam")?.getAnimations()[0]
+        ?.playState === "running",
+  );
   await page.locator(".shelf-books button").first().click();
   await page.getByRole("button", { name: "Ler sinopse", exact: true }).click();
   assert.ok((await page.locator(".book-synopsis p").innerText()).length > 200);
@@ -148,6 +154,7 @@ try {
         libraryImageCached: true,
         officialPortraitCached: true,
         animatedGameplayOffline: true,
+        sunlightAndDustOffline: true,
         errors,
         ...before,
       },

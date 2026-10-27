@@ -1,5 +1,11 @@
 # Viva! — biblioteca viva, Upgrade 3/5
 
+## Reavaliação da ambientação
+
+A primeira implementação abaixo foi reavaliada em execução: os gradientes e pontos estavam ativos, mas eram pouco perceptíveis; o modo simplificado deixava todo o ambiente estático. A correção atual acrescenta três feixes solares suaves, poeira mais legível na luz e reflexo localizado na cortina. O modo simplificado mantém movimento leve. Ilustrações, livros, Blade e retrato foram preservados. Implementação, intensidades, gravação e provas de renderização estão em [AMBIENTACAO.md](AMBIENTACAO.md).
+
+O restante deste arquivo registra a primeira implementação histórica, anterior à recalibração.
+
 ## Composição e tecnologia
 A biblioteca permanece em React/DOM, sobre as quatro ilustrações originais de 496 × 756. O estágio continua em `libraryState`: 0–1, 2–4, 5–7 e 8–10 fases. Recortes e posições dos livros em `libraryLayout.ts` não foram alterados.
 
