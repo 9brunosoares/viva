@@ -1,0 +1,90 @@
+[
+  {
+    "file": "tattoo-tiles.jpg",
+    "original": "1-Foto-1.jpg",
+    "size": [
+      1280,
+      1024
+    ],
+    "mode": "RGB",
+    "bytes": 326805,
+    "sha256": "771d19d830cd2954109fe75777200f8164742faf508e8f6d7aa167d914e1218f"
+  },
+  {
+    "file": "tattoo-studio.jpg",
+    "original": "2-Foto-2.jpg",
+    "size": [
+      719,
+      1280
+    ],
+    "mode": "RGB",
+    "bytes": 267373,
+    "sha256": "ba941bcb633d6bfd594bf3157f32f0dc6d8ada639036de6ac53032bc9f9b6799"
+  },
+  {
+    "file": "tattoo-decoration.jpg",
+    "original": "3-Foto-3.jpg",
+    "size": [
+      1280,
+      1024
+    ],
+    "mode": "RGB",
+    "bytes": 372557,
+    "sha256": "780c7b113f8f17f7d5cc5c1600831b2410c52482ebae25185331aff98c8c7902"
+  },
+  {
+    "file": "vfx-01.png",
+    "original": "4-viva_atlas_vfx_nativo_01.png",
+    "size": [
+      2017,
+      780
+    ],
+    "mode": "RGB",
+    "bytes": 2006194,
+    "sha256": "d8faec9602228777584393d5ca72b6fc64faf2916510d86ed72b9cddf245826d"
+  },
+  {
+    "file": "vfx-02.png",
+    "original": "5-viva_atlas_vfx_nativo_02.png",
+    "size": [
+      1942,
+      809
+    ],
+    "mode": "RGB",
+    "bytes": 2160154,
+    "sha256": "5344d84d11adbed9796ce7375360217c9b06b4f455bac452d0b60a857503c927"
+  },
+  {
+    "file": "vfx-03.png",
+    "original": "6-viva_atlas_vfx_nativo_03.png",
+    "size": [
+      2048,
+      768
+    ],
+    "mode": "RGB",
+    "bytes": 1972306,
+    "sha256": "53378544e852d2187f3b8ca0ccc8d5cf0dd60707740134508ad138763de10f34"
+  },
+  {
+    "file": "library-five-before.jpg",
+    "original": "7-Foto-7.jpg",
+    "size": [
+      590,
+      1280
+    ],
+    "mode": "RGB",
+    "bytes": 163308,
+    "sha256": "d5dea8904dc32496f437f2aab90b65f123975f748a87225612d7876d012f269b"
+  },
+  {
+    "file": "library-four-before.jpg",
+    "original": "8-Foto-8.jpg",
+    "size": [
+      590,
+      1280
+    ],
+    "mode": "RGB",
+    "bytes": 158137,
+    "sha256": "e29535b44d4d1bbd6febf7fbbbfbf9978518bac6c4da602d26d78ded5dc0af92"
+  }
+]

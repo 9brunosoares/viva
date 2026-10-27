@@ -78,7 +78,6 @@ try {
         ".reward h2",
         ".reward .author",
         ".reward .reward-book",
-        ".reward-synopsis",
         ".reward > .primary",
       ]) {
         const b = (await page.locator(selector).boundingBox())!;
@@ -92,9 +91,9 @@ try {
         await page.locator(".reward .author").innerText(),
         book.author,
       );
-      assert.equal(
-        await page.locator(".reward-synopsis p").innerText(),
-        book.synopsis,
+      assert.equal(await page.locator(".reward-synopsis").count(), 0);
+      assert.ok(
+        !(await page.locator(".reward").innerText()).includes(book.synopsis),
       );
       const contrasts = await page.locator(".reward").evaluate((surface) => {
         const luminance = (rgb: number[]) => {
@@ -140,6 +139,23 @@ try {
         });
       checks++;
     }
+    await page
+      .getByRole("button", { name: "Guardar na biblioteca", exact: true })
+      .click();
+    await page.locator(".celebration .primary").click();
+    await page.locator(".library-room").waitFor();
+    await page
+      .getByRole("button", { name: `Abrir ${book.title}`, exact: true })
+      .click();
+    await page
+      .getByRole("button", { name: "Ler sinopse", exact: true })
+      .click();
+    assert.equal(
+      await page.locator(".book-synopsis p").innerText(),
+      book.synopsis,
+    );
+    await page.keyboard.press("Escape");
+    await page.locator(".book-viewer").waitFor({ state: "detached" });
   }
   assert.deepEqual(errors, []);
   const report = {
@@ -147,7 +163,8 @@ try {
     checks,
     allBooks: true,
     safeAreaSimulated: true,
-    onlySynopsisScrolls: true,
+    rewardHasNoSynopsis: true,
+    allSynopsesAvailableInLibrary: true,
     readingContrastAtLeast4_5: true,
     errors,
   };

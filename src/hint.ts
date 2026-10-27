@@ -13,7 +13,7 @@ export function chooseHint(
     const next = swap(board, a, b),
       groups = matches(next);
     const cells = new Set(groups.flatMap((g) => g.cells));
-    const collected = [0, 0, 0, 0, 0, 0];
+    const collected = Array(Math.max(6, counts.length)).fill(0);
     for (const i of cells) collected[next[i].kind]++;
     const useful = targets.reduce(
       (sum, t) =>

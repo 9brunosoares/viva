@@ -1,7 +1,9 @@
 import { useEffect, useRef, type RefObject } from "react";
-import { asset } from "./config";
+import { asset, names } from "./config";
 import type { Board, Wave } from "./engine";
 import { feedbackProfile, ParticlePool } from "./vfx";
+import { AtlasEffects } from "./AtlasEffects";
+import { powerHitDelay } from "./powerTimeline";
 
 const colors = [
   "#f394b0",
@@ -10,9 +12,11 @@ const colors = [
   "#87e4df",
   "#caa0ea",
   "#f0b667",
+  "#d9bc8c",
 ];
 class BoardVfx {
   readonly pool = new ParticlePool(180);
+  private readonly atlas = new AtlasEffects();
   private images: HTMLImageElement[] = [];
   private frame = 0;
   private last = 0;
@@ -34,7 +38,7 @@ class BoardVfx {
     stage: number,
   ) {
     this.ctx = canvas.getContext("2d")!;
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < names[stage - 1].length; i++) {
       const img = new Image();
       img.src = asset(`tile-${stage}-${i}`);
       this.images.push(img);
@@ -94,6 +98,15 @@ class BoardVfx {
     }
     const profile = feedbackProfile(wave.board, wave, depth),
       cellSize = (this.grid.children[0] as HTMLElement).clientWidth;
+    this.atlas.wave(board, wave, this.cells, cellSize, profile.clearMs);
+    this.canvas.dataset.effectTypes = wave.effects
+      .slice(0, 6)
+      .map((e) => e.type)
+      .join(",");
+    if (this.canvas.dataset.beams !== String(this.atlas.beamCount))
+      this.canvas.dataset.beams = String(this.atlas.beamCount);
+    if (this.canvas.dataset.clips !== String(this.atlas.clipCount))
+      this.canvas.dataset.clips = String(this.atlas.clipCount);
     for (const kind of needed) {
       const el = this.screen.querySelector<HTMLElement>(
         `[data-objective-kind="${kind}"]`,
@@ -148,7 +161,7 @@ class BoardVfx {
           vx: Math.cos(angle) * speed,
           vy: Math.sin(angle) * speed - 24,
           gravity: 90,
-          age: -distance * 0.018,
+          age: -powerHitDelay(index, wave.effects) / 1000,
           life: 0.36 + this.random() * 0.22,
           size: j % 3 === 0 ? cellSize * 0.18 : 3 + this.random() * 3,
           rotation: angle,
@@ -229,6 +242,7 @@ class BoardVfx {
     const ctx = this.ctx;
     ctx.setTransform(this.ratio, 0, 0, this.ratio, 0, 0);
     ctx.clearRect(0, 0, this.width, this.height);
+    this.atlas.draw(ctx, dt);
     for (const p of this.pool.particles) {
       if (!p.active || p.age < 0) continue;
       const t = p.age / p.life,
@@ -310,7 +324,12 @@ class BoardVfx {
     ctx.globalAlpha = 1;
     this.samples++;
     this.work += performance.now() - started;
-    if (this.pool.count()) this.frame = requestAnimationFrame(this.draw);
+    if (this.canvas.dataset.beams !== String(this.atlas.beamCount))
+      this.canvas.dataset.beams = String(this.atlas.beamCount);
+    if (this.canvas.dataset.clips !== String(this.atlas.clipCount))
+      this.canvas.dataset.clips = String(this.atlas.clipCount);
+    if (this.pool.count() || this.atlas.active)
+      this.frame = requestAnimationFrame(this.draw);
     else {
       this.frame = 0;
       this.canvas.dataset.running = "false";
@@ -321,6 +340,9 @@ class BoardVfx {
     cancelAnimationFrame(this.frame);
     this.frame = 0;
     this.pool.clear();
+    this.atlas.clear();
+    this.canvas.dataset.beams = "0";
+    this.canvas.dataset.clips = "0";
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.canvas.dataset.running = "false";
   }

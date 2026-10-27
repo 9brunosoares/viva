@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { mkdir, writeFile } from "node:fs/promises";
 import { chromium, webkit } from "playwright";
 import { shelfPositions } from "../src/libraryLayout";
+import { spineMetrics } from "../src/spineMetrics";
 import { libraryState } from "../src/progress";
 import { books } from "../src/config";
 import { waitForCache } from "./boardHelper";
@@ -145,8 +146,16 @@ try {
             height: e.style.height,
             width: e.style.width,
           }));
-        for (const key of ["left", "bottom", "height", "width"] as const)
+        for (const key of ["left", "bottom", "height"] as const)
           assert.ok(Math.abs(parseFloat(b[key]) - positions[i][key]) < 0.001);
+        const metric = spineMetrics[order[i]];
+        assert.ok(
+          Math.abs(
+            parseFloat(b.width) -
+              (((positions[i].height * 756) / 496) * metric.artWidth) /
+                metric.artHeight,
+          ) < 0.001,
+        );
       }
       assert.ok(Math.abs(room.width / room.height - 496 / 756) < 0.001);
       await page.screenshot({

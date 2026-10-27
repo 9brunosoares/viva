@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { asset, books, levels } from "./config";
+import { asset, books, levels, legacyLevels, names } from "./config";
 import {
   complete,
   libraryState,
@@ -22,6 +22,7 @@ import {
 import SoundToggle from "./SoundToggle";
 import { useReducedMotion } from "./useReducedMotion";
 import { BRUNO_SIGNATURE } from "./narrative";
+import { spineMetrics } from "./spineMetrics";
 import { useDialog } from "./useDialog";
 import { shelfPositions } from "./libraryLayout";
 import Celebration from "./Celebration";
@@ -88,7 +89,9 @@ export default function App() {
     activeSession
       ? balancedLevel(
           {
-            ...levels[activeSession.stage - 1],
+            ...(activeSession.campaignVersion === 2 ? levels : legacyLevels)[
+              activeSession.stage - 1
+            ],
             name:
               activeSession.stage === 5 &&
               isRevealed(initial.current!.progress, "blade")
@@ -149,6 +152,10 @@ export default function App() {
   const count = progress.completed.length,
     next = Math.min(10, count + 1),
     acquired = progress.order.slice(0, count);
+  useEffect(() => {
+    if (screen === "reward" && reward !== null && !giftIntro)
+      sound(true, "book");
+  }, [screen, reward, giftIntro]);
   const positions = shelfPositions(libraryState(count));
   const bladeKnown = isRevealed(progress, "blade"),
     familyKnown = isRevealed(progress, "family");
@@ -251,12 +258,13 @@ export default function App() {
           ? [asset(`scene-${activeSession?.stage ?? next}`)]
           : screen === "intro"
             ? [
-                ...Array.from({ length: 6 }, (_, kind) =>
+                ...Array.from({ length: names[stage - 1].length }, (_, kind) =>
                   asset(`tile-${stage}-${kind}`),
                 ),
                 ...Array.from({ length: 4 }, (_, kind) =>
                   asset(`power-${kind}`),
                 ),
+                asset("vfx/sequences"),
               ]
             : [];
     for (const path of paths) {
@@ -279,6 +287,7 @@ export default function App() {
       (!endless && !storySeen(progress, id) ? "intro" : "game");
     const metadata: GameSession = resume ?? {
       version: 1,
+      campaignVersion: 2,
       campaign: progress.order.join(","),
       completedCount: progress.completed.length,
       stage: id,
@@ -291,7 +300,14 @@ export default function App() {
     saved.current.session = writeSession(metadata);
     setStage(id);
     setPlayingLevel(
-      balancedLevel({ ...levels[id - 1], name: titleFor(id) }, mode, endless),
+      balancedLevel(
+        {
+          ...(metadata.campaignVersion === 2 ? levels : legacyLevels)[id - 1],
+          name: titleFor(id),
+        },
+        mode,
+        endless,
+      ),
     );
     setInfinite(endless);
     setSession((n) => n + 1);
@@ -330,10 +346,9 @@ export default function App() {
   }
   function acceptReward() {
     if (progress.pendingCelebration) {
-      sound(true, "book");
       setProgress(acceptMilestoneBook);
       setScreen("celebration");
-    } else visitLibrary();
+    } else setScreen("library");
   }
   function finishCelebration() {
     setProgress(finishMilestone);
@@ -450,7 +465,7 @@ export default function App() {
           className="page library immersive"
           style={
             {
-              "--room-art": `url('${asset(`library-${libraryState(count)}`)}')`,
+              "--room-art": `url('${new URL(asset(`library-${libraryState(count)}`), document.baseURI).href}')`,
             } as React.CSSProperties
           }
         >
@@ -551,7 +566,7 @@ export default function App() {
                       left: `${positions[i].left}%`,
                       bottom: `${positions[i].bottom}%`,
                       height: `${positions[i].height}%`,
-                      width: `${positions[i].width}%`,
+                      width: `${(((positions[i].height * 756) / 496) * spineMetrics[id].artWidth) / spineMetrics[id].artHeight}%`,
                     }}
                     onClick={(e) => {
                       e.currentTarget.focus({ preventScroll: true });
@@ -564,10 +579,23 @@ export default function App() {
                       alt=""
                       width={60}
                       height={160}
+                      style={{
+                        position: "absolute",
+                        width: `${(spineMetrics[id].width / spineMetrics[id].artWidth) * 100}%`,
+                        height: `${(spineMetrics[id].height / spineMetrics[id].artHeight) * 100}%`,
+                        left: `${(-spineMetrics[id].left / spineMetrics[id].artWidth) * 100}%`,
+                        top: `${(-spineMetrics[id].top / spineMetrics[id].artHeight) * 100}%`,
+                      }}
                     />
                   </button>
                 ))}
               </div>
+              <img
+                className="shelf-depth"
+                src={asset(`library-shelf-depth-${libraryState(count)}`)}
+                alt=""
+                aria-hidden="true"
+              />
               {bladeKnown && (
                 <BladeCompanion
                   reduced={reduced}
@@ -622,7 +650,6 @@ export default function App() {
               <button
                 className="primary"
                 onClick={() => {
-                  sound(true, "book");
                   setGiftIntro(false);
                 }}
               >
@@ -658,14 +685,6 @@ export default function App() {
                   />
                   <h2>{books[reward - 1].title}</h2>
                   <p className="author">{books[reward - 1].author}</p>
-                  <div
-                    className="reward-synopsis"
-                    tabIndex={0}
-                    role="region"
-                    aria-label="Sinopse"
-                  >
-                    <p>{books[reward - 1].synopsis}</p>
-                  </div>
                 </>
               ) : (
                 <p>

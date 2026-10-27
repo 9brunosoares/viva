@@ -70,6 +70,7 @@ function Fixture() {
         <Game
           level={{
             ...levels[0],
+            rules: undefined,
             moves: 100,
             targets: [{ kind: 0, amount: mode === "win" ? 3 : 999 }],
             powers: 0,

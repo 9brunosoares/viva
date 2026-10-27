@@ -11,6 +11,7 @@ export type GameSnapshot = {
 };
 export type GameSession = {
   version: 1;
+  campaignVersion?: 2;
   campaign: string;
   completedCount: number;
   stage: number;
@@ -33,15 +34,16 @@ export function validSnapshot(s: unknown): s is GameSnapshot {
       (t) =>
         t &&
         integer(t.kind) &&
-        t.kind < 6 &&
+        t.kind < 7 &&
         (t.special === undefined ||
           ["row", "column", "area", "color"].includes(t.special)),
     ) &&
     Number.isInteger(v.remaining) &&
     Math.abs(v.remaining) <= 100000 &&
     Array.isArray(v.counts) &&
-    v.counts.length === 6 &&
+    (v.counts.length === 6 || v.counts.length === 7) &&
     v.counts.every(integer) &&
+    v.board.every((t) => t.kind < v.counts.length) &&
     integer(v.powers) &&
     integer(v.cascades) &&
     integer(v.round) &&
@@ -55,6 +57,7 @@ export function readSession(p: Progress): GameSession | null {
     ) as GameSession | null;
     return v &&
       v.version === 1 &&
+      (v.campaignVersion === undefined || v.campaignVersion === 2) &&
       !p.pendingCelebration &&
       v.campaign === p.order.join(",") &&
       v.completedCount === p.completed.length &&
@@ -65,7 +68,9 @@ export function readSession(p: Progress): GameSession | null {
       (!v.endless || p.completed.length === 10) &&
       ["easy", "medium", "hard"].includes(v.difficulty) &&
       ["intro", "game"].includes(v.phase) &&
-      (v.snapshot === undefined || validSnapshot(v.snapshot))
+      (v.snapshot === undefined ||
+        (validSnapshot(v.snapshot) &&
+          (v.stage === 9 || v.snapshot.board.every((t) => t.kind < 6))))
       ? v
       : null;
   } catch {

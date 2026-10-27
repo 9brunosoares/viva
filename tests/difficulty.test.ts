@@ -1,13 +1,14 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { levels } from "../src/config";
+import { levels, legacyLevels } from "../src/config";
 import { balancedLevel } from "../src/difficulty";
 
 test("easy preserves every existing level and special objective exactly", () => {
-  for (const level of levels) {
+  for (const level of legacyLevels) {
     assert.equal(balancedLevel(level, "easy"), level);
     assert.equal(level.moves, 36 + (level.id - 1) * 2);
   }
+  for (const level of levels) assert.equal(balancedLevel(level, "easy"), level);
 });
 test("medium and hard scale goals without mutating the original or removing powers", () => {
   for (const base of levels) {

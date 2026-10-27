@@ -18,7 +18,7 @@ import {
 import type { GameSnapshot } from "./session";
 import { sound, waveSound } from "./audio";
 import { useDialog } from "./useDialog";
-import ComboEffects from "./ComboEffects";
+import { powerHitDelay } from "./powerTimeline";
 import { hapticPower } from "./haptics";
 import { useTileMotion, MotionPhase } from "./useTileMotion";
 import { useGameVfx } from "./useGameVfx";
@@ -55,10 +55,15 @@ export default function Game({
   initialSnapshot,
   onSnapshot,
 }: Props) {
+  const rules = level.rules;
+  const freshCounts = () =>
+    Array(
+      Math.max(6, ...(rules?.kinds ?? [0, 1, 2, 3, 4, 5]).map((k) => k + 1)),
+    ).fill(0) as number[];
   const [board, setBoard] = useState<Board>(() =>
     initialSnapshot
       ? initialSnapshot.board.map((t) => tile(t.kind, t.special))
-      : createBoard(),
+      : createBoard(Math.random, rules),
   );
   const current = useRef(board);
   const [selected, setSelected] = useState<number | null>(null),
@@ -76,9 +81,7 @@ export default function Game({
     [remaining, setRemaining] = useState(
       initialSnapshot?.remaining ?? level.moves,
     ),
-    [counts, setCounts] = useState(
-      initialSnapshot?.counts ?? [0, 0, 0, 0, 0, 0],
-    );
+    [counts, setCounts] = useState(initialSnapshot?.counts ?? freshCounts());
   const [powers, setPowers] = useState(initialSnapshot?.powers ?? 0),
     [cascades, setCascades] = useState(initialSnapshot?.cascades ?? 0),
     [paused, pause] = useState(false),
@@ -153,7 +156,7 @@ export default function Game({
         if (!(await wait(140, turn))) return;
         motionPhase.current = { kind: "reset", depth: 0 };
         setRecovery("in");
-        show(ensurePlayable(current.current));
+        show(ensurePlayable(current.current, Math.random, rules));
         if (!(await wait(390, turn))) return;
         lock.current = false;
         setRecovery(null);
@@ -243,9 +246,9 @@ export default function Game({
     sequence.current.cancel();
     setRecovery(null);
     motionPhase.current = { kind: "reset", depth: 0 };
-    show(createBoard());
+    show(createBoard(Math.random, rules));
     setRemaining(level.moves);
-    setCounts([0, 0, 0, 0, 0, 0]);
+    setCounts(freshCounts());
     setPowers(0);
     setCascades(0);
     select(null);
@@ -324,6 +327,7 @@ export default function Game({
         b,
         active,
         active.length ? colorKind : undefined,
+        rules,
       );
       const profile = feedbackProfile(wave.board, wave, depth);
       setWaveVisual({
@@ -358,26 +362,11 @@ export default function Game({
           wave.powers > 1 ? "Que encontro de poderes!" : "Olha essa magia!",
         );
         hapticPower(wave.powers > 1, !motion);
-        for (const i of wave.clear) {
-          const e = wave.effects[0];
-          delays[i] =
-            e?.type === "row"
-              ? Math.abs((i % COLS) - (e.index % COLS)) * 22
-              : e?.type === "column"
-                ? Math.abs(Math.floor(i / COLS) - Math.floor(e.index / COLS)) *
-                  22
-                : Math.min(
-                    120,
-                    Math.hypot(
-                      (i % COLS) - (e.index % COLS),
-                      Math.floor(i / COLS) - Math.floor(e.index / COLS),
-                    ) * 25,
-                  );
-        }
+        for (const i of wave.clear) delays[i] = powerHitDelay(i, wave.effects);
       }
       setClearDelays(delays);
       if (!(await wait(profile.clearMs, turn))) return;
-      total = total.map((n, i) => n + wave.collected[i]);
+      total = total.map((n, i) => n + (wave.collected[i] ?? 0));
       power += wave.powers;
       if (depth > 0) chain++;
       setCounts(total);
@@ -390,7 +379,7 @@ export default function Game({
       setWaveVisual(null);
       const createdIds = new Set(wave.created.map((i) => wave.board[i].id));
       const beforeFall = next;
-      next = fall(wave.board, wave.clear);
+      next = fall(wave.board, wave.clear, Math.random, rules);
       const origins = new Map(wave.created.map((i) => [wave.board[i].id, i]));
       setCreated(next.flatMap((t, i) => (createdIds.has(t.id) ? [i] : [])));
       motionPhase.current = {
@@ -426,7 +415,7 @@ export default function Game({
         setPhase("recovering");
         setRecovery("in");
         motionPhase.current = { kind: "reset", depth: 0 };
-        next = createBoard();
+        next = createBoard(Math.random, rules);
         show(next);
         setMessage("Peças novas, novas chances.");
         if (!(await wait(390, turn))) return;
@@ -434,7 +423,7 @@ export default function Game({
         break;
       }
     }
-    const playable = ensurePlayable(next);
+    const playable = ensurePlayable(next, Math.random, rules);
     if (playable !== next) {
       setPhase("recovering");
       setRecovery("out");
@@ -460,7 +449,7 @@ export default function Game({
       if (!(await sequence.current.wait(depth >= 4 ? 2600 : 2200, turn)))
         return;
       if (endless) {
-        setCounts([0, 0, 0, 0, 0, 0]);
+        setCounts(freshCounts());
         setPowers(0);
         setCascades(0);
         setRound((n) => n + 1);
@@ -640,7 +629,6 @@ export default function Game({
             </button>
           ))}
         </div>
-        <ComboEffects effects={effects} affected={clearing} />
         {waveVisual && (
           <span
             key={waveVisual.id}
@@ -679,6 +667,22 @@ export default function Game({
         {message}
       </p>
       <div className="game-tools">
+        {(import.meta.env.DEV || import.meta.env.VITE_ENABLE_QA === "true") &&
+          !endless && (
+            <button
+              className="text-button light test-complete"
+              disabled={busy || paused || lost}
+              onClick={() => {
+                if (lock.current) return;
+                lock.current = true;
+                sequence.current.cancel();
+                setPhase("transitioning");
+                onWin();
+              }}
+            >
+              Concluir fase
+            </button>
+          )}
         <button
           className="text-button light"
           disabled={busy || paused || lost}

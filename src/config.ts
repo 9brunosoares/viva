@@ -1,3 +1,4 @@
+import type { BoardRules } from "./engine";
 export const themes = [
   "Química",
   "Ensino Infantil",
@@ -7,7 +8,7 @@ export const themes = [
   "Espiritismo",
   "Roma",
   "Pagode",
-  "Cinema",
+  "Tatuagens",
   "Família",
 ];
 export const names = [
@@ -76,12 +77,13 @@ export const names = [
     "Banquinho",
   ],
   [
-    "Pipoca",
-    "Claquete",
-    "Ingresso",
-    "Rolo de filme",
-    "Poltrona vermelha",
-    "Estrela de cinema",
+    "Lutadora de Kung Fu",
+    "Livros ornamentados",
+    "Xícara de café",
+    "Leoa e filhote",
+    "Infinito mãe",
+    "Coluna grega",
+    "Quadrado de contorno",
   ],
   ["Coração vermelho", "Casa", "Mãos dadas", "Xícara de café", "Flor", "Laço"],
 ];
@@ -93,8 +95,11 @@ export type Level = {
   powers: number;
   cascades: number;
   difficulty: string;
+  rules?: BoardRules;
+  character?: string;
 };
-export const levels: Level[] = themes.map((name, i) => ({
+// Frozen goals/rules for already-saved sessions; completion/book keys stay unchanged.
+export const legacyLevels: Level[] = themes.map((name, i) => ({
   id: i + 1,
   name,
   moves: 36 + i * 2,
@@ -116,6 +121,152 @@ export const levels: Level[] = themes.map((name, i) => ({
   cascades: i === 7 ? 3 : 0,
   difficulty: i < 3 ? "Suave" : i < 7 ? "Tranquila" : "Moderada",
 }));
+const profiles = [
+  {
+    kinds: [0, 1, 2, 3],
+    powerTier: 1,
+    moves: 28,
+    targets: [
+      [0, 16],
+      [1, 16],
+    ],
+    powers: 0,
+    cascades: 0,
+    character: "Primeiras descobertas",
+  },
+  {
+    kinds: [0, 1, 2, 3, 5],
+    powerTier: 1,
+    moves: 34,
+    targets: [
+      [1, 15],
+      [5, 15],
+      [3, 15],
+    ],
+    powers: 1,
+    cascades: 0,
+    character: "Organizar as cores",
+  },
+  {
+    kinds: [0, 1, 2, 3, 4],
+    powerTier: 1,
+    moves: 38,
+    targets: [
+      [1, 20],
+      [2, 20],
+    ],
+    powers: 1,
+    cascades: 2,
+    character: "Ondas e linhas",
+  },
+  {
+    kinds: [0, 1, 2, 3, 4, 5],
+    powerTier: 2,
+    moves: 44,
+    targets: [
+      [0, 21],
+      [4, 21],
+    ],
+    powers: 3,
+    cascades: 0,
+    character: "Poderes e concentração",
+  },
+  {
+    kinds: [0, 1, 2, 3, 4],
+    powerTier: 2,
+    moves: 40,
+    targets: [
+      [0, 16],
+      [2, 16],
+      [4, 16],
+    ],
+    powers: 0,
+    cascades: 0,
+    character: "Um cantinho de carinho",
+  },
+  {
+    kinds: [0, 1, 2, 3, 4, 5],
+    weights: [0.9, 0.9, 1, 1.15, 1.15, 1],
+    powerTier: 3,
+    moves: 48,
+    targets: [
+      [0, 20],
+      [1, 20],
+    ],
+    powers: 0,
+    cascades: 0,
+    character: "Escolhas tranquilas",
+  },
+  {
+    kinds: [0, 1, 2, 3, 4, 5],
+    powerTier: 3,
+    moves: 48,
+    targets: [
+      [0, 22],
+      [2, 22],
+      [4, 22],
+    ],
+    powers: 2,
+    cascades: 0,
+    character: "Descobertas especiais",
+  },
+  {
+    kinds: [0, 1, 2, 3, 4],
+    powerTier: 3,
+    moves: 44,
+    targets: [
+      [0, 20],
+      [1, 20],
+    ],
+    powers: 0,
+    cascades: 5,
+    character: "No ritmo das cascatas",
+  },
+  {
+    kinds: [0, 1, 2, 3, 4, 5, 6],
+    powerTier: 3,
+    moves: 58,
+    targets: [
+      [0, 20],
+      [3, 20],
+      [4, 20],
+    ],
+    powers: 0,
+    cascades: 0,
+    character: "Histórias na pele",
+  },
+  {
+    kinds: [0, 1, 2, 3, 4, 5],
+    powerTier: 3,
+    moves: 50,
+    targets: [
+      [0, 24],
+      [2, 24],
+      [4, 24],
+    ],
+    powers: 3,
+    cascades: 3,
+    character: "Tudo o que aprendemos",
+  },
+] as const;
+export const levels: Level[] = themes.map((name, i) => {
+  const p = profiles[i];
+  return {
+    id: i + 1,
+    name,
+    moves: p.moves,
+    targets: p.targets.map(([kind, amount]) => ({ kind, amount })),
+    powers: p.powers,
+    cascades: p.cascades,
+    difficulty: legacyLevels[i].difficulty,
+    character: p.character,
+    rules: {
+      kinds: p.kinds,
+      powerTier: p.powerTier,
+      ...("weights" in p ? { weights: p.weights } : {}),
+    },
+  };
+});
 export const books = [
   {
     id: 1,
@@ -188,5 +339,22 @@ export const books = [
       "Depois de um divórcio e de um período de insatisfação pessoal, Elizabeth Gilbert decide viajar sozinha durante um ano em busca de novos significados para sua vida. Na Itália, redescobre os prazeres cotidianos; na Índia, explora a espiritualidade; e na Indonésia, procura equilíbrio e afeto. Um relato autobiográfico sobre recomeços, autoconhecimento e a coragem de construir a própria felicidade.",
   },
 ];
-export const asset = (name: string) =>
-  `${import.meta.env.BASE_URL}assets/${name}.webp`;
+export const tattooPieces = [
+  "warrior",
+  "books",
+  "coffee",
+  "lioness",
+  "mother-infinity",
+  "ionic-column",
+  "outline-square",
+] as const;
+export const asset = (name: string) => {
+  const match = /^tile-9-(\d+)$/.exec(name);
+  const path =
+    name === "scene-9"
+      ? "scenes/tattoo-studio"
+      : match
+        ? `tattoos/${tattooPieces[Number(match[1])]}`
+        : name;
+  return `${import.meta.env.BASE_URL}assets/${path}.webp`;
+};

@@ -528,72 +528,6 @@
     "purpose": "tile"
   },
   {
-    "name": "tile-9-0",
-    "file": "assets/tile-9-0.webp",
-    "category": "tile",
-    "dimensions": [
-      160,
-      160
-    ],
-    "stage": 9,
-    "purpose": "tile"
-  },
-  {
-    "name": "tile-9-1",
-    "file": "assets/tile-9-1.webp",
-    "category": "tile",
-    "dimensions": [
-      160,
-      160
-    ],
-    "stage": 9,
-    "purpose": "tile"
-  },
-  {
-    "name": "tile-9-2",
-    "file": "assets/tile-9-2.webp",
-    "category": "tile",
-    "dimensions": [
-      160,
-      160
-    ],
-    "stage": 9,
-    "purpose": "tile"
-  },
-  {
-    "name": "tile-9-3",
-    "file": "assets/tile-9-3.webp",
-    "category": "tile",
-    "dimensions": [
-      160,
-      160
-    ],
-    "stage": 9,
-    "purpose": "tile"
-  },
-  {
-    "name": "tile-9-4",
-    "file": "assets/tile-9-4.webp",
-    "category": "tile",
-    "dimensions": [
-      160,
-      160
-    ],
-    "stage": 9,
-    "purpose": "tile"
-  },
-  {
-    "name": "tile-9-5",
-    "file": "assets/tile-9-5.webp",
-    "category": "tile",
-    "dimensions": [
-      160,
-      160
-    ],
-    "stage": 9,
-    "purpose": "tile"
-  },
-  {
     "name": "tile-10-0",
     "file": "assets/tile-10-0.webp",
     "category": "tile",
@@ -745,17 +679,6 @@
       496
     ],
     "stage": 8,
-    "purpose": "scene"
-  },
-  {
-    "name": "scene-9",
-    "file": "assets/scene-9.webp",
-    "category": "scene",
-    "dimensions": [
-      285,
-      496
-    ],
-    "stage": 9,
     "purpose": "scene"
   },
   {
@@ -1551,5 +1474,93 @@
     ],
     "stage": null,
     "purpose": "identity"
+  },
+  {
+    "name": "scene-9",
+    "file": "assets/scenes/tattoo-studio.webp",
+    "category": "scene",
+    "stage": 9,
+    "dimensions": [
+      719,
+      1280
+    ],
+    "source": "tattoo-studio.jpg"
+  },
+  {
+    "name": "tile-9-0",
+    "file": "assets/tattoos/warrior.webp",
+    "category": "tile",
+    "stage": 9,
+    "dimensions": [
+      160,
+      160
+    ],
+    "source": "tattoo-tiles.jpg"
+  },
+  {
+    "name": "tile-9-1",
+    "file": "assets/tattoos/books.webp",
+    "category": "tile",
+    "stage": 9,
+    "dimensions": [
+      160,
+      160
+    ],
+    "source": "tattoo-tiles.jpg"
+  },
+  {
+    "name": "tile-9-2",
+    "file": "assets/tattoos/coffee.webp",
+    "category": "tile",
+    "stage": 9,
+    "dimensions": [
+      160,
+      160
+    ],
+    "source": "tattoo-tiles.jpg"
+  },
+  {
+    "name": "tile-9-3",
+    "file": "assets/tattoos/lioness.webp",
+    "category": "tile",
+    "stage": 9,
+    "dimensions": [
+      160,
+      160
+    ],
+    "source": "tattoo-tiles.jpg"
+  },
+  {
+    "name": "tile-9-4",
+    "file": "assets/tattoos/mother-infinity.webp",
+    "category": "tile",
+    "stage": 9,
+    "dimensions": [
+      160,
+      160
+    ],
+    "source": "tattoo-tiles.jpg"
+  },
+  {
+    "name": "tile-9-5",
+    "file": "assets/tattoos/ionic-column.webp",
+    "category": "tile",
+    "stage": 9,
+    "dimensions": [
+      160,
+      160
+    ],
+    "source": "tattoo-tiles.jpg"
+  },
+  {
+    "name": "tile-9-6",
+    "file": "assets/tattoos/outline-square.webp",
+    "category": "tile",
+    "stage": 9,
+    "dimensions": [
+      160,
+      160
+    ],
+    "source": "tattoo-tiles.jpg"
   }
 ]

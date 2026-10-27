@@ -1,0 +1,867 @@
+{
+  "file": "vfx/sequences.webp",
+  "cell": 192,
+  "sequences": {
+    "match3": {
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-01.png",
+          "sourceRect": [
+            2,
+            40,
+            91,
+            179
+          ]
+        },
+        {
+          "x": 192,
+          "y": 0,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-01.png",
+          "sourceRect": [
+            91,
+            40,
+            187,
+            179
+          ]
+        },
+        {
+          "x": 384,
+          "y": 0,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-01.png",
+          "sourceRect": [
+            187,
+            40,
+            286,
+            179
+          ]
+        },
+        {
+          "x": 576,
+          "y": 0,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-01.png",
+          "sourceRect": [
+            286,
+            40,
+            396,
+            179
+          ]
+        },
+        {
+          "x": 768,
+          "y": 0,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-01.png",
+          "sourceRect": [
+            396,
+            40,
+            525,
+            179
+          ]
+        },
+        {
+          "x": 960,
+          "y": 0,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-01.png",
+          "sourceRect": [
+            525,
+            40,
+            658,
+            179
+          ]
+        },
+        {
+          "x": 1152,
+          "y": 0,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-01.png",
+          "sourceRect": [
+            658,
+            40,
+            838,
+            179
+          ]
+        },
+        {
+          "x": 1344,
+          "y": 0,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-01.png",
+          "sourceRect": [
+            838,
+            40,
+            989,
+            179
+          ]
+        }
+      ],
+      "durations": [
+        55,
+        55,
+        40,
+        40,
+        40,
+        40,
+        65,
+        65
+      ],
+      "reference": 192
+    },
+    "match4": {
+      "frames": [
+        {
+          "x": 0,
+          "y": 192,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-03.png",
+          "sourceRect": [
+            1035,
+            51,
+            1129,
+            158
+          ]
+        },
+        {
+          "x": 192,
+          "y": 192,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-03.png",
+          "sourceRect": [
+            1129,
+            51,
+            1237,
+            158
+          ]
+        },
+        {
+          "x": 384,
+          "y": 192,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-03.png",
+          "sourceRect": [
+            1237,
+            51,
+            1346,
+            158
+          ]
+        },
+        {
+          "x": 576,
+          "y": 192,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-03.png",
+          "sourceRect": [
+            1346,
+            51,
+            1455,
+            158
+          ]
+        },
+        {
+          "x": 768,
+          "y": 192,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-03.png",
+          "sourceRect": [
+            1455,
+            51,
+            1570,
+            158
+          ]
+        },
+        {
+          "x": 960,
+          "y": 192,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-03.png",
+          "sourceRect": [
+            1570,
+            51,
+            1674,
+            158
+          ]
+        },
+        {
+          "x": 1152,
+          "y": 192,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-03.png",
+          "sourceRect": [
+            1674,
+            51,
+            1765,
+            158
+          ]
+        },
+        {
+          "x": 1344,
+          "y": 192,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-03.png",
+          "sourceRect": [
+            1765,
+            51,
+            1867,
+            158
+          ]
+        },
+        {
+          "x": 0,
+          "y": 384,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-03.png",
+          "sourceRect": [
+            1867,
+            51,
+            1960,
+            158
+          ]
+        },
+        {
+          "x": 192,
+          "y": 384,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-03.png",
+          "sourceRect": [
+            1960,
+            51,
+            2045,
+            158
+          ]
+        }
+      ],
+      "durations": [
+        55,
+        55,
+        40,
+        40,
+        40,
+        40,
+        40,
+        40,
+        65,
+        65
+      ],
+      "reference": 127
+    },
+    "color": {
+      "frames": [
+        {
+          "x": 384,
+          "y": 384,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-01.png",
+          "sourceRect": [
+            1004,
+            249,
+            1106,
+            404
+          ]
+        },
+        {
+          "x": 576,
+          "y": 384,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-01.png",
+          "sourceRect": [
+            1106,
+            249,
+            1214,
+            404
+          ]
+        },
+        {
+          "x": 768,
+          "y": 384,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-01.png",
+          "sourceRect": [
+            1214,
+            249,
+            1326,
+            404
+          ]
+        },
+        {
+          "x": 960,
+          "y": 384,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-01.png",
+          "sourceRect": [
+            1326,
+            249,
+            1450,
+            404
+          ]
+        },
+        {
+          "x": 1152,
+          "y": 384,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-01.png",
+          "sourceRect": [
+            1450,
+            249,
+            1576,
+            404
+          ]
+        },
+        {
+          "x": 1344,
+          "y": 384,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-01.png",
+          "sourceRect": [
+            1576,
+            249,
+            1715,
+            404
+          ]
+        },
+        {
+          "x": 0,
+          "y": 576,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-01.png",
+          "sourceRect": [
+            1715,
+            249,
+            1845,
+            404
+          ]
+        },
+        {
+          "x": 192,
+          "y": 576,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-01.png",
+          "sourceRect": [
+            1845,
+            249,
+            2011,
+            404
+          ]
+        }
+      ],
+      "durations": [
+        55,
+        55,
+        40,
+        40,
+        40,
+        40,
+        65,
+        65
+      ],
+      "reference": 178
+    },
+    "area": {
+      "frames": [
+        {
+          "x": 384,
+          "y": 576,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-02.png",
+          "sourceRect": [
+            12,
+            660,
+            78,
+            775
+          ]
+        },
+        {
+          "x": 576,
+          "y": 576,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-02.png",
+          "sourceRect": [
+            78,
+            660,
+            171,
+            775
+          ]
+        },
+        {
+          "x": 768,
+          "y": 576,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-02.png",
+          "sourceRect": [
+            171,
+            660,
+            267,
+            775
+          ]
+        },
+        {
+          "x": 960,
+          "y": 576,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-02.png",
+          "sourceRect": [
+            267,
+            660,
+            371,
+            775
+          ]
+        },
+        {
+          "x": 1152,
+          "y": 576,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-02.png",
+          "sourceRect": [
+            371,
+            660,
+            484,
+            775
+          ]
+        },
+        {
+          "x": 1344,
+          "y": 576,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-02.png",
+          "sourceRect": [
+            484,
+            660,
+            590,
+            775
+          ]
+        },
+        {
+          "x": 0,
+          "y": 768,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-02.png",
+          "sourceRect": [
+            590,
+            660,
+            645,
+            775
+          ]
+        }
+      ],
+      "durations": [
+        55,
+        55,
+        40,
+        40,
+        40,
+        65,
+        65
+      ],
+      "reference": 127
+    },
+    "horizontal": {
+      "frames": [
+        {
+          "x": 192,
+          "y": 768,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-02.png",
+          "sourceRect": [
+            651,
+            660,
+            724,
+            775
+          ]
+        },
+        {
+          "x": 384,
+          "y": 768,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-02.png",
+          "sourceRect": [
+            724,
+            660,
+            799,
+            775
+          ]
+        },
+        {
+          "x": 576,
+          "y": 768,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-02.png",
+          "sourceRect": [
+            799,
+            660,
+            877,
+            775
+          ]
+        },
+        {
+          "x": 768,
+          "y": 768,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-02.png",
+          "sourceRect": [
+            877,
+            660,
+            965,
+            775
+          ]
+        },
+        {
+          "x": 960,
+          "y": 768,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-02.png",
+          "sourceRect": [
+            965,
+            660,
+            1051,
+            775
+          ]
+        },
+        {
+          "x": 1152,
+          "y": 768,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-02.png",
+          "sourceRect": [
+            1051,
+            660,
+            1131,
+            775
+          ]
+        },
+        {
+          "x": 1344,
+          "y": 768,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-02.png",
+          "sourceRect": [
+            1131,
+            660,
+            1210,
+            775
+          ]
+        },
+        {
+          "x": 0,
+          "y": 960,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-02.png",
+          "sourceRect": [
+            1210,
+            660,
+            1297,
+            775
+          ]
+        }
+      ],
+      "durations": [
+        55,
+        55,
+        40,
+        40,
+        40,
+        40,
+        65,
+        65
+      ],
+      "reference": 127
+    },
+    "vertical": {
+      "frames": [
+        {
+          "x": 192,
+          "y": 960,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-02.png",
+          "sourceRect": [
+            1310,
+            665,
+            1382,
+            777
+          ]
+        },
+        {
+          "x": 384,
+          "y": 960,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-02.png",
+          "sourceRect": [
+            1382,
+            665,
+            1460,
+            777
+          ]
+        },
+        {
+          "x": 576,
+          "y": 960,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-02.png",
+          "sourceRect": [
+            1460,
+            665,
+            1538,
+            777
+          ]
+        },
+        {
+          "x": 768,
+          "y": 960,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-02.png",
+          "sourceRect": [
+            1538,
+            665,
+            1617,
+            777
+          ]
+        },
+        {
+          "x": 960,
+          "y": 960,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-02.png",
+          "sourceRect": [
+            1617,
+            665,
+            1694,
+            777
+          ]
+        },
+        {
+          "x": 1152,
+          "y": 960,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-02.png",
+          "sourceRect": [
+            1694,
+            665,
+            1769,
+            777
+          ]
+        },
+        {
+          "x": 1344,
+          "y": 960,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-02.png",
+          "sourceRect": [
+            1769,
+            665,
+            1848,
+            777
+          ]
+        },
+        {
+          "x": 0,
+          "y": 1152,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-02.png",
+          "sourceRect": [
+            1848,
+            665,
+            1936,
+            777
+          ]
+        }
+      ],
+      "durations": [
+        55,
+        55,
+        40,
+        40,
+        40,
+        40,
+        65,
+        65
+      ],
+      "reference": 124
+    },
+    "areaBirth": {
+      "frames": [
+        {
+          "x": 192,
+          "y": 1152,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-03.png",
+          "sourceRect": [
+            5,
+            232,
+            90,
+            346
+          ]
+        },
+        {
+          "x": 384,
+          "y": 1152,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-03.png",
+          "sourceRect": [
+            90,
+            232,
+            181,
+            346
+          ]
+        },
+        {
+          "x": 576,
+          "y": 1152,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-03.png",
+          "sourceRect": [
+            181,
+            232,
+            286,
+            346
+          ]
+        },
+        {
+          "x": 768,
+          "y": 1152,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-03.png",
+          "sourceRect": [
+            286,
+            232,
+            407,
+            346
+          ]
+        },
+        {
+          "x": 960,
+          "y": 1152,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-03.png",
+          "sourceRect": [
+            407,
+            232,
+            531,
+            346
+          ]
+        },
+        {
+          "x": 1152,
+          "y": 1152,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-03.png",
+          "sourceRect": [
+            531,
+            232,
+            649,
+            346
+          ]
+        },
+        {
+          "x": 1344,
+          "y": 1152,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-03.png",
+          "sourceRect": [
+            649,
+            232,
+            778,
+            346
+          ]
+        },
+        {
+          "x": 0,
+          "y": 1344,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-03.png",
+          "sourceRect": [
+            778,
+            232,
+            889,
+            346
+          ]
+        },
+        {
+          "x": 192,
+          "y": 1344,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-03.png",
+          "sourceRect": [
+            889,
+            232,
+            1022,
+            346
+          ]
+        }
+      ],
+      "durations": [
+        55,
+        55,
+        40,
+        40,
+        40,
+        40,
+        40,
+        65,
+        65
+      ],
+      "reference": 145
+    }
+  }
+}

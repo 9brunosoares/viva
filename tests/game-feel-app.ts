@@ -14,6 +14,7 @@ const context = await browser.newContext({
 });
 const page = await context.newPage(),
   errors: string[] = [];
+const initialMoves = balancedLevel(levels[4], "medium").moves;
 page.on("pageerror", (e) => errors.push(e.message));
 try {
   await page.goto("http://127.0.0.1:4173/viva-test/?v=feel4");
@@ -60,33 +61,35 @@ try {
     Number(await page.locator(".moves strong").innerText()),
     balancedLevel(levels[4], "medium").moves,
   );
-  const board = await page
-    .locator(".tile")
-    .evaluateAll((els) =>
-      els.map((e) => ({
-        kind: Number((e as HTMLElement).dataset.kind),
-        special: (e as HTMLElement).dataset.special,
-      })),
-    );
+  const board = await page.locator(".tile").evaluateAll((els) =>
+    els.map((e) => ({
+      kind: Number((e as HTMLElement).dataset.kind),
+      special: (e as HTMLElement).dataset.special,
+    })),
+  );
   const [a, b] = moves(board.map((t) => tile(t.kind, t.special as any)))[0];
   await page.locator(".tile").nth(a).tap();
   await page.locator(".tile").nth(b).tap();
   await page.waitForFunction(
-    () =>
+    (initialMoves: number) =>
       document.querySelector(".board")?.getAttribute("aria-busy") === "false" &&
       JSON.parse(localStorage.getItem("viva-session-v1")!).snapshot.remaining <
-        49,
+        initialMoves,
+    initialMoves,
   );
   const saved = await page.evaluate(() =>
     JSON.parse(localStorage.getItem("viva-session-v1")!),
   );
   assert.equal(saved.difficulty, "medium");
-  assert.equal(saved.snapshot.remaining, 48);
+  assert.equal(saved.snapshot.remaining, initialMoves - 1);
   await page
     .getByRole("button", { name: "Pausar partida", exact: true })
     .click();
   await page.getByRole("button", { name: "Retomar", exact: true }).click();
-  assert.equal(Number(await page.locator(".moves strong").innerText()), 48);
+  assert.equal(
+    Number(await page.locator(".moves strong").innerText()),
+    initialMoves - 1,
+  );
   await page
     .getByRole("button", { name: "Pausar partida", exact: true })
     .click();
@@ -98,14 +101,12 @@ try {
   await context.setOffline(true);
   await page.reload();
   await page.locator(".board").waitFor();
-  const restored = await page
-    .locator(".tile")
-    .evaluateAll((els) =>
-      els.map((e) => ({
-        kind: Number((e as HTMLElement).dataset.kind),
-        special: (e as HTMLElement).dataset.special || undefined,
-      })),
-    );
+  const restored = await page.locator(".tile").evaluateAll((els) =>
+    els.map((e) => ({
+      kind: Number((e as HTMLElement).dataset.kind),
+      special: (e as HTMLElement).dataset.special || undefined,
+    })),
+  );
   assert.deepEqual(
     restored,
     saved.snapshot.board.map((t: any) => ({
@@ -113,7 +114,10 @@ try {
       special: t.special,
     })),
   );
-  assert.equal(Number(await page.locator(".moves strong").innerText()), 48);
+  assert.equal(
+    Number(await page.locator(".moves strong").innerText()),
+    initialMoves - 1,
+  );
   assert.equal(
     await page.evaluate(() => localStorage.getItem("viva-progress-v1")),
     progress,

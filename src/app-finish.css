@@ -316,6 +316,14 @@ button:disabled {
 .intro-number {
   font-size: 13px;
   letter-spacing: 1.5px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.tattoo-intro-mark {
+  width: 62px;
+  height: 44px;
+  object-fit: contain;
 }
 .intro-editorial > p {
   font:
@@ -486,7 +494,7 @@ button:disabled {
   color: #665b47;
 }
 .reward .reward-book {
-  max-height: calc(var(--vh) * 25);
+  max-height: calc(var(--vh) * 40);
   max-width: 65%;
   filter: drop-shadow(3px 6px 7px #563f2438);
 }
@@ -581,7 +589,7 @@ button:disabled {
     height: 30px;
   }
   .reward .reward-book {
-    max-height: calc(var(--vh) * 20);
+    max-height: calc(var(--vh) * 31);
   }
   .reward h2 {
     font-size: 21px;

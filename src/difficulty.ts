@@ -32,6 +32,14 @@ export function balancedLevel(
         ],
         powers: 0,
         cascades: 0,
+        rules: base.rules
+          ? {
+              ...base.rules,
+              powerTier: 3 as const,
+              kinds: base.id === 9 ? [0, 1, 2, 3, 4, 5, 6] : [0, 1, 2, 3, 4, 5],
+              weights: undefined,
+            }
+          : undefined,
       }
     : base;
   if (difficulty === "easy") return original;

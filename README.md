@@ -2,6 +2,12 @@
 
 Um joguinho pra viver e passar o tempo: dez fases Match-3, dez livros em ordem aleatória persistente e uma biblioteca que cresce com a campanha. Aplicação estática em React e TypeScript, sem contas ou backend.
 
+## Evolução da campanha — versão atual
+
+Tatuagens substitui Cinema no índice 9, com cenário próprio e sete desenhos pessoais. A campanha agora varia tipos, metas e criação progressiva de poderes; o tabuleiro permanece 7 × 8. Novos quadros de VFX e feixes móveis integram o Canvas existente. Recompensas apresentam capa/título/autor; sinopses ficam na biblioteca. Livros usam apoio e oclusão específicos por estágio da estante. Partidas antigas conservam suas regras até terminar, e o áudio aprovado continua sem trilha de fundo.
+
+Implementação, tabela das dez fases, assets, evidências, testes e limitações: [CAMPANHA.md](CAMPANHA.md). Ponto de restauração: `viva-pre-campaign-evolution-20261027`. Sem publicação automática.
+
 ## Executar e gerar a entrega
 
 Requer Node.js 22 ou superior e pnpm 11.
@@ -30,21 +36,21 @@ Abra http://127.0.0.1:4173/viva-test/?v=finish5. Atualizações aguardam uma tel
 
 Biblioteca com controles integrados, fases como capítulos com rolagem interna, tipografia e recompensas mais legíveis, dificuldade acessível, diálogos com foco e transições curtas. Safe areas, viewport dinâmica, abertura recuperável e atualização offline coordenada completam o acabamento. Sem novos assets, dependências ou mudanças de regras, textos e áudio. Implementação, ponto de restauração, testes e limitações em [MOBILE.md](MOBILE.md). Não houve publicação automática nem auditoria da etapa 6.
 
-## Testes sem atalhos na interface
+## Navegação rápida para testes
 
-Os botões de concluir fase e as prévias de QA foram removidos do código da interface, inclusive em desenvolvimento. A variável `VITE_ENABLE_QA` não pode reativá-los. Os mecanismos automatizados de teste de regras e persistência continuam em `tests/`, fora do aplicativo publicado. Scripts históricos que dependiam dos botões de QA documentam versões anteriores; a campanha real, os testes unitários e `tests/synopses.ts` validam a entrega atual.
+O botão **Concluir fase** foi restaurado por solicitação para desenvolvimento e `pnpm build:qa`. A prévia QA local está em http://127.0.0.1:4177/viva-test/?v=campaign. `pnpm build` continua forçando QA desativado, e a distribuição não mostra atalhos. Os testes ficam em contextos isolados, sem apagar o progresso da jogadora.
 
 ## Experiência e progresso
 
 A biblioteca ocupa a tela como ambiente, com controles flutuantes de Jogar/Continuar, fases, coleção e infinito quando desbloqueado. As artes e posições relativas de livros, Blade e quadro são preservadas. Fases bloqueadas ocultam nomes, temas e imagens. “Meus livros” e as lombadas abrem a capa do livro; “Ler sinopse” vira o volume e mostra título, autor e texto no verso. “Voltar à capa” desfaz o movimento. Somente a sinopse rola; a face oculta fica fora da navegação assistiva.
 
-Toque em peças vizinhas ou arraste para trocar. Três combinam; quatro criam limpeza de linha/coluna; cinco criam poder de cor; interseções criam área. Poderes podem ser ativados e encadeados. Uma dica não gasta jogada. Não há tempo ou vidas. Cascatas terminam antes de avaliar vitória. Pausar, voltar à biblioteca ou recarregar preserva a última posição estável do tabuleiro, contadores e jogadas. “Recomeçar fase” inicia outro tabuleiro.
+Toque em peças vizinhas ou arraste para trocar. Três combinam; quatro criam limpeza de linha/coluna. Nas novas partidas, as fases iniciais criam poderes direcionais; área chega a partir de Kung Fu e cor a partir de Espiritismo. Poderes podem ser ativados e encadeados. Uma dica não gasta jogada. Não há tempo ou vidas. Cascatas terminam antes de avaliar vitória. Pausar, voltar à biblioteca ou recarregar preserva a última posição estável do tabuleiro, contadores e jogadas. “Recomeçar fase” inicia outro tabuleiro.
 
 Cada fase inédita concede um livro. A ordem é sorteada uma vez e salva. Repetições e infinito não duplicam livros. A chave `viva-progress-v1` permanece compatível com campanhas anteriores. Testes automatizados usam contextos isolados, sem apagar o progresso do usuário.
 
-Depois da última cascata, o tabuleiro permanece visível por 2,2 a 2,6 segundos para celebrar os objetivos, com luz dourada e “Conseguiu!”. A transição leva à recompensa. A primeira conquista explica a coleção em uma apresentação curta antes de mostrar o livro. As seguintes variam a mensagem; repetir fase celebra sem duplicar livro. A capa, autoria e sinopse aparecem na recompensa, com “Guardar na biblioteca”. Movimento reduzido conserva a mensagem e remove a animação.
+Depois da última cascata, o tabuleiro permanece visível por 2,2 a 2,6 segundos para celebrar os objetivos, com luz dourada e “Conseguiu!”. A transição leva à recompensa. A primeira conquista explica a coleção em uma apresentação curta antes de mostrar o livro. As seguintes variam a mensagem; repetir fase celebra sem duplicar livro. Capa, título e autoria aparecem na recompensa, com “Guardar na biblioteca”; a sinopse é lida posteriormente na estante. Movimento reduzido conserva a mensagem e remove a animação.
 
-Ao lado de Jogar, o botão de dificuldade abre Fácil, Médio e Difícil. Fácil usa exatamente os objetivos e jogadas anteriores; Médio aumenta coleções em 35% e soma cinco jogadas; Difícil aumenta em 65% e soma três. Fases com objetivos de poderes/cascatas recebem metas próprias. A seleção é salva separadamente em `viva-difficulty-v1`; não modifica `viva-progress-v1`. Cada partida congela seu balanceamento ao começar. O infinito renova objetivos no mesmo tabuleiro, sem limite de jogadas, derrota obrigatória ou livros adicionais.
+Ao lado de Jogar, o botão de dificuldade abre Fácil, Médio e Difícil. Fácil usa o perfil base de cada fase; Médio aumenta coleções em 35% e soma cinco jogadas; Difícil aumenta em 65% e soma três. Fases com objetivos de poderes/cascatas recebem metas próprias. A seleção é salva separadamente em `viva-difficulty-v1`; não modifica `viva-progress-v1`. Cada partida congela seu balanceamento ao começar; sessões anteriores à evolução conservam o perfil legado. O infinito renova objetivos no mesmo tabuleiro, sem limite de jogadas, derrota obrigatória ou livros adicionais.
 
 Depois da fase 5, guardar o livro abre a chegada de Blade. Na biblioteca ele começa dormindo, sem frases ou pistas permanentes. Tocar nele abre três opções em um menu pequeno ao lado do cachorro. “Blade, vamos passear?” usa a pose em pé do atlas existente; “Quer petisco?” usa a pose deitado acordado aprovada; “Blade, boa noite.” restaura a pose dormindo. O menu fecha ao selecionar, tocar fora ou pressionar Escape. A pose escolhida permanece durante a sessão, inclusive ao visitar outras telas. Não há camada escura nem deslocamento de controles.
 

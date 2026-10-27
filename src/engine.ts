@@ -5,6 +5,20 @@ export type Tile = { id: number; kind: number; special?: Special };
 export type Board = Tile[];
 export type Match = { cells: number[]; axis: "row" | "column" };
 export type Rng = () => number;
+export type BoardRules = {
+  kinds: readonly number[];
+  weights?: readonly number[];
+  powerTier: 1 | 2 | 3;
+};
+function drawKind(allowed: readonly number[], rng: Rng, rules?: BoardRules) {
+  const weights = allowed.map((k) => rules?.weights?.[k] ?? 1);
+  let value = rng() * weights.reduce((a, b) => a + b, 0);
+  for (let i = 0; i < allowed.length; i++) {
+    value -= weights[i];
+    if (value < 0) return allowed[i];
+  }
+  return allowed[allowed.length - 1];
+}
 let serial = 0;
 export const tile = (kind: number, special?: Special): Tile => ({
   id: ++serial,
@@ -62,10 +76,10 @@ export function moves(b: Board): [number, number][] {
       if (j < b.length && validSwap(b, i, j)) r.push([i, j]);
   return r;
 }
-export function createBoard(rng: Rng = Math.random): Board {
+export function createBoard(rng: Rng = Math.random, rules?: BoardRules): Board {
   const b: Board = [];
   for (let i = 0; i < COLS * ROWS; i++) {
-    const allowed = [0, 1, 2, 3, 4, 5].filter(
+    const allowed = (rules?.kinds ?? [0, 1, 2, 3, 4, 5]).filter(
       (k) =>
         !(i % COLS >= 2 && b[i - 1].kind === k && b[i - 2].kind === k) &&
         !(
@@ -74,15 +88,9 @@ export function createBoard(rng: Rng = Math.random): Board {
           b[i - 2 * COLS].kind === k
         ),
     );
-    b.push(
-      tile(
-        allowed[
-          Math.min(allowed.length - 1, Math.floor(rng() * allowed.length))
-        ],
-      ),
-    );
+    b.push(tile(drawKind(allowed, rng, rules)));
   }
-  return moves(b).length ? b : createBoard(rng);
+  return moves(b).length ? b : createBoard(rng, rules);
 }
 export type Wave = {
   board: Board;
@@ -97,6 +105,7 @@ export function resolveWave(
   preferred?: number,
   activated: number[] = [],
   colorKind?: number,
+  rules?: BoardRules,
 ): Wave {
   const groups = matches(b);
   const clear = new Set(groups.flatMap((g) => g.cells));
@@ -104,7 +113,8 @@ export function resolveWave(
   const intersections = [...clear].filter(
     (i) => groups.filter((g) => g.cells.includes(i)).length > 1,
   );
-  for (const i of intersections) created.set(i, "area");
+  for (const i of intersections)
+    created.set(i, (rules?.powerTier ?? 3) >= 2 ? "area" : "row");
   for (const g of groups) {
     if (g.cells.some((i) => intersections.includes(i))) continue;
     if (g.cells.length >= 4) {
@@ -112,7 +122,10 @@ export function resolveWave(
         preferred !== undefined && g.cells.includes(preferred)
           ? preferred
           : g.cells[Math.floor(g.cells.length / 2)];
-      created.set(i, g.cells.length >= 5 ? "color" : g.axis);
+      created.set(
+        i,
+        g.cells.length >= 5 && (rules?.powerTier ?? 3) === 3 ? "color" : g.axis,
+      );
     }
   }
   activated.forEach((i) => clear.add(i));
@@ -138,7 +151,7 @@ export function resolveWave(
       }
     }
   }
-  const collected = [0, 0, 0, 0, 0, 0];
+  const collected = Array(Math.max(6, ...b.map((t) => t.kind + 1))).fill(0);
   const next = b.slice();
   for (const i of clear) {
     if (created.has(i) && !fired.has(i) && !activated.includes(i)) {
@@ -157,16 +170,27 @@ export function resolveWave(
     effects: [...fired].map((index) => ({ index, type: b[index].special! })),
   };
 }
-export function fall(b: Board, clear: number[], rng: Rng = Math.random): Board {
+export function fall(
+  b: Board,
+  clear: number[],
+  rng: Rng = Math.random,
+  rules?: BoardRules,
+): Board {
   const removed = new Set(clear),
     n = b.slice();
   for (let x = 0; x < COLS; x++) {
     const keep = b.filter((_, i) => i % COLS === x && !removed.has(i));
     for (let y = ROWS - 1; y >= 0; y--)
-      n[y * COLS + x] = keep.pop() ?? tile(Math.floor(rng() * 6));
+      n[y * COLS + x] =
+        keep.pop() ??
+        tile(drawKind(rules?.kinds ?? [0, 1, 2, 3, 4, 5], rng, rules));
   }
   return n;
 }
-export function ensurePlayable(b: Board, rng: Rng = Math.random) {
-  return moves(b).length ? b : createBoard(rng);
+export function ensurePlayable(
+  b: Board,
+  rng: Rng = Math.random,
+  rules?: BoardRules,
+) {
+  return moves(b).length ? b : createBoard(rng, rules);
 }

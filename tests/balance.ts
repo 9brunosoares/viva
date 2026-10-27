@@ -24,7 +24,7 @@ for (const difficulty of ["easy", "medium", "hard"] as Difficulty[]) {
       minLegal = Infinity,
       wavesTotal = 0,
       maxWaves = 0;
-    const exposure = [0, 0, 0, 0, 0, 0];
+    const exposure = Array(7).fill(0);
     const attempts = Number(process.env.BALANCE_SAMPLES || 24);
     for (let seed = 1; seed <= attempts; seed++) {
       let state = seed * 9127 + base.id * 701;
@@ -32,8 +32,13 @@ for (const difficulty of ["easy", "medium", "hard"] as Difficulty[]) {
         state = (Math.imul(state, 1664525) + 1013904223) >>> 0;
         return state / 4294967296;
       };
-      let board = createBoard(rng),
-        counts = [0, 0, 0, 0, 0, 0],
+      let board = createBoard(rng, level.rules),
+        counts = Array(
+          Math.max(
+            6,
+            ...(level.rules?.kinds ?? [0, 1, 2, 3, 4, 5]).map((k) => k + 1),
+          ),
+        ).fill(0),
         powers = 0,
         cascades = 0;
       for (let turn = 0; turn < level.moves; turn++) {
@@ -53,7 +58,7 @@ for (const difficulty of ["easy", "medium", "hard"] as Difficulty[]) {
                 : n[b].special === "color"
                   ? n[a].kind
                   : undefined;
-            const wave = resolveWave(n, b, active, colorKind);
+            const wave = resolveWave(n, b, active, colorKind, level.rules);
             const useful = level.targets.reduce(
               (sum, t) =>
                 sum +
@@ -70,7 +75,8 @@ for (const difficulty of ["easy", "medium", "hard"] as Difficulty[]) {
               score:
                 useful * 2 +
                 wave.clear.length +
-                wave.created.length * 14 +
+                wave.created.length *
+                  (process.env.BALANCE_STRATEGY === "powers" ? 24 : 14) +
                 wave.powers * 5,
             };
           })
@@ -84,20 +90,21 @@ for (const difficulty of ["easy", "medium", "hard"] as Difficulty[]) {
             choice.b,
             active,
             active.length ? choice.colorKind : undefined,
+            level.rules,
           );
           active = [];
-          counts = counts.map((n, i) => n + wave.collected[i]);
+          counts = counts.map((n, i) => n + (wave.collected[i] ?? 0));
           powers += wave.powers;
           activated += wave.powers;
           created += wave.created.length;
           if (depth > 0) cascades++;
-          board = fall(wave.board, wave.clear, rng);
+          board = fall(wave.board, wave.clear, rng, level.rules);
           if (++depth >= 80) {
-            board = createBoard(rng);
+            board = createBoard(rng, level.rules);
             break;
           }
         }
-        const next = ensurePlayable(board, rng);
+        const next = ensurePlayable(board, rng, level.rules);
         wavesTotal += depth;
         maxWaves = Math.max(maxWaves, depth);
         if (next !== board) reshuffles++;
@@ -142,7 +149,7 @@ for (const difficulty of ["easy", "medium", "hard"] as Difficulty[]) {
   );
 }
 await writeFile(
-  "test-results/balance-report.json",
+  `test-results/${process.env.BALANCE_REPORT || "balance-report.json"}`,
   JSON.stringify(
     {
       policy:

@@ -23,7 +23,17 @@ export default function StageIntro({
         <img src={asset("control-back")} alt="" />
       </button>
       <div className="intro-editorial">
-        <span className="intro-number">Fase {level.id}</span>
+        <span className="intro-number">
+          Fase {level.id}
+          {level.id === 9 && (
+            <img
+              className="tattoo-intro-mark"
+              src={asset("tattoos/studio-flash")}
+              alt=""
+              aria-hidden="true"
+            />
+          )}
+        </span>
         <h1>{level.name}</h1>
         <p>{stories[level.id - 1]}</p>
         <div className="intro-pieces" aria-hidden="true">

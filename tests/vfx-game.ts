@@ -42,12 +42,12 @@ await page.addInitScript(() => {
       evidence.invalid = true;
     if (!evidence.first && document.querySelector(".tile.clearing"))
       evidence.first = {
-        types: Array.from(document.querySelectorAll(".combo-effect")).map(
-          (el) =>
-            ["row", "column", "area", "color"].find((t) =>
-              el.classList.contains(`combo-${t}`),
-            ),
-        ),
+        types: (
+          document.querySelector<HTMLElement>(".game-vfx")?.dataset
+            .effectTypes || ""
+        )
+          .split(",")
+          .filter(Boolean),
         tier: document.querySelector(".match-aura")?.className,
       };
     const c = document.querySelector<HTMLCanvasElement>(".game-vfx");
@@ -465,6 +465,8 @@ try {
         .querySelector(".tile.selected")
         ?.getAttribute("aria-label"),
       message: document.querySelector(".game-message")?.textContent,
+      evidence: (window as any).__fxEvidence,
+      canvas: { ...document.querySelector<HTMLElement>(".game-vfx")?.dataset },
     })),
   );
   console.log(errors);

@@ -7,6 +7,6 @@ export const stories = [
   "Há sempre espaço para aprender, refletir e encontrar serenidade. Vamos organizar este cantinho de estudos e boas energias?",
   "Uma viagem pela Cidade Eterna, entre ruas encantadoras e sabores inesquecíveis. Vamos reunir tudo para aproveitar esse passeio?",
   "Uma roda de pagode fica ainda melhor quando todo mundo entra no ritmo! Vamos preparar os instrumentos para a música começar?",
-  "As luzes vão se apagar e uma nova história está prestes a começar. Vamos preparar tudo para uma sessão especial?",
+  "Algumas lembranças são tão especiais que merecem ficar para sempre. Vamos reunir os desenhos e preparar tudo para uma nova tatuagem?",
   "Os melhores momentos da vida são aqueles que compartilhamos com quem amamos. Vamos reunir tudo que torna esses encontros tão especiais?",
 ] as const;

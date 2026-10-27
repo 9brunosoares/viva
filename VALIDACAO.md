@@ -1,3 +1,21 @@
+# Evolução da campanha — 27/10/2026
+
+- Recuperação: `viva-pre-campaign-evolution-20261027` / `04824ac`; trabalho em `codex/campaign-evolution`. Não publicado.
+- Tatuagens integrada com sete tipos pessoais, cenário e introdução próprios; oito originais preservados por SHA-256. Vinte sprites extraídos, 58 quadros VFX preparados, 47 utilizados em sete sequências.
+- Feixes procedurais percorrem as células com frentes de atlas proporcionais. Explosões mantêm escala uniforme. Recompensa sem sinopse; leitura completa na biblioteca. Apoio/oclusão de livros específico por estágio.
+- Campanha varia quatro a sete tipos, distribuição, metas e tiers de poderes, mantendo grade 7 × 8. Novas partidas são versão 2; tabuleiro/metas de sessões legadas preservados. Áudio aprovado inalterado, sem trilha de fundo.
+- TypeScript e 42 testes unitários aprovados. 1.920 simulações, duas estratégias: por estratégia Fácil 319/320, Médio 320/320, Difícil 306/320. São evidências de bots, não taxa de vitória humana.
+- Campanha Chromium concluída legitimamente em 190 jogadas, zero reinícios. Dois motores: treze layouts por motor, legado de Cinema, sete tipos, derrota/retomada, dez livros, QA pelas dez fases, marcos e infinito.
+- VFX: 21 cenários por motor; dez cenários adicionais inspecionam quadros reais, proporção e trajetórias. Vídeo contínuo Chromium e GIFs extraídos. WebKit/Windows usa relógio determinístico na inspeção detalhada; não equivale a validação de FPS no iPhone.
+- Recompensas: vinte verificações por motor, associação dos dez livros e textos completos, duas dimensões, contraste e rolagem. Biblioteca: quinze composições, poses, marcos, sinopses, offline e progresso. Retomada/dificuldade/uma jogada consumida aprovadas.
+- Game feel Chromium: onze grupos de gestos/cancelamentos, dicas, recuperação, derrota, infinito e desmontagem em diferentes momentos sem áudio/salvamento/recompensa tardios, zero erros.
+- WebKit com servidor HTTP desligado: biblioteca, luz/poeira, retrato, sinopse, infinito e Tatuagens carregados do cache; atlas novo realmente pintou durante jogada offline. Corrigido caminho relativo da variável CSS do fundo externo, que tentava `assets/assets/` em base `./`.
+- Integridade: vinte recortes com margens transparentes; quadrado vazio; partes claras preservadas; proporção 719 × 1280; 58 bordas de frames seguras; oclusão copiada da madeira; 26 arquivos de arte/áudio/narrativa protegidos inalterados.
+- Build de distribuição `d19ede18e3e1` e QA `6905009e185f`, 171 arquivos cada. JS 310,06 kB (100,23 gzip); CSS 67,70 kB (14,99 gzip). Nenhuma dependência nova em execução. Botão Concluir fase somente DEV/QA, a pedido; distribuição limpa.
+- Sem iPhone físico, audição crítica nova ou garantia de 60 FPS. Sem novas dimensões/formatos irregulares. Limitações dos atlas, tabela das dez fases, arquivos e evidências: [CAMPANHA.md](CAMPANHA.md).
+
+---
+
 # Reavaliação do Upgrade 3/5 — ambientação da biblioteca
 
 - Base preservada: publicação `bbe29b6`; correção local em `codex/library-atmosphere`, sem publicação automática ou auditoria das outras etapas.

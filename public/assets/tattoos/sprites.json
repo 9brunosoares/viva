@@ -1,0 +1,555 @@
+{
+  "source": "source-assets/campaign-evolution/tattoo-tiles.jpg",
+  "background": "connected exterior; only square interior seeded",
+  "active": [
+    "warrior",
+    "books",
+    "coffee",
+    "lioness",
+    "mother-infinity",
+    "ionic-column",
+    "outline-square"
+  ],
+  "sprites": {
+    "warrior": {
+      "index": 0,
+      "coreBox": [
+        32,
+        26,
+        275,
+        305
+      ],
+      "outputSize": [
+        160,
+        160
+      ],
+      "alphaBox": [
+        19,
+        10,
+        141,
+        150
+      ],
+      "corePixels": 27340,
+      "region": [
+        5,
+        5,
+        265,
+        307
+      ],
+      "file": "tattoos/warrior.webp"
+    },
+    "books": {
+      "index": 1,
+      "coreBox": [
+        264,
+        45,
+        530,
+        300
+      ],
+      "outputSize": [
+        160,
+        160
+      ],
+      "alphaBox": [
+        10,
+        13,
+        150,
+        147
+      ],
+      "corePixels": 46566,
+      "region": [
+        265,
+        5,
+        530,
+        307
+      ],
+      "file": "tattoos/books.webp"
+    },
+    "coffee": {
+      "index": 2,
+      "coreBox": [
+        534,
+        104,
+        748,
+        289
+      ],
+      "outputSize": [
+        160,
+        160
+      ],
+      "alphaBox": [
+        10,
+        19,
+        150,
+        140
+      ],
+      "corePixels": 31099,
+      "region": [
+        530,
+        5,
+        755,
+        307
+      ],
+      "file": "tattoos/coffee.webp"
+    },
+    "lioness": {
+      "index": 3,
+      "coreBox": [
+        750,
+        43,
+        992,
+        316
+      ],
+      "outputSize": [
+        160,
+        160
+      ],
+      "alphaBox": [
+        18,
+        10,
+        142,
+        150
+      ],
+      "corePixels": 48795,
+      "region": [
+        755,
+        5,
+        1007,
+        307
+      ],
+      "file": "tattoos/lioness.webp"
+    },
+    "mother-infinity": {
+      "index": 4,
+      "coreBox": [
+        999,
+        104,
+        1264,
+        277
+      ],
+      "outputSize": [
+        160,
+        160
+      ],
+      "alphaBox": [
+        10,
+        34,
+        150,
+        125
+      ],
+      "corePixels": 30815,
+      "region": [
+        1007,
+        5,
+        1275,
+        307
+      ],
+      "file": "tattoos/mother-infinity.webp"
+    },
+    "machine": {
+      "index": 5,
+      "coreBox": [
+        42,
+        297,
+        276,
+        533
+      ],
+      "outputSize": [
+        160,
+        160
+      ],
+      "alphaBox": [
+        10,
+        10,
+        149,
+        150
+      ],
+      "corePixels": 22765,
+      "region": [
+        5,
+        307,
+        265,
+        534
+      ],
+      "file": "tattoos/machine.webp"
+    },
+    "ink": {
+      "index": 6,
+      "coreBox": [
+        325,
+        312,
+        511,
+        524
+      ],
+      "outputSize": [
+        160,
+        160
+      ],
+      "alphaBox": [
+        18,
+        10,
+        141,
+        150
+      ],
+      "corePixels": 25738,
+      "region": [
+        265,
+        307,
+        530,
+        534
+      ],
+      "file": "tattoos/ink.webp"
+    },
+    "ionic-column": {
+      "index": 7,
+      "coreBox": [
+        528,
+        307,
+        749,
+        530
+      ],
+      "outputSize": [
+        160,
+        160
+      ],
+      "alphaBox": [
+        10,
+        10,
+        149,
+        150
+      ],
+      "corePixels": 38359,
+      "region": [
+        530,
+        307,
+        755,
+        534
+      ],
+      "file": "tattoos/ionic-column.webp"
+    },
+    "swallow": {
+      "index": 8,
+      "coreBox": [
+        758,
+        336,
+        992,
+        540
+      ],
+      "outputSize": [
+        160,
+        160
+      ],
+      "alphaBox": [
+        10,
+        19,
+        150,
+        141
+      ],
+      "corePixels": 22440,
+      "region": [
+        755,
+        307,
+        1007,
+        534
+      ],
+      "file": "tattoos/swallow.webp"
+    },
+    "heart": {
+      "index": 9,
+      "coreBox": [
+        1008,
+        323,
+        1254,
+        524
+      ],
+      "outputSize": [
+        160,
+        160
+      ],
+      "alphaBox": [
+        10,
+        23,
+        150,
+        137
+      ],
+      "corePixels": 33489,
+      "region": [
+        1007,
+        307,
+        1275,
+        534
+      ],
+      "file": "tattoos/heart.webp"
+    },
+    "butterfly": {
+      "index": 10,
+      "coreBox": [
+        31,
+        544,
+        275,
+        746
+      ],
+      "outputSize": [
+        160,
+        160
+      ],
+      "alphaBox": [
+        10,
+        22,
+        150,
+        138
+      ],
+      "corePixels": 31694,
+      "region": [
+        5,
+        534,
+        265,
+        759
+      ],
+      "file": "tattoos/butterfly.webp"
+    },
+    "flash-sheet": {
+      "index": 11,
+      "coreBox": [
+        268,
+        530,
+        521,
+        756
+      ],
+      "outputSize": [
+        160,
+        160
+      ],
+      "alphaBox": [
+        10,
+        17,
+        150,
+        142
+      ],
+      "corePixels": 37996,
+      "region": [
+        265,
+        534,
+        530,
+        759
+      ],
+      "file": "tattoos/flash-sheet.webp"
+    },
+    "glove": {
+      "index": 12,
+      "coreBox": [
+        546,
+        546,
+        743,
+        760
+      ],
+      "outputSize": [
+        160,
+        160
+      ],
+      "alphaBox": [
+        15,
+        10,
+        144,
+        150
+      ],
+      "corePixels": 26814,
+      "region": [
+        530,
+        534,
+        755,
+        759
+      ],
+      "file": "tattoos/glove.webp"
+    },
+    "gold-star": {
+      "index": 13,
+      "coreBox": [
+        786,
+        536,
+        998,
+        749
+      ],
+      "outputSize": [
+        160,
+        160
+      ],
+      "alphaBox": [
+        10,
+        10,
+        149,
+        150
+      ],
+      "corePixels": 14899,
+      "region": [
+        755,
+        534,
+        1007,
+        759
+      ],
+      "file": "tattoos/gold-star.webp"
+    },
+    "moon": {
+      "index": 14,
+      "coreBox": [
+        1054,
+        550,
+        1225,
+        746
+      ],
+      "outputSize": [
+        160,
+        160
+      ],
+      "alphaBox": [
+        19,
+        10,
+        141,
+        150
+      ],
+      "corePixels": 18367,
+      "region": [
+        1007,
+        534,
+        1275,
+        759
+      ],
+      "file": "tattoos/moon.webp"
+    },
+    "leaves": {
+      "index": 15,
+      "coreBox": [
+        39,
+        746,
+        257,
+        977
+      ],
+      "outputSize": [
+        160,
+        160
+      ],
+      "alphaBox": [
+        14,
+        10,
+        146,
+        150
+      ],
+      "corePixels": 25658,
+      "region": [
+        5,
+        759,
+        265,
+        1000
+      ],
+      "file": "tattoos/leaves.webp"
+    },
+    "hibiscus": {
+      "index": 16,
+      "coreBox": [
+        283,
+        760,
+        523,
+        967
+      ],
+      "outputSize": [
+        160,
+        160
+      ],
+      "alphaBox": [
+        10,
+        19,
+        150,
+        140
+      ],
+      "corePixels": 36646,
+      "region": [
+        265,
+        759,
+        530,
+        1000
+      ],
+      "file": "tattoos/hibiscus.webp"
+    },
+    "diamond": {
+      "index": 17,
+      "coreBox": [
+        539,
+        780,
+        736,
+        959
+      ],
+      "outputSize": [
+        160,
+        160
+      ],
+      "alphaBox": [
+        10,
+        16,
+        150,
+        143
+      ],
+      "corePixels": 21783,
+      "region": [
+        530,
+        759,
+        755,
+        1000
+      ],
+      "file": "tattoos/diamond.webp"
+    },
+    "lotus": {
+      "index": 18,
+      "coreBox": [
+        755,
+        767,
+        1013,
+        968
+      ],
+      "outputSize": [
+        160,
+        160
+      ],
+      "alphaBox": [
+        10,
+        25,
+        150,
+        134
+      ],
+      "corePixels": 36132,
+      "region": [
+        755,
+        759,
+        1007,
+        1000
+      ],
+      "file": "tattoos/lotus.webp"
+    },
+    "outline-square": {
+      "index": 19,
+      "coreBox": [
+        1070,
+        790,
+        1211,
+        934
+      ],
+      "outputSize": [
+        160,
+        160
+      ],
+      "alphaBox": [
+        11,
+        10,
+        148,
+        150
+      ],
+      "corePixels": 3903,
+      "region": [
+        1007,
+        759,
+        1275,
+        1000
+      ],
+      "file": "tattoos/outline-square.webp"
+    }
+  }
+}

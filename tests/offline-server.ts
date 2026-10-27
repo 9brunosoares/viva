@@ -4,7 +4,8 @@ import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { resolve, extname } from "node:path";
 import assert from "node:assert/strict";
 import { waitForCache } from "./boardHelper.ts";
-import { tile, moves, type Special } from "../src/engine";
+import { tile, moves, createBoard, type Special } from "../src/engine";
+import { levels } from "../src/config";
 const require = createRequire(import.meta.url),
   { webkit } = require("playwright");
 const root = resolve("dist"),
@@ -143,6 +144,72 @@ try {
       Promise.all(imgs.map((img) => (img as HTMLImageElement).decode())),
     );
   assert.equal(await page.locator(".tile").count(), 56);
+  const tattooBoard = createBoard(undefined, levels[8].rules);
+  await page.evaluate((board) => {
+    const progress = JSON.parse(localStorage.getItem("viva-progress-v1")!);
+    localStorage.setItem(
+      "viva-session-v1",
+      JSON.stringify({
+        version: 1,
+        campaignVersion: 2,
+        campaign: progress.order.join(","),
+        completedCount: 10,
+        stage: 9,
+        endless: false,
+        difficulty: "easy",
+        phase: "game",
+        snapshot: {
+          board,
+          remaining: 58,
+          counts: Array(7).fill(0),
+          powers: 0,
+          cascades: 0,
+          round: 1,
+        },
+      }),
+    );
+  }, tattooBoard);
+  await page.addInitScript(
+    `window.__offlineNativeDraws=0;const draw=CanvasRenderingContext2D.prototype.drawImage;CanvasRenderingContext2D.prototype.drawImage=function(image,...args){if(image?.src?.includes('/vfx/sequences.webp'))window.__offlineNativeDraws++;return draw.call(this,image,...args);};`,
+  );
+  await page.reload();
+  await page.locator(".board").waitFor();
+  assert.ok(
+    (await page.locator(".game-header").innerText()).includes("Tatuagens"),
+  );
+  const offlineAssets = await page.evaluate(async () => {
+    const keys = (
+      await Promise.all(
+        (await caches.keys()).map(async (k) => (await caches.open(k)).keys()),
+      )
+    ).flat();
+    const urls = keys
+      .map((r) => r.url)
+      .filter((u) => /tattoo|vfx\/sequences|shelf-depth/.test(u));
+    const assets = urls.filter((u) => u.endsWith(".webp"));
+    await Promise.all(
+      assets.map(async (url) => {
+        const img = new Image();
+        img.src = url;
+        await img.decode();
+      }),
+    );
+    return urls;
+  });
+  assert.ok(offlineAssets.some((u) => u.includes("vfx/sequences.webp")));
+  assert.ok(
+    offlineAssets.some((u) => u.includes("tattoos/outline-square.webp")),
+  );
+  assert.ok(offlineAssets.some((u) => u.includes("scenes/tattoo-studio.webp")));
+  const [ta, tb] = moves(tattooBoard)[0];
+  await page.locator(".tile").nth(ta).click();
+  await page.locator(".tile").nth(tb).click();
+  await page.waitForFunction(() => (window as any).__offlineNativeDraws > 0);
+  await page.waitForFunction(
+    () =>
+      document.querySelector(".board")?.getAttribute("aria-busy") === "false",
+  );
+  await page.screenshot({ path: "test-results/webkit-tattoo-no-server.png" });
   assert.deepEqual(errors, []);
   await mkdir("test-results", { recursive: true });
   await writeFile(
@@ -155,6 +222,9 @@ try {
         officialPortraitCached: true,
         animatedGameplayOffline: true,
         sunlightAndDustOffline: true,
+        tattooStageOffline: true,
+        nativeAtlasPaintedOffline: true,
+        offlineAssets,
         errors,
         ...before,
       },

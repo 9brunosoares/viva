@@ -127,3 +127,7 @@ for entry in manifest:
 (out/'manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding='utf-8')
 (root/'asset-audit.json').write_text(json.dumps(audit,ensure_ascii=False,indent=2),encoding='utf-8')
 print(f'{len(manifest)} assets preparados; originais preservados.')
+if (root/'source-assets/campaign-evolution/originals.json').exists():
+    import subprocess,sys
+    subprocess.run([sys.executable,str(root/'scripts/prepare_campaign_assets.py')],check=True)
+    subprocess.run([sys.executable,str(root/'scripts/prepare_shelf_depth.py')],check=True)
