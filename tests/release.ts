@@ -48,6 +48,7 @@ await page
   .getByRole("button", { name: "Entrar na biblioteca", exact: true })
   .click();
 await page.locator(".hub-actions .primary").click();
+await page.getByRole("button", { name: "Vamos lá!", exact: true }).click();
 assert.equal(
   await page
     .getByRole("button", { name: "Concluir fase · QA", exact: true })

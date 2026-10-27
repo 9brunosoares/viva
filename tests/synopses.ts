@@ -42,7 +42,9 @@ async function saved(order: number[], count: number) {
     { order, count },
   );
   await page.reload();
-  await page.locator('.library').evaluate(el => Promise.all(el.getAnimations().map(a => a.finished)));
+  await page
+    .locator(".library")
+    .evaluate((el) => Promise.all(el.getAnimations().map((a) => a.finished)));
 }
 async function checkBook(id: number) {
   const book = books[id - 1],
@@ -109,7 +111,15 @@ for (const order of orders) {
     { width: 430, height: 932 },
   ]) {
     await page.setViewportSize(size);
-    await page.waitForFunction(() => Math.abs(parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--vh')) - innerHeight / 100) < .02);
+    await page.waitForFunction(
+      () =>
+        Math.abs(
+          parseFloat(
+            getComputedStyle(document.documentElement).getPropertyValue("--vh"),
+          ) -
+            innerHeight / 100,
+        ) < 0.02,
+    );
     await page.waitForTimeout(150);
     for (const id of order) {
       const spine = page.locator(".shelf-books button").nth(order.indexOf(id));
@@ -162,6 +172,7 @@ await page
   .click();
 assert.equal(await page.locator(".qa-button,.qa-tools").count(), 0);
 await page.locator(".hub-actions .primary").click();
+await page.getByRole("button", { name: "Vamos lá!", exact: true }).click();
 assert.equal(
   await page.getByRole("button", { name: /Concluir fase|pular|QA/i }).count(),
   0,

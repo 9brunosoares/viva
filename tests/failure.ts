@@ -31,6 +31,7 @@ await page.evaluate(
 );
 await page.reload();
 await page.getByRole("button", { name: /^Continuar/ }).click();
+await page.getByRole("button", { name: "Vamos lá!", exact: true }).click();
 let failed = false;
 for (let attempt = 0; attempt < 4 && !failed; attempt++) {
   while (await page.locator(".board").count()) {

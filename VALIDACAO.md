@@ -1,3 +1,21 @@
+# Blade contextual e narrativas das fases
+
+Esta seção descreve a entrega local mais recente. Os registros seguintes são históricos.
+
+- Blade deixou de ter botões ou mensagens permanentes. O toque direto abre um menu contextual sem backdrop, com três opções, fechamento por seleção/toque fora/Escape e navegação por teclado. Entrada e saída em 180 ms; movimento reduzido elimina a animação. O menu fica dentro da tela e não muda o layout.
+- Passeio usa `blade-2.webp` (em pé); petisco mantém `blade-4.webp` (acordado deitado); boa noite usa `blade-5.webp` (dormindo). São assets já existentes. A pose em pé foi normalizada pelo tamanho aparente, mantendo o apoio no chão na mesma coordenada. As três poses foram inspecionadas em 320×568, 390×844 e 430×932. A pose escolhida se mantém ao navegar nesta sessão.
+- Corrigida a rolagem horizontal involuntária ao focar o cachorro: o cenário utiliza clipping sem criar um contêiner rolável, com a coluna da composição centralizada. As posições relativas dos livros, mesa, quadro e cachorro seguem a mesma arte. Nenhuma imagem foi refeita.
+- Dez introduções com cenário aprovado, título, narrativa oficial, ícones dos objetivos e “Vamos lá!”. 30 verificações por motor (dez fases em três tamanhos), sem corte do botão ou scroll desnecessário. Meu Pet não apresenta o nome Blade antes da revelação; Família não cita Bruno, retrato ou surpresa. Fases concluídas e infinito entram direto no gameplay.
+- Biblioteca conferida antes e depois do desbloqueio, com 0, 4, 5 e 10 conquistas, em três viewports: 12 verificações por motor. Não há tutorial, tooltip, indicação de interatividade ou área vazia reservada a Blade. Menu ausente por padrão, quadro na mesa e coleção acessível.
+- Novos registros separados: `viva-stories-v1` guarda narrativas lidas por campanha; `viva-session-v1` guarda introdução pendente ou partida. A sessão é validada contra campanha, quantidade de conquistas, fase liberada e dificuldade. Tabuleiro, contadores, poderes, sequências, jogadas e momento infinito são restaurados. IDs de peças são reatribuídos ao carregar para evitar colisões. O estado estável é salvo antes de liberar a próxima jogada. Durante cascata interrompida, retoma-se a posição estável anterior; não se tenta restaurar uma animação a meio caminho.
+- 23 testes unitários aprovados, incluindo narrativas sem spoilers, validação de sessão, compatibilidade de campanha e preservação do save antigo. TypeScript e build aprovados. As regras do Match-3, balanceamento, ordem dos livros, sinopses, marcos e assinatura não foram modificados.
+- Campanha completa com introduções: dez fases, 235 movimentos, nenhuma repetição, nenhum erro e dez livros únicos. Marcos de Blade/retrato e reabertura offline aprovados. Teste de derrota e nova tentativa aprovado. Release continua sem QA, com manifesto standalone e ícones acessíveis.
+- Chromium e WebKit passaram em 60 verificações de introduções, 24 de biblioteca e 18 de poses/interações. A retomada do mesmo tabuleiro e jogadas passou nas três dificuldades, após recarga e retorno da biblioteca. As 73 verificações de sinopses no Chromium passaram, incluindo leitura offline. WebKit carregou biblioteca e retrato pelo cache com o servidor HTTP desligado.
+- Limitação real: testes em motores automatizados no Windows; instalação, áudio, vibração e áreas seguras físicas no iPhone ainda precisam de conferência no aparelho. Nenhum progresso do usuário foi reiniciado; todas as partidas de teste usam contextos isolados.
+- Evidências: `test-results/story-blade-*-report.json`, `story-*-1.png` a `story-*-10.png`, `story-library-*.png`, `blade-*-quiet-*.png`, `blade-*-menu-*.png`, `blade-*-pose-*.png`, `browser-report.json`, `synopses-chromium-report.json`, `release-report.json` e `webkit-no-server-report.json`.
+
+---
+
 # Refinamento premium — biblioteca, vitória e dificuldade
 
 Esta seção descreve a versão local mais recente. Os registros seguintes são históricos.

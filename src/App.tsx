@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { asset, books, levels } from "./config";
 import {
   complete,
@@ -27,14 +27,31 @@ import {
   readDifficulty,
 } from "./difficulty";
 import { usePortrait } from "./usePortrait";
-type Screen = "home" | "levels" | "library" | "game" | "reward" | "celebration";
+import BladeCompanion from "./BladeCompanion";
+import StageIntro from "./StageIntro";
+import {
+  GameSession,
+  GameSnapshot,
+  readSession,
+  writeSession,
+  storySeen,
+  rememberStory,
+} from "./session";
+type Screen =
+  | "home"
+  | "levels"
+  | "library"
+  | "intro"
+  | "game"
+  | "reward"
+  | "celebration";
 export default function App() {
   usePortrait();
   const [difficulty, setDifficulty] = useState<Difficulty>(readDifficulty);
   const [difficultyOpen, setDifficultyOpen] = useState(false);
-  const [playingLevel, setPlayingLevel] = useState(levels[0]);
   const [firstGift, setFirstGift] = useState(false);
   const [giftIntro, setGiftIntro] = useState(false);
+  const [bladePose, setBladePose] = useState(5);
   const initial = useRef<ReturnType<typeof load> | null>(null);
   if (!initial.current) {
     try {
@@ -47,6 +64,31 @@ export default function App() {
       });
     }
   }
+  const [activeSession, setActiveSession] = useState<GameSession | null>(() =>
+    readSession(initial.current!.progress),
+  );
+  const activeRef = useRef(activeSession);
+  const [playingLevel, setPlayingLevel] = useState(() =>
+    activeSession
+      ? balancedLevel(
+          {
+            ...levels[activeSession.stage - 1],
+            name:
+              activeSession.stage === 5 &&
+              isRevealed(initial.current!.progress, "blade")
+                ? "Blade"
+                : levels[activeSession.stage - 1].name,
+          },
+          activeSession.difficulty,
+          activeSession.endless,
+        )
+      : levels[0],
+  );
+  const saveMatch = useCallback((snapshot: GameSnapshot) => {
+    if (!activeRef.current) return;
+    activeRef.current = { ...activeRef.current, snapshot };
+    writeSession(activeRef.current);
+  }, []);
   const [progress, setProgress] = useState<Progress>(initial.current.progress),
     [warning, setWarning] = useState(
       initial.current.warning
@@ -58,24 +100,26 @@ export default function App() {
         ? initial.current!.progress.pendingCelebration.step === "book"
           ? "reward"
           : "celebration"
-        : initial.current!.progress.completed.length
-          ? "library"
-          : "home",
+        : activeSession
+          ? activeSession.phase === "intro"
+            ? "intro"
+            : "game"
+          : initial.current!.progress.completed.length
+            ? "library"
+            : "home",
     ),
     [stage, setStage] = useState(() =>
       initial.current!.progress.pendingCelebration
         ? milestoneStage(initial.current!.progress.pendingCelebration.kind)
-        : 1,
+        : (activeSession?.stage ?? 1),
     ),
     [session, setSession] = useState(0),
-    [infinite, setInfinite] = useState(false);
+    [infinite, setInfinite] = useState(activeSession?.endless ?? false);
   const [book, setBook] = useState<number | null>(null),
     [portrait, setPortrait] = useState(false),
     [reward, setReward] = useState<number | null>(
       () => initial.current!.progress.pendingCelebration?.bookId ?? null,
     );
-  const [blade, setBlade] = useState(5),
-    [bladeText, setBladeText] = useState("");
   const count = progress.completed.length,
     next = Math.min(10, count + 1),
     acquired = progress.order.slice(0, count);
@@ -112,19 +156,46 @@ export default function App() {
       visitLibrary();
       return;
     }
+    const previous = readSession(progress);
+    const resume =
+      previous?.stage === id && previous.endless === endless ? previous : null;
+    const mode = resume?.difficulty ?? difficulty;
+    const phase =
+      resume?.phase ??
+      (!endless && !storySeen(progress, id) ? "intro" : "game");
+    const metadata: GameSession = resume ?? {
+      version: 1,
+      campaign: progress.order.join(","),
+      completedCount: progress.completed.length,
+      stage: id,
+      endless,
+      difficulty: mode,
+      phase,
+    };
+    activeRef.current = metadata;
+    setActiveSession(metadata);
+    writeSession(metadata);
     setStage(id);
     setPlayingLevel(
-      balancedLevel(
-        { ...levels[id - 1], name: titleFor(id) },
-        difficulty,
-        endless,
-      ),
+      balancedLevel({ ...levels[id - 1], name: titleFor(id) }, mode, endless),
     );
     setInfinite(endless);
+    setSession((n) => n + 1);
+    setScreen(phase);
+  }
+  function beginStage() {
+    rememberStory(progress, stage);
+    const metadata = { ...activeRef.current!, phase: "game" as const };
+    activeRef.current = metadata;
+    setActiveSession(metadata);
+    writeSession(metadata);
     setSession((n) => n + 1);
     setScreen("game");
   }
   function win() {
+    writeSession(null);
+    activeRef.current = null;
+    setActiveSession(null);
     const first = !infinite && !progress.completed.includes(stage);
     setFirstGift(first && count === 0);
     setGiftIntro(first && count === 0);
@@ -153,17 +224,6 @@ export default function App() {
     setProgress(finishMilestone);
     setScreen("library");
   }
-  function talkToBlade(action: "pet" | "walk" | "treat" | "sleep") {
-    setBlade(action === "sleep" ? 5 : 4);
-    setBladeText(
-      {
-        pet: "Blade ficou feliz com seu carinho.",
-        walk: "Blade acordou! Um passeio com você é sempre uma boa ideia.",
-        treat: "Blade acordou de olho no petisco.",
-        sleep: "Boa noite, Blade. Bons sonhos pertinho dos livros.",
-      }[action],
-    );
-  }
   const selectedBook = book === null ? null : books[book - 1];
   useDialog(book !== null || portrait);
   return (
@@ -178,10 +238,18 @@ export default function App() {
           key={session}
           level={playingLevel}
           endless={infinite}
+          initialSnapshot={activeSession?.snapshot}
+          onSnapshot={saveMatch}
           audio={true}
           motion={!reduced}
           onWin={win}
           onExit={visitLibrary}
+        />
+      ) : screen === "intro" ? (
+        <StageIntro
+          level={playingLevel}
+          onBegin={beginStage}
+          onBack={visitLibrary}
         />
       ) : screen === "celebration" ? (
         <Celebration
@@ -285,8 +353,22 @@ export default function App() {
             </button>
           </header>
           <nav className="hub-actions" aria-label="Sua jornada">
-            <button className="primary" onClick={() => start(next)}>
-              {count === 10 ? "Jogar novamente" : count ? "Continuar" : "Jogar"}
+            <button
+              className="primary"
+              onClick={() =>
+                start(
+                  activeSession?.stage ?? next,
+                  activeSession?.endless ?? false,
+                )
+              }
+            >
+              {activeSession
+                ? "Continuar"
+                : count === 10
+                  ? "Jogar novamente"
+                  : count
+                    ? "Continuar"
+                    : "Jogar"}
               <span>
                 Fase {next} · {titleFor(next)}
               </span>
@@ -365,21 +447,11 @@ export default function App() {
                 ))}
               </div>
               {bladeKnown && (
-                <button
-                  className="blade"
-                  onClick={() => talkToBlade("pet")}
-                  aria-label="Fazer carinho no Blade"
-                  aria-describedby="blade-status"
-                >
-                  <img
-                    src={asset(`blade-${blade}`)}
-                    alt={
-                      blade === 5
-                        ? "Blade dormindo, chow chow preto"
-                        : "Blade acordado, chow chow preto"
-                    }
-                  />
-                </button>
+                <BladeCompanion
+                  reduced={reduced}
+                  pose={bladePose}
+                  onPose={setBladePose}
+                />
               )}
               <img
                 className="library-foreground"
@@ -414,22 +486,6 @@ export default function App() {
               </span>
             </div>
           </div>
-          {bladeKnown && (
-            <div className="blade-prompts" aria-label="Converse com o Blade">
-              <button onClick={() => talkToBlade("walk")}>
-                Blade, vamos passear?
-              </button>
-              <button onClick={() => talkToBlade("treat")}>
-                Quer petisco?
-              </button>
-              <button onClick={() => talkToBlade("sleep")}>
-                Blade, boa noite.
-              </button>
-            </div>
-          )}
-          <p id="blade-status" className="library-caption" role="status">
-            {bladeKnown ? bladeText : ""}
-          </p>
         </section>
       ) : (
         <section className="page reward">

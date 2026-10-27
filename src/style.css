@@ -2739,3 +2739,206 @@ small,
 .difficulty-picker button {
   min-height: 44px;
 }
+
+/* Blade is a discovery inside the room, with no permanent surrounding HUD. */
+.blade-companion {
+  display: contents;
+}
+.library.immersive,
+.immersive .library-stage {
+  overflow: clip;
+}
+.immersive .library-stage {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+}
+.blade-companion .blade {
+  border-radius: 48%;
+}
+.blade-companion .blade:active {
+  transform: none;
+}
+.blade-companion .blade img {
+  pointer-events: none;
+  animation: blade-pose-in 0.2s ease-out both;
+}
+.blade-companion .blade-standing {
+  height: 30%;
+}
+.blade-companion .blade .blade-happy {
+  animation:
+    blade-pose-in 0.2s ease-out both,
+    blade-joy 0.35s 0.2s ease-out;
+}
+.blade-context {
+  position: absolute;
+  left: 8%;
+  bottom: 36%;
+  width: min(220px, 52%);
+  z-index: 8;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 7px;
+  border: 1px solid #e6c98b;
+  border-radius: 19px;
+  background: #fff4e0f5;
+  box-shadow: 0 7px 22px #231b1640;
+  transform-origin: bottom right;
+}
+.blade-context::after {
+  content: "";
+  position: absolute;
+  bottom: -7px;
+  right: 16px;
+  width: 12px;
+  height: 12px;
+  transform: rotate(45deg);
+  background: #fff4e0;
+  border-right: 1px solid #e6c98b;
+  border-bottom: 1px solid #e6c98b;
+}
+.blade-context.is-open {
+  animation: blade-menu-in 0.18s ease-out both;
+}
+.blade-context.is-closing {
+  animation: blade-menu-out 0.18s ease-in both;
+  pointer-events: none;
+}
+.blade-context button {
+  min-height: 44px;
+  padding: 7px 8px;
+  border-radius: 12px;
+  font-size: 14px;
+  background: transparent;
+  border-color: #d5bc8e70;
+  line-height: 1.3;
+}
+@keyframes blade-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(5px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes blade-menu-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+@keyframes blade-pose-in {
+  from {
+    opacity: 0.3;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes blade-joy {
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+.stage-intro {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: calc(var(--vh, 1dvh) * 100);
+  overflow: hidden;
+  background-size: cover;
+  background-position: center 35%;
+  color: #fff5dc;
+  padding: max(20px, env(safe-area-inset-top)) 24px
+    max(22px, env(safe-area-inset-bottom));
+  animation: room-arrival 0.55s ease-out both;
+}
+.stage-intro::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    0deg,
+    #102f28fc 1%,
+    #102f28ed 27%,
+    #102f2860 62%,
+    #102f2820
+  );
+}
+.intro-back {
+  position: absolute;
+  left: 16px;
+  top: max(14px, env(safe-area-inset-top));
+  background: #fff4deed;
+}
+.intro-editorial {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: flex-start;
+  max-width: 400px;
+  width: 100%;
+}
+.intro-number {
+  color: #f5d48e;
+  font-size: 14px;
+  letter-spacing: 1.5px;
+}
+.intro-editorial h1 {
+  font-size: clamp(30px, calc(var(--vh, 1dvh) * 5), 40px);
+  line-height: 1.12;
+  text-shadow: 0 2px 10px #0006;
+}
+.intro-editorial > p {
+  font-size: 19px;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+.intro-pieces {
+  display: flex;
+  gap: 7px;
+  height: 44px;
+  align-items: center;
+}
+.intro-pieces img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 5px #0b2519);
+}
+.intro-editorial .primary {
+  width: 100%;
+  min-height: 56px;
+  font-size: 21px;
+}
+.portrait-fallback .stage-intro {
+  padding-top: max(20px, env(safe-area-inset-left), env(safe-area-inset-right));
+  padding-bottom: max(
+    22px,
+    env(safe-area-inset-left),
+    env(safe-area-inset-right)
+  );
+}
+@media (max-height: 650px) and (orientation: portrait) {
+  .intro-editorial {
+    gap: 10px;
+  }
+  .intro-editorial > p {
+    font-size: 17px;
+    line-height: 1.5;
+  }
+  .stage-intro {
+    padding-inline: 20px;
+  }
+}

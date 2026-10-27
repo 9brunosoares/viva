@@ -42,6 +42,7 @@ try {
   await waitForCache(page);
   await page.reload();
   await page.waitForFunction(() => !!navigator.serviceWorker.controller);
+  await page.waitForTimeout(120);
   await page.evaluate(() => {
     localStorage.setItem(
       "viva-progress-v1",
@@ -55,6 +56,7 @@ try {
     );
   });
   await page.reload();
+  await page.locator(".library-room").waitFor();
   const before = await page.evaluate(async () => ({
     controller: navigator.serviceWorker.controller?.scriptURL,
     keys: await caches.keys(),

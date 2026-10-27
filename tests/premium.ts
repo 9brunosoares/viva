@@ -27,6 +27,11 @@ await page.goto("http://127.0.0.1:4173/viva-test/");
 await waitForCache(page);
 const order = [7, 2, 9, 1, 8, 4, 10, 3, 6, 5];
 async function seed(count: number) {
+  await page.waitForTimeout(120);
+  await page.evaluate(() => {
+    localStorage.removeItem("viva-session-v1");
+    localStorage.removeItem("viva-stories-v1");
+  });
   await page.evaluate(
     ({ order, count }) =>
       localStorage.setItem(
@@ -135,12 +140,16 @@ assert.equal(
   await page.evaluate(() => localStorage.getItem("viva-progress-v1")),
   before,
 );
-await page.getByRole("button", { name: "Quer petisco?", exact: true }).click();
+await page.getByRole("button", { name: "Blade", exact: true }).click();
+await page
+  .getByRole("menuitem", { name: "Quer petisco?", exact: true })
+  .click();
 assert.ok(
   (await page.locator(".blade img").getAttribute("src"))?.includes("blade-4"),
 );
+await page.getByRole("button", { name: "Blade", exact: true }).click();
 await page
-  .getByRole("button", { name: "Blade, boa noite.", exact: true })
+  .getByRole("menuitem", { name: "Blade, boa noite.", exact: true })
   .click();
 assert.ok(
   (await page.locator(".blade img").getAttribute("src"))?.includes("blade-5"),
@@ -243,6 +252,7 @@ for (const [difficulty, label] of [
   await page.getByRole("button", { name: /^Dificuldade:/ }).click();
   await page.getByRole("button", { name: label, exact: true }).click();
   await page.locator(".hub-actions .primary").click();
+  await page.getByRole("button", { name: "Vamos lá!", exact: true }).click();
   const expected = balancedLevel(levels[0], difficulty);
   assert.equal(
     Number(await page.locator(".moves strong").textContent()),

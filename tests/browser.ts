@@ -32,6 +32,7 @@ await waitForCache(page);
 await page.screenshot({ path: "test-results/home.png", fullPage: true });
 await page.getByRole("button", { name: "Entrar na biblioteca" }).click();
 await page.getByRole("button", { name: /^Jogar/ }).click();
+await page.getByRole("button", { name: "Vamos lá!", exact: true }).click();
 await page.locator(".tile").first().waitFor();
 await page.screenshot({ path: "test-results/game.png", fullPage: true });
 await page.getByRole("button", { name: "Pausar partida" }).click();
@@ -123,12 +124,14 @@ for (let stage = 1; stage <= 10; stage++) {
     );
     assert.equal(restored.order.join(), order);
     await page.getByRole("button", { name: /^Continuar/ }).click();
+    await page.getByRole("button", { name: "Vamos lá!", exact: true }).click();
   } else if (stage < 10) {
     await page
       .getByRole("button", { name: "Guardar na biblioteca", exact: true })
       .click();
     if (stage === 5) await page.locator(".celebration .primary").click();
     await page.getByRole("button", { name: /^Continuar/ }).click();
+    await page.getByRole("button", { name: "Vamos lá!", exact: true }).click();
   }
 }
 await page.screenshot({ path: "test-results/finale.png", fullPage: true });
@@ -136,10 +139,10 @@ await page.getByRole("button", { name: "Guardar na biblioteca" }).click();
 await page.locator(".celebration .primary").click();
 await page.screenshot({ path: "test-results/library.png", fullPage: true });
 assert.equal(await page.locator(".shelf-books button").count(), 10);
-await page.getByRole("button", { name: "Fazer carinho no Blade" }).click();
+await page.getByRole("button", { name: "Blade", exact: true }).click();
 await page
-  .getByText("Blade ficou feliz com seu carinho.", { exact: true })
-  .waitFor();
+  .getByRole("menuitem", { name: "Quer petisco?", exact: true })
+  .click();
 await page.getByRole("button", { name: /Meus livros/ }).click();
 await page.locator(".book-modal").waitFor();
 await page.getByRole("button", { name: "Voltar à biblioteca" }).click();
@@ -168,8 +171,7 @@ for (const size of [
 }
 await context.setOffline(true);
 await page.reload();
-await page.getByRole("button", { name: /^Jogar novamente/ }).waitFor();
-await page.getByRole("button", { name: /^Jogar novamente/ }).click();
+// The saved infinite board now resumes directly after reopening offline.
 await page.locator(".tile").first().waitFor();
 await page.screenshot({ path: "test-results/offline.png", fullPage: true });
 assert.equal(errors.length, 0, errors.join("\n"));

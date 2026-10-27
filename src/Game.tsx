@@ -12,7 +12,9 @@ import {
   moves,
   COLS,
   Wave,
+  tile,
 } from "./engine";
+import type { GameSnapshot } from "./session";
 import { sound } from "./audio";
 import { useDialog } from "./useDialog";
 import ComboEffects from "./ComboEffects";
@@ -24,6 +26,8 @@ type Props = {
   onWin: () => void;
   onExit: () => void;
   endless?: boolean;
+  initialSnapshot?: GameSnapshot;
+  onSnapshot?: (snapshot: GameSnapshot) => void;
 };
 export default function Game({
   level,
@@ -32,20 +36,30 @@ export default function Game({
   onWin,
   onExit,
   endless = false,
+  initialSnapshot,
+  onSnapshot,
 }: Props) {
-  const [board, setBoard] = useState<Board>(() => createBoard());
+  const [board, setBoard] = useState<Board>(() =>
+    initialSnapshot
+      ? initialSnapshot.board.map((t) => tile(t.kind, t.special))
+      : createBoard(),
+  );
   const current = useRef(board);
   const [selected, select] = useState<number | null>(null),
     [busy, setBusy] = useState(false),
     [clearing, setClearing] = useState<number[]>([]);
   const lock = useRef(false),
     alive = useRef(true),
-    [remaining, setRemaining] = useState(level.moves),
-    [counts, setCounts] = useState([0, 0, 0, 0, 0, 0]);
-  const [powers, setPowers] = useState(0),
-    [cascades, setCascades] = useState(0),
+    [remaining, setRemaining] = useState(
+      initialSnapshot?.remaining ?? level.moves,
+    ),
+    [counts, setCounts] = useState(
+      initialSnapshot?.counts ?? [0, 0, 0, 0, 0, 0],
+    );
+  const [powers, setPowers] = useState(initialSnapshot?.powers ?? 0),
+    [cascades, setCascades] = useState(initialSnapshot?.cascades ?? 0),
     [paused, pause] = useState(false),
-    [lost, setLost] = useState(false),
+    [lost, setLost] = useState(!endless && initialSnapshot?.remaining === 0),
     [message, setMessage] = useState("Combine 3 peças iguais. Sem pressa.");
   const [hint, setHint] = useState<number[]>([]),
     [offset, setOffset] = useState<Record<number, number>>({});
@@ -57,7 +71,7 @@ export default function Game({
   const [lastItems, setLastItems] = useState<{ index: number; kind: number }[]>(
     [],
   );
-  const [round, setRound] = useState(1);
+  const [round, setRound] = useState(initialSnapshot?.round ?? 1);
   const drag = useRef<{ i: number; x: number; y: number } | null>(null),
     suppress = useRef(false);
   const grid = useRef<HTMLDivElement>(null),
@@ -89,6 +103,20 @@ export default function Game({
     [],
   );
   useDialog(paused || lost);
+  useEffect(() => {
+    if (!busy && !victory)
+      onSnapshot?.({ board, remaining, counts, powers, cascades, round });
+  }, [
+    board,
+    remaining,
+    counts,
+    powers,
+    cascades,
+    round,
+    busy,
+    victory,
+    onSnapshot,
+  ]);
   const wait = (ms: number) =>
     new Promise((r) => setTimeout(r, motion ? ms : 25));
   function show(b: Board) {
@@ -244,11 +272,20 @@ export default function Game({
     }
     const left = remaining - 1;
     setRemaining(left);
-    if (
+    const won =
       level.targets.every((t) => total[t.kind] >= t.amount) &&
       power >= level.powers &&
-      chain >= level.cascades
-    ) {
+      chain >= level.cascades;
+    if (!won)
+      onSnapshot?.({
+        board: playable,
+        remaining: left,
+        counts: total,
+        powers: power,
+        cascades: chain,
+        round,
+      });
+    if (won) {
       sound(audio, "win");
       setVictory("shine");
       setMessage("Conseguiu!");
@@ -262,6 +299,14 @@ export default function Game({
         setRemaining(level.moves);
         setVictory("");
         setMessage("Mais um momento de alegria. Sem pressa.");
+        onSnapshot?.({
+          board: playable,
+          remaining: level.moves,
+          counts: [0, 0, 0, 0, 0, 0],
+          powers: 0,
+          cascades: 0,
+          round: round + 1,
+        });
       } else {
         setVictory("leave");
         await wait(320);
@@ -502,7 +547,7 @@ export default function Game({
             )}
             <button onClick={restart}>Recomeçar fase</button>
             <button onClick={onExit}>Voltar à biblioteca</button>
-            <p className="muted">Ao sair, esta partida recomeça.</p>
+            <p className="muted">Sua partida fica guardada.</p>
           </div>
         </div>
       )}
