@@ -24,7 +24,11 @@ pnpm build
 node scripts/serve.mjs
 ```
 
-Abra http://127.0.0.1:4173/viva-test/. Feche abas antigas e reabra para ativar uma atualização do cache, sem apagar o progresso.
+Abra http://127.0.0.1:4173/viva-test/?v=finish5. Atualizações aguardam uma tela segura e o consentimento das outras janelas do jogo, preservando partida e conquistas. Na primeira migração de uma versão antiga, pode ser necessário fechar e reabrir as abas uma vez.
+
+## Acabamento mobile — upgrade 5/5
+
+Biblioteca com controles integrados, fases como capítulos com rolagem interna, tipografia e recompensas mais legíveis, dificuldade acessível, diálogos com foco e transições curtas. Safe areas, viewport dinâmica, abertura recuperável e atualização offline coordenada completam o acabamento. Sem novos assets, dependências ou mudanças de regras, textos e áudio. Implementação, ponto de restauração, testes e limitações em [MOBILE.md](MOBILE.md). Não houve publicação automática nem auditoria da etapa 6.
 
 ## Testes sem atalhos na interface
 

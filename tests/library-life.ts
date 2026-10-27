@@ -195,6 +195,7 @@ try {
     await page
       .getByRole("button", { name: "Voltar à biblioteca", exact: true })
       .click();
+    await page.locator(".book-viewer").waitFor({ state: "detached" });
     assert.equal(
       await page.locator(".library-room").getAttribute("data-ambient"),
       "active",
@@ -318,10 +319,12 @@ try {
   );
   for (let i = 0; i < 6; i++) {
     await page.getByRole("button", { name: "Ver fases", exact: true }).click();
+    await page.locator(".journey").waitFor();
     assert.equal(await page.locator(".library-atmosphere").count(), 0);
     await page
       .getByRole("button", { name: "Voltar à biblioteca", exact: true })
       .click();
+    await page.locator(".library-room").waitFor();
     assert.equal(await page.locator(".library-atmosphere").count(), 1);
     assert.equal(await page.locator(".library-dust i").count(), 8);
   }

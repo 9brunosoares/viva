@@ -13,12 +13,88 @@
       name="apple-mobile-web-app-status-bar-style"
       content="black-translucent"
     />
+    <meta
+      name="description"
+      content="Um joguinho pra viver e passar o tempo. Combine peças e descubra histórias."
+    />
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="apple-touch-icon" href="./assets/icon-192.png" />
-    <title>Viva! â€” Um joguinho pra viver</title>
+    <link rel="icon" type="image/png" href="./assets/icon-192.png" />
+    <link rel="preload" as="image" href="./assets/logo.webp" />
+    <title>Viva! — Um joguinho pra viver e passar o tempo</title>
+    <script>
+      window.addEventListener(
+        "error",
+        function (event) {
+          if (
+            event.target instanceof HTMLScriptElement &&
+            event.target.type === "module"
+          ) {
+            document.getElementById("boot-retry")?.removeAttribute("hidden");
+            document
+              .getElementById("boot-status")
+              ?.replaceChildren("Vamos tentar de novo?");
+          }
+        },
+        true,
+      );
+    </script>
+    <style>
+      html,
+      body {
+        margin: 0;
+        background: #102e25;
+      }
+      .launch {
+        color: #fff1d3;
+        min-height: 100vh;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 24px;
+        padding: 24px;
+        box-sizing: border-box;
+        text-align: center;
+        font:
+          17px/1.5 Georgia,
+          serif;
+      }
+      .launch img {
+        width: min(280px, 80vw);
+        height: auto;
+      }
+      .launch button {
+        font: inherit;
+        min-height: 48px;
+        padding: 12px 24px;
+        border: 1px solid #d8b475;
+        border-radius: 18px;
+        background: #315e3a;
+        color: #fff1d3;
+      }
+      .launch [hidden] {
+        display: none;
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div class="launch">
+        <img
+          src="./assets/logo.webp"
+          width="280"
+          height="160"
+          alt="Viva!"
+          fetchpriority="high"
+        />
+        <span id="boot-status" role="status">Abrindo seu cantinho…</span>
+        <button id="boot-retry" hidden onclick="location.reload()">
+          Tentar novamente
+        </button>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

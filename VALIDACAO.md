@@ -1,3 +1,22 @@
+# Upgrade 5/5 — acabamento de aplicativo e UX mobile (27/10/2026)
+
+- Ponto de restauração anterior às alterações: commit **0c96512**, tag `viva-pre-premium-5-20261027`, branch `codex/premium-5-mobile`. Alterações anteriores preservadas integralmente.
+- Biblioteca com controles menores e agrupados, capítulos ilustrados com rolagem interna e fase atual centralizada, dificuldade com fechamento externo/Escape, tipografia editorial nas introduções, pausa/derrota com ação principal clara, livro/retrato com altura segura e foco contido. Nenhuma mudança de artes, coordenadas, narrativas, sinopses, áudio ou regras.
+- Dissoluções sequenciais de 80/140 ms entre telas, fechamento de diálogos em 130 ms e respeito ao movimento reduzido. Navegação pendente finaliza ao entrar em segundo plano. View Transitions não é usado: a alternativa com snapshots falhou no WebKit durante redimensionamento e foi substituída por Web Animations API.
+- Viewport dinâmica com fallback, safe areas, zoom preservado e documento sem rolagem nas telas imersivas. Inicialização com logo e nova tentativa de carregamento, Error Boundary, preload seletivo e cores de abertura coerentes.
+- PWA adota atualização apenas em telas seguras, com persistência confirmada e anuência de todas as janelas. Mantém o cache atual e um anterior e preserva as chaves de progresso/sessão. Sem dependências novas.
+- **36 testes unitários**, TypeScript e build aprovados. Cache final **cefa22d2929c**, 147 arquivos; JS 300,42 kB (96,91 kB gzip), CSS 65,93 kB (14,67 kB gzip).
+- `mobile-finish.ts`: **15 composições por motor**, Chromium/Edge e WebKit, em 320×568, 393×852 (equivalente ao iPhone 14 Pro) e 430×932. Quatro estágios, coleção completa, capítulos, dificuldade, foco, Escape, safe areas simuladas, rotação, viewport variável e movimento reduzido passaram; nenhuma falha de página registrada.
+- `reward-finish.ts`: dez livros × duas dimensões × dois motores; **40 verificações** de associação exata, enquadramento seguro, botão acessível e sinopse interna. Capturas revisadas; corrigida herança de cor clara da abertura. Contraste do título, autoria, mensagens e sinopse é de pelo menos **4,5:1** contra a região mais escura do papel.
+- `pwa-update.ts`: **três versões e duas janelas** nos dois motores. Partida e leitura adiam atualização; saída para a biblioteca permite adoção, sem alterar tabuleiro/contadores/conquistas/dificuldade. Chunk anterior atendido, apenas dois caches mantidos e versão nova recarregada offline. `launch-recovery.ts`: falha proposital do módulo recuperada sem tela vazia ou perda de progresso.
+- Campanha real completa: **279 movimentos, uma nova tentativa**, dez livros, Blade, encerramento familiar, infinito e offline, sem erros de página/HTTP. Narrativas/Blade: 30 introduções, nove verificações de poses e retomada nas três dificuldades. Sinopses: 73 verificações Chromium e 63 WebKit em duas ordens/três dimensões. Release: manifest, ícones, ausência de QA, progresso legado e retrato offline aprovados.
+- `offline-server.ts` aprovado no pacote final: WebKit recarregou biblioteca, sinopse, retrato e partida animada com o servidor HTTP efetivamente desligado.
+- `library-life.ts` repetido no Chromium: 15 composições, dez sinopses, poses ancoradas, interação oculta, pausa por visibilidade, movimento reduzido, chegadas e áudios originais, navegação repetida e offline aprovados.
+- Testes em navegador/emulação, sem iPhone físico, instalação real na tela inicial, VoiceOver ou medição de bateria/FPS no aparelho. WebKit/Windows sem Web Audio; sons originais preservados e testes unitários aprovados, sem nova audição crítica. Primeira migração de abas antigas pode exigir fechá-las uma vez.
+- Detalhes e arquivos: [MOBILE.md](MOBILE.md). Evidências em `test-results/mobile-finish-*-report.json`, `reward-finish-*-report.json`, `pwa-update*-report.json`, `launch-recovery-report.json`, relatórios de regressão e capturas correspondentes. Prévia local: http://127.0.0.1:4173/viva-test/?v=finish5. **Sem publicação remota ou auditoria da etapa 6.**
+
+---
+
 # Upgrade 4/5 — game feel e consistência do Match-3 (27/10/2026)
 
 - Entrada revisada: feedback no pointerdown, deslizes curtos (13 px no teste 390×844), rejeição de diagonais ambíguas, rastreamento do ponteiro primário, cancelamento/lost capture, saída do tabuleiro e interrupção por visibilidade/blur/resize. O próximo toque permanece utilizável. Caminhos por teclado e clique assistivo preservados.

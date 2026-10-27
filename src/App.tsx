@@ -28,7 +28,6 @@ import Celebration from "./Celebration";
 import BookViewer from "./BookViewer";
 import {
   balancedLevel,
-  difficulties,
   Difficulty,
   DIFFICULTY_KEY,
   readDifficulty,
@@ -37,6 +36,10 @@ import { usePortrait } from "./usePortrait";
 import BladeCompanion from "./BladeCompanion";
 import StageIntro from "./StageIntro";
 import LibraryAtmosphere, { useLibraryActivity } from "./LibraryAtmosphere";
+import DifficultySelector from "./DifficultySelector";
+import { useSceneTransition } from "./useSceneTransition";
+import { useDialogExit } from "./useDialogExit";
+import { consumeUpdateReturn, usePwaUpdates } from "./usePwaUpdates";
 import {
   GameSession,
   GameSnapshot,
@@ -44,6 +47,7 @@ import {
   writeSession,
   storySeen,
   rememberStory,
+  SESSION_KEY,
 } from "./session";
 type Screen =
   | "home"
@@ -55,6 +59,9 @@ type Screen =
   | "celebration";
 export default function App() {
   usePortrait();
+  const reduced = useReducedMotion();
+  const appRoot = useRef<HTMLElement>(null);
+  const [updateReturn] = useState(consumeUpdateReturn);
   const [difficulty, setDifficulty] = useState<Difficulty>(readDifficulty);
   const [difficultyOpen, setDifficultyOpen] = useState(false);
   const [firstGift, setFirstGift] = useState(false);
@@ -76,6 +83,7 @@ export default function App() {
     readSession(initial.current!.progress),
   );
   const activeRef = useRef(activeSession);
+  const saved = useRef({ progress: true, session: true });
   const [playingLevel, setPlayingLevel] = useState(() =>
     activeSession
       ? balancedLevel(
@@ -95,7 +103,7 @@ export default function App() {
   const saveMatch = useCallback((snapshot: GameSnapshot) => {
     if (!activeRef.current) return;
     activeRef.current = { ...activeRef.current, snapshot };
-    writeSession(activeRef.current);
+    saved.current.session = writeSession(activeRef.current);
   }, []);
   const [progress, setProgress] = useState<Progress>(initial.current.progress),
     [warning, setWarning] = useState(
@@ -106,18 +114,19 @@ export default function App() {
   const [audioPrefs, setAudioPrefs] = useState(() =>
     readAudioPreferences(initial.current!.progress.sound),
   );
-  const [screen, setScreen] = useState<Screen>(() =>
+  const [screen, setScreenState] = useState<Screen>(() =>
       initial.current!.progress.pendingCelebration
         ? initial.current!.progress.pendingCelebration.step === "book"
           ? "reward"
           : "celebration"
-        : activeSession
-          ? activeSession.phase === "intro"
-            ? "intro"
-            : "game"
-          : initial.current!.progress.completed.length
-            ? "library"
-            : "home",
+        : (updateReturn ??
+          (activeSession
+            ? activeSession.phase === "intro"
+              ? "intro"
+              : "game"
+            : initial.current!.progress.completed.length
+              ? "library"
+              : "home")),
     ),
     [stage, setStage] = useState(() =>
       initial.current!.progress.pendingCelebration
@@ -126,6 +135,12 @@ export default function App() {
     ),
     [session, setSession] = useState(0),
     [infinite, setInfinite] = useState(activeSession?.endless ?? false);
+  const setScreen = useSceneTransition(
+    screen,
+    setScreenState,
+    appRoot,
+    reduced,
+  );
   const [book, setBook] = useState<number | null>(null),
     [portrait, setPortrait] = useState(false),
     [reward, setReward] = useState<number | null>(
@@ -139,7 +154,6 @@ export default function App() {
     familyKnown = isRevealed(progress, "family");
   const titleFor = (id: number) =>
     id === 5 && bladeKnown ? "Blade" : levels[id - 1].name;
-  const reduced = useReducedMotion();
   const libraryActivity = useLibraryActivity(screen === "library", reduced);
   const [arrivingBook, setArrivingBook] = useState<number | null>(
     () => initial.current!.progress.pendingCelebration?.bookId ?? null,
@@ -190,21 +204,67 @@ export default function App() {
       heading.tabIndex = -1;
       heading.focus({ preventScroll: true });
     }
+    if (screen === "levels") {
+      const list = document.querySelector(".level-list");
+      (
+        list?.querySelector<HTMLElement>('[aria-current="step"]') ??
+        list?.lastElementChild
+      )?.scrollIntoView({ block: "center", behavior: "instant" });
+    }
   }, [screen]);
   useEffect(() => {
     try {
-      if (!save(progress, localStorage))
+      saved.current.progress = save(progress, localStorage);
+      if (!saved.current.progress)
         setWarning("Não foi possível guardar suas conquistas agora.");
     } catch {
+      saved.current.progress = false;
       setWarning("Não foi possível guardar suas conquistas agora.");
     }
   }, [progress]);
+  usePwaUpdates({
+    safe:
+      ["home", "library", "levels"].includes(screen) &&
+      book === null &&
+      !portrait &&
+      !difficultyOpen &&
+      !progress.pendingCelebration &&
+      arrivingBook === null &&
+      bookArrival === null,
+    screen,
+    persist: () => {
+      try {
+        // Autosave runs before this hook. Never overwrite newer data from another window.
+        localStorage.getItem(SESSION_KEY);
+        return saved.current.progress && saved.current.session;
+      } catch {
+        return false;
+      }
+    },
+  });
   useEffect(() => {
-    if (!import.meta.env.DEV && "serviceWorker" in navigator)
-      void navigator.serviceWorker
-        .register(`${import.meta.env.BASE_URL}sw.js`)
-        .catch(() => {});
-  }, []);
+    // Warm only the next destination, never every illustrated chapter at startup.
+    const paths =
+      screen === "home"
+        ? [asset(`library-${libraryState(count)}`)]
+        : screen === "library"
+          ? [asset(`scene-${activeSession?.stage ?? next}`)]
+          : screen === "intro"
+            ? [
+                ...Array.from({ length: 6 }, (_, kind) =>
+                  asset(`tile-${stage}-${kind}`),
+                ),
+                ...Array.from({ length: 4 }, (_, kind) =>
+                  asset(`power-${kind}`),
+                ),
+              ]
+            : [];
+    for (const path of paths) {
+      const image = new Image();
+      image.src = path;
+      void image.decode?.().catch(() => {});
+    }
+  }, [screen, count, next, stage, activeSession?.stage]);
   function start(id: number, endless = false) {
     if (progress.pendingCelebration) {
       visitLibrary();
@@ -228,7 +288,7 @@ export default function App() {
     };
     activeRef.current = metadata;
     setActiveSession(metadata);
-    writeSession(metadata);
+    saved.current.session = writeSession(metadata);
     setStage(id);
     setPlayingLevel(
       balancedLevel({ ...levels[id - 1], name: titleFor(id) }, mode, endless),
@@ -242,12 +302,12 @@ export default function App() {
     const metadata = { ...activeRef.current!, phase: "game" as const };
     activeRef.current = metadata;
     setActiveSession(metadata);
-    writeSession(metadata);
+    saved.current.session = writeSession(metadata);
     setSession((n) => n + 1);
     setScreen("game");
   }
   function win() {
-    writeSession(null);
+    saved.current.session = writeSession(null);
     activeRef.current = null;
     setActiveSession(null);
     const first = !infinite && !progress.completed.includes(stage);
@@ -280,9 +340,12 @@ export default function App() {
     setScreen("library");
   }
   const selectedBook = book === null ? null : books[book - 1];
-  useDialog(book !== null || portrait);
+  const portraitExit = useDialogExit(() => setPortrait(false));
+  useDialog(portrait, portraitExit.close);
   return (
     <main
+      ref={appRoot}
+      data-screen={screen}
       className={reduced ? "app reduced" : "app"}
       onPointerDown={unlockAudio}
       onKeyDown={unlockAudio}
@@ -350,6 +413,8 @@ export default function App() {
             {levels.map((l) => (
               <button
                 className="level-card"
+                aria-current={l.id === next && count < 10 ? "step" : undefined}
+                data-completed={l.id <= count ? "true" : undefined}
                 disabled={l.id > next}
                 key={l.id}
                 onClick={() => start(l.id)}
@@ -429,41 +494,17 @@ export default function App() {
               </span>
             </button>
           </nav>
-          <button
-            className="difficulty-trigger"
-            aria-expanded={difficultyOpen}
-            aria-label={`Dificuldade: ${difficulties.find((d) => d.id === difficulty)!.label}`}
-            onClick={() => setDifficultyOpen(!difficultyOpen)}
-          >
-            {difficulties.find((d) => d.id === difficulty)!.label}{" "}
-            <span aria-hidden="true">⌄</span>
-          </button>
-          {difficultyOpen && (
-            <fieldset className="difficulty-picker">
-              <legend className="visually-hidden">Dificuldade</legend>
-              <div>
-                {difficulties.map((d) => (
-                  <button
-                    key={d.id}
-                    type="button"
-                    aria-pressed={difficulty === d.id}
-                    onClick={() => {
-                      setDifficulty(d.id);
-                      setDifficultyOpen(false);
-                      try {
-                        localStorage.setItem(DIFFICULTY_KEY, d.id);
-                      } catch {}
-                    }}
-                  >
-                    {d.label}
-                  </button>
-                ))}
-              </div>
-              <p>
-                {difficulties.find((d) => d.id === difficulty)!.description}
-              </p>
-            </fieldset>
-          )}
+          <DifficultySelector
+            value={difficulty}
+            open={difficultyOpen}
+            onOpen={setDifficultyOpen}
+            onChange={(value) => {
+              setDifficulty(value);
+              try {
+                localStorage.setItem(DIFFICULTY_KEY, value);
+              } catch {}
+            }}
+          />
           {count === 10 && (
             <button
               className="gold hub-infinite"
@@ -517,7 +558,12 @@ export default function App() {
                     }}
                     aria-label={`Abrir ${books[id - 1].title}`}
                   >
-                    <img src={asset(`book-${id}-spine`)} alt="" />
+                    <img
+                      src={asset(`book-${id}-spine`)}
+                      alt=""
+                      width={60}
+                      height={160}
+                    />
                   </button>
                 ))}
               </div>
@@ -665,7 +711,7 @@ export default function App() {
         />
       )}
       {portrait && (
-        <div className="modal-backdrop">
+        <div className="modal-backdrop" ref={portraitExit.root}>
           <div className="modal portrait-modal">
             <img
               src={asset("family")}
@@ -673,7 +719,7 @@ export default function App() {
             />
             <h2 className="visually-hidden">Retrato da família</h2>
             <p className="bruno-signature">{BRUNO_SIGNATURE}</p>
-            <button className="primary" onClick={() => setPortrait(false)}>
+            <button className="primary" onClick={portraitExit.close}>
               Guardar este carinho
             </button>
           </div>

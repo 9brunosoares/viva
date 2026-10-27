@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { asset, books } from "./config";
+import { useDialog } from "./useDialog";
+import { useDialogExit } from "./useDialogExit";
 
 export default function BookViewer({
   id,
@@ -13,15 +15,17 @@ export default function BookViewer({
   onClose: () => void;
 }) {
   const [back, setBack] = useState(false);
+  const exit = useDialogExit(onClose);
+  useDialog(true, exit.close);
   const book = books[id - 1],
     index = acquired.indexOf(id);
   return (
-    <div className="modal-backdrop book-backdrop">
+    <div className="modal-backdrop book-backdrop" ref={exit.root}>
       <div className="modal book-modal book-viewer">
         <h2 className="visually-hidden">{book.title}</h2>
         <button
           className="book-close round"
-          onClick={onClose}
+          onClick={exit.close}
           aria-label="Voltar à biblioteca"
         >
           ×

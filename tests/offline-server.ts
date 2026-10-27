@@ -45,6 +45,7 @@ try {
     isMobile: true,
     hasTouch: true,
   });
+  await page.addInitScript("globalThis.__name = (fn) => fn");
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("http://127.0.0.1:4199/viva-test/");
@@ -75,6 +76,12 @@ try {
     server.close(() => r());
     server.closeAllConnections();
   });
+  await page.addInitScript(() =>
+    Object.defineProperty(navigator, "onLine", {
+      configurable: true,
+      get: () => false,
+    }),
+  );
   await page.reload();
   await page.locator(".library-room").waitFor();
   await page

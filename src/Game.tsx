@@ -165,7 +165,7 @@ export default function Game({
       sequence.current.cancel();
     };
   }, []);
-  useDialog(paused || lost);
+  useDialog(paused || lost, paused ? () => pause(false) : undefined);
   useEffect(() => {
     if (!lock.current && !busy && !victory)
       onSnapshot?.({ board, remaining, counts, powers, cascades, round });
@@ -702,7 +702,7 @@ export default function Game({
       </div>
       {(paused || lost) && (
         <div className="modal-backdrop">
-          <div className="modal">
+          <div className="modal game-menu">
             <small>NO SEU TEMPO</small>
             <h2>
               {lost ? "Vamos tentar de novo?" : "Uma pausa para respirar"}
@@ -717,7 +717,9 @@ export default function Game({
                 Retomar
               </button>
             )}
-            <button onClick={restart}>Recomeçar fase</button>
+            <button className={lost ? "primary" : undefined} onClick={restart}>
+              Recomeçar fase
+            </button>
             <button onClick={onExit}>Voltar à biblioteca</button>
             <p className="muted">Sua partida fica guardada.</p>
           </div>

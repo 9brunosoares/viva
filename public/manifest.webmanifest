@@ -1,1 +1,26 @@
-{"id":"./","name":"Viva! — Um joguinho pra viver e passar o tempo","short_name":"Viva!","lang":"pt-BR","start_url":"./","scope":"./","display":"standalone","orientation":"portrait","background_color":"#fff7e8","theme_color":"#194b37","icons":[{"src":"assets/icon-192.png","sizes":"192x192","type":"image/png","purpose":"any"},{"src":"assets/icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}]}
+{
+  "id": "./",
+  "name": "Viva! — Um joguinho pra viver e passar o tempo",
+  "short_name": "Viva!",
+  "lang": "pt-BR",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#102e25",
+  "theme_color": "#194b37",
+  "icons": [
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

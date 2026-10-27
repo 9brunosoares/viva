@@ -76,7 +76,10 @@ export function writeSession(v: GameSession | null) {
   try {
     if (v) localStorage.setItem(SESSION_KEY, JSON.stringify(v));
     else localStorage.removeItem(SESSION_KEY);
-  } catch {}
+    return true;
+  } catch {
+    return false;
+  }
 }
 export function storySeen(p: Progress, id: number) {
   if (p.completed.includes(id)) return true;
