@@ -1,6 +1,9 @@
 {
   "file": "vfx/sequences.webp",
   "cell": 192,
+  "columns": 8,
+  "frameCount": 74,
+  "matte": "black recovery; dark-valley ownership seams; stable core anchors; no radial mask",
   "sequences": {
     "match3": {
       "frames": [
@@ -10,11 +13,21 @@
           "width": 192,
           "height": 192,
           "source": "vfx-01.png",
-          "sourceRect": [
-            2,
-            40,
+          "rect": [
+            4,
+            39,
             91,
-            179
+            180
+          ],
+          "anchor": [
+            48,
+            111
+          ],
+          "sampleRect": [
+            3,
+            39,
+            94,
+            180
           ]
         },
         {
@@ -23,11 +36,21 @@
           "width": 192,
           "height": 192,
           "source": "vfx-01.png",
-          "sourceRect": [
+          "rect": [
             91,
-            40,
-            187,
-            179
+            39,
+            188,
+            180
+          ],
+          "anchor": [
+            140,
+            111
+          ],
+          "sampleRect": [
+            89,
+            39,
+            191,
+            180
           ]
         },
         {
@@ -36,11 +59,21 @@
           "width": 192,
           "height": 192,
           "source": "vfx-01.png",
-          "sourceRect": [
-            187,
-            40,
-            286,
-            179
+          "rect": [
+            188,
+            39,
+            287,
+            180
+          ],
+          "anchor": [
+            238,
+            111
+          ],
+          "sampleRect": [
+            184,
+            39,
+            290,
+            180
           ]
         },
         {
@@ -49,11 +82,21 @@
           "width": 192,
           "height": 192,
           "source": "vfx-01.png",
-          "sourceRect": [
-            286,
-            40,
-            396,
-            179
+          "rect": [
+            287,
+            39,
+            401,
+            180
+          ],
+          "anchor": [
+            347,
+            111
+          ],
+          "sampleRect": [
+            284,
+            39,
+            403,
+            180
           ]
         },
         {
@@ -62,11 +105,21 @@
           "width": 192,
           "height": 192,
           "source": "vfx-01.png",
-          "sourceRect": [
-            396,
-            40,
-            525,
-            179
+          "rect": [
+            401,
+            39,
+            526,
+            180
+          ],
+          "anchor": [
+            460,
+            112
+          ],
+          "sampleRect": [
+            391,
+            39,
+            529,
+            180
           ]
         },
         {
@@ -75,11 +128,21 @@
           "width": 192,
           "height": 192,
           "source": "vfx-01.png",
-          "sourceRect": [
-            525,
-            40,
+          "rect": [
+            526,
+            39,
             658,
-            179
+            180
+          ],
+          "anchor": [
+            585,
+            112
+          ],
+          "sampleRect": [
+            521,
+            39,
+            669,
+            180
           ]
         },
         {
@@ -88,11 +151,21 @@
           "width": 192,
           "height": 192,
           "source": "vfx-01.png",
-          "sourceRect": [
+          "rect": [
             658,
-            40,
-            838,
-            179
+            39,
+            839,
+            180
+          ],
+          "anchor": [
+            744,
+            111
+          ],
+          "sampleRect": [
+            656,
+            39,
+            842,
+            180
           ]
         },
         {
@@ -101,25 +174,36 @@
           "width": 192,
           "height": 192,
           "source": "vfx-01.png",
-          "sourceRect": [
-            838,
-            40,
-            989,
-            179
+          "rect": [
+            839,
+            39,
+            990,
+            180
+          ],
+          "anchor": [
+            915,
+            111
+          ],
+          "sampleRect": [
+            835,
+            39,
+            992,
+            180
           ]
         }
       ],
       "durations": [
+        70,
+        70,
         55,
         55,
-        40,
-        40,
-        40,
-        40,
-        65,
+        55,
+        55,
+        85,
         65
       ],
-      "reference": 192
+      "reference": 206,
+      "role": "temporal"
     },
     "match4": {
       "frames": [
@@ -128,12 +212,22 @@
           "y": 192,
           "width": 192,
           "height": 192,
-          "source": "vfx-03.png",
-          "sourceRect": [
-            1035,
-            51,
-            1129,
-            158
+          "source": "vfx-02.png",
+          "rect": [
+            979,
+            46,
+            1062,
+            175
+          ],
+          "anchor": [
+            1008,
+            111
+          ],
+          "sampleRect": [
+            978,
+            46,
+            1065,
+            175
           ]
         },
         {
@@ -141,12 +235,22 @@
           "y": 192,
           "width": 192,
           "height": 192,
-          "source": "vfx-03.png",
-          "sourceRect": [
-            1129,
-            51,
-            1237,
-            158
+          "source": "vfx-02.png",
+          "rect": [
+            1062,
+            46,
+            1180,
+            175
+          ],
+          "anchor": [
+            1117,
+            111
+          ],
+          "sampleRect": [
+            1058,
+            46,
+            1183,
+            175
           ]
         },
         {
@@ -154,12 +258,22 @@
           "y": 192,
           "width": 192,
           "height": 192,
-          "source": "vfx-03.png",
-          "sourceRect": [
-            1237,
-            51,
-            1346,
-            158
+          "source": "vfx-02.png",
+          "rect": [
+            1180,
+            46,
+            1303,
+            175
+          ],
+          "anchor": [
+            1245,
+            111
+          ],
+          "sampleRect": [
+            1174,
+            46,
+            1306,
+            175
           ]
         },
         {
@@ -167,12 +281,22 @@
           "y": 192,
           "width": 192,
           "height": 192,
-          "source": "vfx-03.png",
-          "sourceRect": [
-            1346,
-            51,
-            1455,
-            158
+          "source": "vfx-02.png",
+          "rect": [
+            1303,
+            46,
+            1434,
+            175
+          ],
+          "anchor": [
+            1360,
+            111
+          ],
+          "sampleRect": [
+            1293,
+            46,
+            1439,
+            175
           ]
         },
         {
@@ -180,12 +304,22 @@
           "y": 192,
           "width": 192,
           "height": 192,
-          "source": "vfx-03.png",
-          "sourceRect": [
-            1455,
-            51,
-            1570,
-            158
+          "source": "vfx-02.png",
+          "rect": [
+            1434,
+            46,
+            1582,
+            175
+          ],
+          "anchor": [
+            1506,
+            111
+          ],
+          "sampleRect": [
+            1429,
+            46,
+            1586,
+            175
           ]
         },
         {
@@ -193,12 +327,22 @@
           "y": 192,
           "width": 192,
           "height": 192,
-          "source": "vfx-03.png",
-          "sourceRect": [
-            1570,
-            51,
-            1674,
-            158
+          "source": "vfx-02.png",
+          "rect": [
+            1582,
+            46,
+            1757,
+            175
+          ],
+          "anchor": [
+            1662,
+            111
+          ],
+          "sampleRect": [
+            1579,
+            46,
+            1759,
+            175
           ]
         },
         {
@@ -206,81 +350,129 @@
           "y": 192,
           "width": 192,
           "height": 192,
-          "source": "vfx-03.png",
-          "sourceRect": [
-            1674,
-            51,
-            1765,
-            158
-          ]
-        },
-        {
-          "x": 1344,
-          "y": 192,
-          "width": 192,
-          "height": 192,
-          "source": "vfx-03.png",
-          "sourceRect": [
-            1765,
-            51,
-            1867,
-            158
-          ]
-        },
-        {
-          "x": 0,
-          "y": 384,
-          "width": 192,
-          "height": 192,
-          "source": "vfx-03.png",
-          "sourceRect": [
-            1867,
-            51,
-            1960,
-            158
-          ]
-        },
-        {
-          "x": 192,
-          "y": 384,
-          "width": 192,
-          "height": 192,
-          "source": "vfx-03.png",
-          "sourceRect": [
-            1960,
-            51,
-            2045,
-            158
+          "source": "vfx-02.png",
+          "rect": [
+            1757,
+            46,
+            1940,
+            175
+          ],
+          "anchor": [
+            1852,
+            111
+          ],
+          "sampleRect": [
+            1739,
+            46,
+            1942,
+            175
           ]
         }
       ],
       "durations": [
+        70,
+        70,
         55,
         55,
-        40,
-        40,
-        40,
-        40,
-        40,
-        40,
-        65,
+        55,
+        85,
         65
       ],
-      "reference": 127
+      "reference": 236,
+      "role": "temporal"
     },
     "color": {
       "frames": [
         {
+          "x": 1344,
+          "y": 192,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-03.png",
+          "rect": [
+            5,
+            414,
+            90,
+            548
+          ],
+          "anchor": [
+            46,
+            481
+          ],
+          "sampleRect": [
+            4,
+            414,
+            92,
+            548
+          ]
+        },
+        {
+          "x": 0,
+          "y": 384,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-03.png",
+          "rect": [
+            90,
+            414,
+            197,
+            548
+          ],
+          "anchor": [
+            140,
+            481
+          ],
+          "sampleRect": [
+            85,
+            414,
+            199,
+            548
+          ]
+        },
+        {
+          "x": 192,
+          "y": 384,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-03.png",
+          "rect": [
+            197,
+            414,
+            313,
+            548
+          ],
+          "anchor": [
+            252,
+            481
+          ],
+          "sampleRect": [
+            195,
+            414,
+            321,
+            548
+          ]
+        },
+        {
           "x": 384,
           "y": 384,
           "width": 192,
           "height": 192,
-          "source": "vfx-01.png",
-          "sourceRect": [
-            1004,
-            249,
-            1106,
-            404
+          "source": "vfx-03.png",
+          "rect": [
+            313,
+            414,
+            440,
+            548
+          ],
+          "anchor": [
+            376,
+            481
+          ],
+          "sampleRect": [
+            312,
+            414,
+            444,
+            548
           ]
         },
         {
@@ -288,12 +480,22 @@
           "y": 384,
           "width": 192,
           "height": 192,
-          "source": "vfx-01.png",
-          "sourceRect": [
-            1106,
-            249,
-            1214,
-            404
+          "source": "vfx-03.png",
+          "rect": [
+            440,
+            414,
+            576,
+            548
+          ],
+          "anchor": [
+            507,
+            481
+          ],
+          "sampleRect": [
+            438,
+            414,
+            578,
+            548
           ]
         },
         {
@@ -301,12 +503,22 @@
           "y": 384,
           "width": 192,
           "height": 192,
-          "source": "vfx-01.png",
-          "sourceRect": [
-            1214,
-            249,
-            1326,
-            404
+          "source": "vfx-03.png",
+          "rect": [
+            576,
+            414,
+            724,
+            548
+          ],
+          "anchor": [
+            649,
+            481
+          ],
+          "sampleRect": [
+            571,
+            414,
+            729,
+            548
           ]
         },
         {
@@ -314,12 +526,22 @@
           "y": 384,
           "width": 192,
           "height": 192,
-          "source": "vfx-01.png",
-          "sourceRect": [
-            1326,
-            249,
-            1450,
-            404
+          "source": "vfx-03.png",
+          "rect": [
+            724,
+            414,
+            866,
+            548
+          ],
+          "anchor": [
+            801,
+            481
+          ],
+          "sampleRect": [
+            722,
+            414,
+            874,
+            548
           ]
         },
         {
@@ -327,79 +549,130 @@
           "y": 384,
           "width": 192,
           "height": 192,
-          "source": "vfx-01.png",
-          "sourceRect": [
-            1450,
-            249,
-            1576,
-            404
-          ]
-        },
-        {
-          "x": 1344,
-          "y": 384,
-          "width": 192,
-          "height": 192,
-          "source": "vfx-01.png",
-          "sourceRect": [
-            1576,
-            249,
-            1715,
-            404
-          ]
-        },
-        {
-          "x": 0,
-          "y": 576,
-          "width": 192,
-          "height": 192,
-          "source": "vfx-01.png",
-          "sourceRect": [
-            1715,
-            249,
-            1845,
-            404
-          ]
-        },
-        {
-          "x": 192,
-          "y": 576,
-          "width": 192,
-          "height": 192,
-          "source": "vfx-01.png",
-          "sourceRect": [
-            1845,
-            249,
-            2011,
-            404
+          "source": "vfx-03.png",
+          "rect": [
+            866,
+            414,
+            1021,
+            548
+          ],
+          "anchor": [
+            933,
+            481
+          ],
+          "sampleRect": [
+            864,
+            414,
+            1023,
+            548
           ]
         }
       ],
       "durations": [
+        70,
+        70,
         55,
         55,
-        40,
-        40,
-        40,
-        40,
-        65,
+        55,
+        55,
+        85,
         65
       ],
-      "reference": 178
+      "reference": 190,
+      "role": "temporal"
     },
     "area": {
       "frames": [
         {
+          "x": 1344,
+          "y": 384,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-03.png",
+          "rect": [
+            5,
+            614,
+            84,
+            731
+          ],
+          "anchor": [
+            47,
+            666
+          ],
+          "sampleRect": [
+            4,
+            614,
+            86,
+            731
+          ]
+        },
+        {
+          "x": 0,
+          "y": 576,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-03.png",
+          "rect": [
+            84,
+            614,
+            168,
+            731
+          ],
+          "anchor": [
+            125,
+            666
+          ],
+          "sampleRect": [
+            80,
+            614,
+            170,
+            731
+          ]
+        },
+        {
+          "x": 192,
+          "y": 576,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-03.png",
+          "rect": [
+            168,
+            614,
+            262,
+            731
+          ],
+          "anchor": [
+            213,
+            666
+          ],
+          "sampleRect": [
+            166,
+            614,
+            264,
+            731
+          ]
+        },
+        {
           "x": 384,
           "y": 576,
           "width": 192,
           "height": 192,
-          "source": "vfx-02.png",
-          "sourceRect": [
-            12,
-            660,
-            78,
-            775
+          "source": "vfx-03.png",
+          "rect": [
+            262,
+            614,
+            359,
+            731
+          ],
+          "anchor": [
+            309,
+            666
+          ],
+          "sampleRect": [
+            258,
+            614,
+            363,
+            731
           ]
         },
         {
@@ -407,12 +680,22 @@
           "y": 576,
           "width": 192,
           "height": 192,
-          "source": "vfx-02.png",
-          "sourceRect": [
-            78,
-            660,
-            171,
-            775
+          "source": "vfx-03.png",
+          "rect": [
+            359,
+            614,
+            464,
+            731
+          ],
+          "anchor": [
+            410,
+            666
+          ],
+          "sampleRect": [
+            356,
+            614,
+            466,
+            731
           ]
         },
         {
@@ -420,12 +703,22 @@
           "y": 576,
           "width": 192,
           "height": 192,
-          "source": "vfx-02.png",
-          "sourceRect": [
-            171,
-            660,
-            267,
-            775
+          "source": "vfx-03.png",
+          "rect": [
+            464,
+            614,
+            574,
+            731
+          ],
+          "anchor": [
+            518,
+            666
+          ],
+          "sampleRect": [
+            454,
+            614,
+            576,
+            731
           ]
         },
         {
@@ -433,12 +726,22 @@
           "y": 576,
           "width": 192,
           "height": 192,
-          "source": "vfx-02.png",
-          "sourceRect": [
-            267,
-            660,
-            371,
-            775
+          "source": "vfx-03.png",
+          "rect": [
+            574,
+            614,
+            718,
+            731
+          ],
+          "anchor": [
+            638,
+            666
+          ],
+          "sampleRect": [
+            565,
+            614,
+            736,
+            731
           ]
         },
         {
@@ -446,12 +749,22 @@
           "y": 576,
           "width": 192,
           "height": 192,
-          "source": "vfx-02.png",
-          "sourceRect": [
-            371,
-            660,
-            484,
-            775
+          "source": "vfx-03.png",
+          "rect": [
+            718,
+            614,
+            910,
+            731
+          ],
+          "anchor": [
+            834,
+            666
+          ],
+          "sampleRect": [
+            716,
+            614,
+            932,
+            731
           ]
         },
         {
@@ -459,52 +772,85 @@
           "y": 576,
           "width": 192,
           "height": 192,
-          "source": "vfx-02.png",
-          "sourceRect": [
-            484,
-            660,
-            590,
-            775
-          ]
-        },
-        {
-          "x": 0,
-          "y": 768,
-          "width": 192,
-          "height": 192,
-          "source": "vfx-02.png",
-          "sourceRect": [
-            590,
-            660,
-            645,
-            775
+          "source": "vfx-03.png",
+          "rect": [
+            910,
+            614,
+            1021,
+            731
+          ],
+          "anchor": [
+            965,
+            666
+          ],
+          "sampleRect": [
+            913,
+            614,
+            1023,
+            731
           ]
         }
       ],
       "durations": [
+        70,
+        70,
         55,
         55,
-        40,
-        40,
-        40,
-        65,
+        55,
+        55,
+        55,
+        85,
         65
       ],
-      "reference": 127
+      "reference": 246,
+      "role": "temporal"
     },
     "horizontal": {
       "frames": [
         {
+          "x": 0,
+          "y": 768,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-02.png",
+          "rect": [
+            651,
+            660,
+            724,
+            776
+          ],
+          "anchor": [
+            687.5,
+            718.0
+          ],
+          "sampleRect": [
+            650,
+            660,
+            727,
+            776
+          ]
+        },
+        {
           "x": 192,
           "y": 768,
           "width": 192,
           "height": 192,
           "source": "vfx-02.png",
-          "sourceRect": [
-            651,
-            660,
+          "rect": [
             724,
-            775
+            660,
+            799,
+            776
+          ],
+          "anchor": [
+            761.5,
+            718.0
+          ],
+          "sampleRect": [
+            703,
+            660,
+            801,
+            776
           ]
         },
         {
@@ -513,11 +859,21 @@
           "width": 192,
           "height": 192,
           "source": "vfx-02.png",
-          "sourceRect": [
-            724,
-            660,
+          "rect": [
             799,
-            775
+            660,
+            877,
+            776
+          ],
+          "anchor": [
+            838.0,
+            718.0
+          ],
+          "sampleRect": [
+            788,
+            660,
+            884,
+            776
           ]
         },
         {
@@ -526,11 +882,21 @@
           "width": 192,
           "height": 192,
           "source": "vfx-02.png",
-          "sourceRect": [
-            799,
-            660,
+          "rect": [
             877,
-            775
+            660,
+            965,
+            776
+          ],
+          "anchor": [
+            921.0,
+            718.0
+          ],
+          "sampleRect": [
+            874,
+            660,
+            973,
+            776
           ]
         },
         {
@@ -539,11 +905,21 @@
           "width": 192,
           "height": 192,
           "source": "vfx-02.png",
-          "sourceRect": [
-            877,
-            660,
+          "rect": [
             965,
-            775
+            660,
+            1051,
+            776
+          ],
+          "anchor": [
+            1008.0,
+            718.0
+          ],
+          "sampleRect": [
+            962,
+            660,
+            1066,
+            776
           ]
         },
         {
@@ -552,11 +928,21 @@
           "width": 192,
           "height": 192,
           "source": "vfx-02.png",
-          "sourceRect": [
-            965,
-            660,
+          "rect": [
             1051,
-            775
+            660,
+            1131,
+            776
+          ],
+          "anchor": [
+            1091.0,
+            718.0
+          ],
+          "sampleRect": [
+            1049,
+            660,
+            1153,
+            776
           ]
         },
         {
@@ -565,11 +951,21 @@
           "width": 192,
           "height": 192,
           "source": "vfx-02.png",
-          "sourceRect": [
-            1051,
-            660,
+          "rect": [
             1131,
-            775
+            660,
+            1210,
+            776
+          ],
+          "anchor": [
+            1170.5,
+            718.0
+          ],
+          "sampleRect": [
+            1134,
+            660,
+            1210,
+            776
           ]
         },
         {
@@ -578,52 +974,83 @@
           "width": 192,
           "height": 192,
           "source": "vfx-02.png",
-          "sourceRect": [
-            1131,
-            660,
-            1210,
-            775
-          ]
-        },
-        {
-          "x": 0,
-          "y": 960,
-          "width": 192,
-          "height": 192,
-          "source": "vfx-02.png",
-          "sourceRect": [
+          "rect": [
             1210,
             660,
             1297,
-            775
+            776
+          ],
+          "anchor": [
+            1253.5,
+            718.0
+          ],
+          "sampleRect": [
+            1189,
+            660,
+            1299,
+            776
           ]
         }
       ],
       "durations": [
+        70,
+        70,
         55,
         55,
-        40,
-        40,
-        40,
-        40,
-        65,
+        55,
+        55,
+        85,
         65
       ],
-      "reference": 127
+      "reference": 140,
+      "role": "temporal"
     },
     "vertical": {
       "frames": [
         {
+          "x": 0,
+          "y": 960,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-02.png",
+          "rect": [
+            1310,
+            660,
+            1382,
+            780
+          ],
+          "anchor": [
+            1346.0,
+            720.0
+          ],
+          "sampleRect": [
+            1309,
+            660,
+            1386,
+            780
+          ]
+        },
+        {
           "x": 192,
           "y": 960,
           "width": 192,
           "height": 192,
           "source": "vfx-02.png",
-          "sourceRect": [
-            1310,
-            665,
+          "rect": [
             1382,
-            777
+            660,
+            1460,
+            780
+          ],
+          "anchor": [
+            1421.0,
+            720.0
+          ],
+          "sampleRect": [
+            1380,
+            660,
+            1463,
+            780
           ]
         },
         {
@@ -632,11 +1059,21 @@
           "width": 192,
           "height": 192,
           "source": "vfx-02.png",
-          "sourceRect": [
-            1382,
-            665,
+          "rect": [
             1460,
-            777
+            660,
+            1538,
+            780
+          ],
+          "anchor": [
+            1499.0,
+            720.0
+          ],
+          "sampleRect": [
+            1457,
+            660,
+            1541,
+            780
           ]
         },
         {
@@ -645,11 +1082,21 @@
           "width": 192,
           "height": 192,
           "source": "vfx-02.png",
-          "sourceRect": [
-            1460,
-            665,
+          "rect": [
             1538,
-            777
+            660,
+            1617,
+            780
+          ],
+          "anchor": [
+            1577.5,
+            720.0
+          ],
+          "sampleRect": [
+            1535,
+            660,
+            1621,
+            780
           ]
         },
         {
@@ -658,11 +1105,21 @@
           "width": 192,
           "height": 192,
           "source": "vfx-02.png",
-          "sourceRect": [
-            1538,
-            665,
+          "rect": [
             1617,
-            777
+            660,
+            1694,
+            780
+          ],
+          "anchor": [
+            1655.5,
+            720.0
+          ],
+          "sampleRect": [
+            1613,
+            660,
+            1697,
+            780
           ]
         },
         {
@@ -671,11 +1128,21 @@
           "width": 192,
           "height": 192,
           "source": "vfx-02.png",
-          "sourceRect": [
-            1617,
-            665,
+          "rect": [
             1694,
-            777
+            660,
+            1769,
+            780
+          ],
+          "anchor": [
+            1731.5,
+            720.0
+          ],
+          "sampleRect": [
+            1688,
+            660,
+            1772,
+            780
           ]
         },
         {
@@ -684,11 +1151,21 @@
           "width": 192,
           "height": 192,
           "source": "vfx-02.png",
-          "sourceRect": [
-            1694,
-            665,
+          "rect": [
             1769,
-            777
+            660,
+            1848,
+            780
+          ],
+          "anchor": [
+            1808.5,
+            720.0
+          ],
+          "sampleRect": [
+            1762,
+            660,
+            1849,
+            780
           ]
         },
         {
@@ -697,52 +1174,83 @@
           "width": 192,
           "height": 192,
           "source": "vfx-02.png",
-          "sourceRect": [
-            1769,
-            665,
+          "rect": [
             1848,
-            777
-          ]
-        },
-        {
-          "x": 0,
-          "y": 1152,
-          "width": 192,
-          "height": 192,
-          "source": "vfx-02.png",
-          "sourceRect": [
-            1848,
-            665,
+            660,
             1936,
-            777
+            780
+          ],
+          "anchor": [
+            1892.0,
+            720.0
+          ],
+          "sampleRect": [
+            1836,
+            660,
+            1938,
+            780
           ]
         }
       ],
       "durations": [
+        70,
+        70,
         55,
         55,
-        40,
-        40,
-        40,
-        40,
-        65,
+        55,
+        55,
+        85,
         65
       ],
-      "reference": 124
+      "reference": 130,
+      "role": "temporal"
     },
     "areaBirth": {
       "frames": [
         {
+          "x": 0,
+          "y": 1152,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-01.png",
+          "rect": [
+            4,
+            244,
+            95,
+            410
+          ],
+          "anchor": [
+            50,
+            332
+          ],
+          "sampleRect": [
+            3,
+            244,
+            105,
+            410
+          ]
+        },
+        {
           "x": 192,
           "y": 1152,
           "width": 192,
           "height": 192,
-          "source": "vfx-03.png",
-          "sourceRect": [
-            5,
-            232,
-            90,
-            346
+          "source": "vfx-01.png",
+          "rect": [
+            95,
+            244,
+            202,
+            410
+          ],
+          "anchor": [
+            149,
+            332
+          ],
+          "sampleRect": [
+            92,
+            244,
+            213,
+            410
           ]
         },
         {
@@ -750,12 +1258,22 @@
           "y": 1152,
           "width": 192,
           "height": 192,
-          "source": "vfx-03.png",
-          "sourceRect": [
-            90,
-            232,
-            181,
-            346
+          "source": "vfx-01.png",
+          "rect": [
+            202,
+            244,
+            315,
+            410
+          ],
+          "anchor": [
+            259,
+            332
+          ],
+          "sampleRect": [
+            200,
+            244,
+            326,
+            410
           ]
         },
         {
@@ -763,12 +1281,22 @@
           "y": 1152,
           "width": 192,
           "height": 192,
-          "source": "vfx-03.png",
-          "sourceRect": [
-            181,
-            232,
-            286,
-            346
+          "source": "vfx-01.png",
+          "rect": [
+            315,
+            244,
+            435,
+            410
+          ],
+          "anchor": [
+            371,
+            332
+          ],
+          "sampleRect": [
+            313,
+            244,
+            449,
+            410
           ]
         },
         {
@@ -776,12 +1304,22 @@
           "y": 1152,
           "width": 192,
           "height": 192,
-          "source": "vfx-03.png",
-          "sourceRect": [
-            286,
-            232,
-            407,
-            346
+          "source": "vfx-01.png",
+          "rect": [
+            435,
+            244,
+            560,
+            410
+          ],
+          "anchor": [
+            495,
+            332
+          ],
+          "sampleRect": [
+            433,
+            244,
+            571,
+            410
           ]
         },
         {
@@ -789,12 +1327,22 @@
           "y": 1152,
           "width": 192,
           "height": 192,
-          "source": "vfx-03.png",
-          "sourceRect": [
-            407,
-            232,
-            531,
-            346
+          "source": "vfx-01.png",
+          "rect": [
+            560,
+            244,
+            709,
+            410
+          ],
+          "anchor": [
+            629,
+            332
+          ],
+          "sampleRect": [
+            558,
+            244,
+            712,
+            410
           ]
         },
         {
@@ -802,12 +1350,22 @@
           "y": 1152,
           "width": 192,
           "height": 192,
-          "source": "vfx-03.png",
-          "sourceRect": [
-            531,
-            232,
-            649,
-            346
+          "source": "vfx-01.png",
+          "rect": [
+            709,
+            244,
+            855,
+            410
+          ],
+          "anchor": [
+            777,
+            332
+          ],
+          "sampleRect": [
+            702,
+            244,
+            864,
+            410
           ]
         },
         {
@@ -815,25 +1373,61 @@
           "y": 1152,
           "width": 192,
           "height": 192,
-          "source": "vfx-03.png",
-          "sourceRect": [
-            649,
-            232,
-            778,
-            346
+          "source": "vfx-01.png",
+          "rect": [
+            855,
+            244,
+            990,
+            410
+          ],
+          "anchor": [
+            925,
+            332
+          ],
+          "sampleRect": [
+            849,
+            244,
+            992,
+            410
           ]
-        },
+        }
+      ],
+      "durations": [
+        70,
+        70,
+        55,
+        55,
+        55,
+        55,
+        85,
+        65
+      ],
+      "reference": 186,
+      "role": "temporal"
+    },
+    "cross": {
+      "frames": [
         {
           "x": 0,
           "y": 1344,
           "width": 192,
           "height": 192,
-          "source": "vfx-03.png",
-          "sourceRect": [
-            778,
-            232,
-            889,
-            346
+          "source": "vfx-01.png",
+          "rect": [
+            4,
+            477,
+            91,
+            684
+          ],
+          "anchor": [
+            40,
+            573
+          ],
+          "sampleRect": [
+            3,
+            477,
+            94,
+            684
           ]
         },
         {
@@ -841,27 +1435,449 @@
           "y": 1344,
           "width": 192,
           "height": 192,
-          "source": "vfx-03.png",
-          "sourceRect": [
-            889,
-            232,
-            1022,
-            346
+          "source": "vfx-01.png",
+          "rect": [
+            91,
+            477,
+            192,
+            684
+          ],
+          "anchor": [
+            144,
+            573
+          ],
+          "sampleRect": [
+            75,
+            477,
+            195,
+            684
+          ]
+        },
+        {
+          "x": 384,
+          "y": 1344,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-01.png",
+          "rect": [
+            192,
+            477,
+            308,
+            684
+          ],
+          "anchor": [
+            246,
+            573
+          ],
+          "sampleRect": [
+            171,
+            477,
+            311,
+            684
+          ]
+        },
+        {
+          "x": 576,
+          "y": 1344,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-01.png",
+          "rect": [
+            308,
+            477,
+            430,
+            684
+          ],
+          "anchor": [
+            369,
+            573
+          ],
+          "sampleRect": [
+            298,
+            477,
+            447,
+            684
+          ]
+        },
+        {
+          "x": 768,
+          "y": 1344,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-01.png",
+          "rect": [
+            430,
+            477,
+            575,
+            684
+          ],
+          "anchor": [
+            509,
+            573
+          ],
+          "sampleRect": [
+            427,
+            477,
+            578,
+            684
+          ]
+        },
+        {
+          "x": 960,
+          "y": 1344,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-01.png",
+          "rect": [
+            575,
+            477,
+            718,
+            684
+          ],
+          "anchor": [
+            648,
+            573
+          ],
+          "sampleRect": [
+            562,
+            477,
+            721,
+            684
+          ]
+        },
+        {
+          "x": 1152,
+          "y": 1344,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-01.png",
+          "rect": [
+            718,
+            477,
+            865,
+            684
+          ],
+          "anchor": [
+            797,
+            573
+          ],
+          "sampleRect": [
+            699,
+            477,
+            867,
+            684
+          ]
+        },
+        {
+          "x": 1344,
+          "y": 1344,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-01.png",
+          "rect": [
+            865,
+            477,
+            990,
+            684
+          ],
+          "anchor": [
+            929,
+            573
+          ],
+          "sampleRect": [
+            857,
+            477,
+            992,
+            684
           ]
         }
       ],
       "durations": [
+        70,
+        70,
         55,
         55,
-        40,
-        40,
-        40,
-        40,
-        40,
-        65,
+        55,
+        55,
+        85,
         65
       ],
-      "reference": 145
+      "reference": 232,
+      "role": "temporal"
+    },
+    "colorBirth": {
+      "frames": [
+        {
+          "x": 0,
+          "y": 1536,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-01.png",
+          "rect": [
+            1003,
+            468,
+            1115,
+            684
+          ],
+          "anchor": [
+            1062,
+            591
+          ],
+          "sampleRect": [
+            1002,
+            468,
+            1118,
+            684
+          ]
+        },
+        {
+          "x": 192,
+          "y": 1536,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-01.png",
+          "rect": [
+            1115,
+            468,
+            1230,
+            684
+          ],
+          "anchor": [
+            1171,
+            591
+          ],
+          "sampleRect": [
+            1107,
+            468,
+            1233,
+            684
+          ]
+        },
+        {
+          "x": 384,
+          "y": 1536,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-01.png",
+          "rect": [
+            1230,
+            468,
+            1354,
+            684
+          ],
+          "anchor": [
+            1290,
+            591
+          ],
+          "sampleRect": [
+            1221,
+            468,
+            1357,
+            684
+          ]
+        },
+        {
+          "x": 576,
+          "y": 1536,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-01.png",
+          "rect": [
+            1354,
+            468,
+            1494,
+            684
+          ],
+          "anchor": [
+            1420,
+            591
+          ],
+          "sampleRect": [
+            1349,
+            468,
+            1500,
+            684
+          ]
+        },
+        {
+          "x": 768,
+          "y": 1536,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-01.png",
+          "rect": [
+            1494,
+            468,
+            1653,
+            684
+          ],
+          "anchor": [
+            1570,
+            591
+          ],
+          "sampleRect": [
+            1490,
+            468,
+            1660,
+            684
+          ]
+        },
+        {
+          "x": 960,
+          "y": 1536,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-01.png",
+          "rect": [
+            1653,
+            468,
+            1818,
+            684
+          ],
+          "anchor": [
+            1738,
+            591
+          ],
+          "sampleRect": [
+            1647,
+            468,
+            1837,
+            684
+          ]
+        },
+        {
+          "x": 1152,
+          "y": 1536,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-01.png",
+          "rect": [
+            1818,
+            468,
+            2014,
+            684
+          ],
+          "anchor": [
+            1898,
+            591
+          ],
+          "sampleRect": [
+            1816,
+            468,
+            2016,
+            684
+          ]
+        }
+      ],
+      "durations": [
+        70,
+        70,
+        55,
+        55,
+        55,
+        85,
+        65
+      ],
+      "reference": 256,
+      "role": "temporal"
+    },
+    "petal": {
+      "frames": [
+        {
+          "x": 1344,
+          "y": 1536,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-01.png",
+          "rect": [
+            857,
+            63,
+            985,
+            177
+          ],
+          "isolate": "pink",
+          "anchor": [
+            921.0,
+            120.0
+          ],
+          "sampleRect": [
+            856,
+            63,
+            987,
+            177
+          ]
+        }
+      ],
+      "durations": [
+        70
+      ],
+      "reference": 142,
+      "role": "particle"
+    },
+    "leaf": {
+      "frames": [
+        {
+          "x": 0,
+          "y": 1728,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-01.png",
+          "rect": [
+            848,
+            32,
+            919,
+            77
+          ],
+          "isolate": "green",
+          "anchor": [
+            883.5,
+            54.5
+          ],
+          "sampleRect": [
+            847,
+            32,
+            921,
+            77
+          ]
+        }
+      ],
+      "durations": [
+        70
+      ],
+      "reference": 86,
+      "role": "particle"
+    },
+    "spark": {
+      "frames": [
+        {
+          "x": 192,
+          "y": 1728,
+          "width": 192,
+          "height": 192,
+          "source": "vfx-01.png",
+          "rect": [
+            27,
+            89,
+            70,
+            135
+          ],
+          "anchor": [
+            48.5,
+            112.0
+          ],
+          "sampleRect": [
+            26,
+            89,
+            72,
+            135
+          ]
+        }
+      ],
+      "durations": [
+        70
+      ],
+      "reference": 58,
+      "role": "particle"
     }
   }
 }

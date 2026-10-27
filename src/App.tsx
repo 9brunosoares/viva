@@ -20,6 +20,7 @@ import {
   AUDIO_KEY,
 } from "./audio";
 import SoundToggle from "./SoundToggle";
+import { restartJourney } from "./restart";
 import { useReducedMotion } from "./useReducedMotion";
 import { BRUNO_SIGNATURE } from "./narrative";
 import { spineMetrics } from "./spineMetrics";
@@ -59,12 +60,17 @@ type Screen =
   | "reward"
   | "celebration";
 export default function App() {
+  const [journey, setJourney] = useState(0);
+  return <Journey key={journey} onRestarted={() => setJourney((n) => n + 1)} />;
+}
+function Journey({ onRestarted }: { onRestarted: () => void }) {
   usePortrait();
   const reduced = useReducedMotion();
   const appRoot = useRef<HTMLElement>(null);
   const [updateReturn] = useState(consumeUpdateReturn);
   const [difficulty, setDifficulty] = useState<Difficulty>(readDifficulty);
   const [difficultyOpen, setDifficultyOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const [firstGift, setFirstGift] = useState(false);
   const [giftIntro, setGiftIntro] = useState(false);
   const [bladePose, setBladePose] = useState(5);
@@ -235,6 +241,7 @@ export default function App() {
       book === null &&
       !portrait &&
       !difficultyOpen &&
+      !settingsOpen &&
       !progress.pendingCelebration &&
       arrivingBook === null &&
       bookArrival === null,
@@ -746,6 +753,19 @@ export default function App() {
         </div>
       )}
       <SoundToggle
+        open={settingsOpen}
+        onOpenChange={setSettingsOpen}
+        onRestart={() => {
+          try {
+            if (!restartJourney(localStorage)) return false;
+            activeRef.current = null;
+            consumeUpdateReturn();
+            onRestarted();
+            return true;
+          } catch {
+            return false;
+          }
+        }}
         position={
           book !== null || portrait
             ? "modal"

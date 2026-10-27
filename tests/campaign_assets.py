@@ -32,14 +32,15 @@ for stage in range(4):
     lip=np.asarray(Image.open(assets/f'library-shelf-depth-{stage}.webp').convert('RGBA'))
     assert np.array_equal(lip[:,:,:3][lip[:,:,3]>0],room[lip[:,:,3]>0])
 sheet=np.asarray(Image.open(assets/'vfx/sequences.webp').convert('RGBA'))
-assert sheet.shape==(1536,1536,4)
-for i in range(58):
+vfx=json.loads((assets/'vfx/sequences.json').read_text())
+assert sheet.shape[1]==vfx['columns']*vfx['cell']
+for i in range(vfx['frameCount']):
     y,x=divmod(i,8); a=sheet[y*192:(y+1)*192,x*192:(x+1)*192,3]
     assert not np.any(np.concatenate([a[0],a[-1],a[:,0],a[:,-1]])), f'frame {i}: unsafe border'
 protected=[f'public/assets/library-{i}.webp' for i in range(4)]
 protected += [str(p.relative_to(root)).replace('\\','/') for p in assets.glob('book-*.webp')]
 protected += ['src/audio.ts','src/narrative.ts']
 subprocess.run(['git','diff','--exit-code','viva-pre-campaign-evolution-20261027','--',*protected],cwd=root,check=True,stdout=subprocess.PIPE)
-report=dict(originalsVerified=len(inventory),individualSprites=20,activeTattooKinds=7,whiteArtworkPixels=white,emptySquare=True,proportionalScene=True,originalWoodOcclusion=True,safeAtlasBorders=58,protectedFilesUnchanged=len(protected))
+report=dict(originalsVerified=len(inventory),individualSprites=20,activeTattooKinds=7,whiteArtworkPixels=white,emptySquare=True,proportionalScene=True,originalWoodOcclusion=True,safeAtlasBorders=vfx['frameCount'],protectedFilesUnchanged=len(protected))
 (root/'test-results/campaign-assets-report.json').write_text(json.dumps(report,indent=2))
 print(json.dumps(report))

@@ -1,5 +1,7 @@
 # Evolução da campanha — 27/10/2026
 
+Este documento registra a entrega `22574a9`. A revisão posterior dos recortes, intensidade dos VFX e opção Novo jogo está em [VFX_FINAL.md](VFX_FINAL.md).
+
 Implementação incremental em `codex/campaign-evolution`. Ponto de recuperação anterior: tag `viva-pre-campaign-evolution-20261027`, commit `04824ac`. Não houve publicação nem alteração do progresso do navegador da jogadora.
 
 ## Jogar e navegar rapidamente

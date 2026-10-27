@@ -1,16 +1,18 @@
 """Extract actual recorded frames without interrupting gameplay's RAF."""
 from pathlib import Path
 from PIL import Image, ImageDraw
-import json, subprocess, re, math
+import json, subprocess, re, math, sys
 
 root = Path(__file__).resolve().parents[1]
 out = root / 'test-results/native-vfx'
 report = json.loads((root/'test-results/vfx-native-chromium-report.json').read_text())
 ffmpeg = Path.home()/'AppData/Local/ms-playwright/ffmpeg-1011/ffmpeg-win64.exe'
 video = root/'test-results/vfx-native-chromium.webm'
-exports = []
+modes=set(sys.argv[1:] or ['row','column','area','combined','color','5'])
+exports=json.loads((out/'exports.json').read_text()) if (out/'exports.json').exists() else []
+exports=[entry for entry in exports if entry['mode'] not in modes]
 for entry in report['results']:
-    if entry['mode'] not in ['row','column','area','combined']: continue
+    if entry['mode'] not in modes: continue
     mode=entry['mode']; wave=entry['waveAtMs']/1000
     # Screencast and wall clock have independent origins; include generous lead-in.
     start=max(0,wave-1.1)

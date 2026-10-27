@@ -1,3 +1,20 @@
+# Revisão final de VFX e Configurações — 27/10/2026
+
+- Recuperação: `viva-pre-vfx-finale-20261027` / `22574a9`. Publicação da versão oficial autorizada pelo usuário nesta rodada; QA permanece separado.
+- Corrigidos recortes que apagavam pétalas e sequências que não chegavam ao pico. Agora são 74 recortes: 71 quadros de nove sequências temporais e três partículas originais. Originais preservados, âncoras alinhadas e separações pelas regiões escuras.
+- Mais presença na linha/coluna, impactos florais nas células, área com pico/dissipação, disco na criação, vórtice grande na ativação de cor e cruz nas combinações correspondentes. Proporções preservadas; nenhuma mudança nas regras ou áudio.
+- Engrenagem Configurações com som e Novo jogo. Confirmação explícita, cancelamento seguro, limpeza apenas da jornada, nova ordem válida de livros, retorno à abertura e preferências de áudio preservadas. A atualização sozinha não apaga progresso.
+- TypeScript e **45 testes unitários** aprovados, incluindo falhas de armazenamento e restauração seletiva.
+- Chromium e WebKit: Configurações/cancelar/confirmar/recarregar, dez livros zerados corretamente, histórias/partida/dificuldade removidas, sem antecipar marcos; reinício durante um poder com relógio controlado cancela sons/saves/recompensas antigos. Chromium também confirmou reinício offline; versão sem API de áudio continua com Novo jogo. WebKit/Windows não disponibiliza áudio real neste ambiente.
+- VFX: dez cenários de inspeção de Canvas por motor, quadros tardios realmente pintados, escala uniforme e trajetórias. Vídeo Chromium em tempo real e quadros extraídos inspecionados. WebKit usa relógio determinístico na inspeção detalhada, sem equivaler a FPS físico.
+- Regressão VFX: **21 cenários por motor**, resultado idêntico ao motor com/sem movimento, todos os pares, cascatas, invalidação, cancelamento, movimento reduzido, tamanhos móveis e vitória.
+- Campanha/QA Chromium: treze layouts, salvamento legado, sete tatuagens, sinopses, dez fases via atalho, Blade/família e infinito aprovados. Offline WebKit: servidor HTTP realmente desligado, biblioteca, sinopses, retrato, infinito, Tatuagens e atlas novo renderizado.
+- Integridade: oito originais SHA-256, vinte sprites de tatuagens, 74 bordas VFX seguras e 26 arquivos de arte/áudio/narrativa protegidos inalterados.
+- Build local oficial `704852711ac5`, QA `20fec01d65ad`, 171 arquivos; JS 312,72 kB (101,23 gzip), CSS 68,49 kB (15,20 gzip). Textura de 1536 × 1920, aproximadamente 873 kB. Sem nova dependência de execução. CI do Pages usa a base `/viva/` e produz seu próprio hash.
+- Sem iPhone físico ou nova audição crítica. Detalhes, arquivos e limitações dos atlas: [VFX_FINAL.md](VFX_FINAL.md). A verificação pós-publicação usa `tests/published-vfx.ts` e salva `test-results/published-vfx-report.json`.
+
+---
+
 # Evolução da campanha — 27/10/2026
 
 - Recuperação: `viva-pre-campaign-evolution-20261027` / `04824ac`; trabalho em `codex/campaign-evolution`. Não publicado.

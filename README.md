@@ -4,6 +4,8 @@ Um joguinho pra viver e passar o tempo: dez fases Match-3, dez livros em ordem a
 
 ## Evolução da campanha — versão atual
 
+Revisão posterior dos efeitos: 74 recortes curados, sequências florais completas, impactos nas peças e vórtice multicolorido maior. A engrenagem **Configurações** conserva o som e inclui **Novo jogo**, com confirmação antes de reiniciar o progresso. Detalhes, comparação, evidências e limites: [VFX_FINAL.md](VFX_FINAL.md).
+
 Tatuagens substitui Cinema no índice 9, com cenário próprio e sete desenhos pessoais. A campanha agora varia tipos, metas e criação progressiva de poderes; o tabuleiro permanece 7 × 8. Novos quadros de VFX e feixes móveis integram o Canvas existente. Recompensas apresentam capa/título/autor; sinopses ficam na biblioteca. Livros usam apoio e oclusão específicos por estágio da estante. Partidas antigas conservam suas regras até terminar, e o áudio aprovado continua sem trilha de fundo.
 
 Implementação, tabela das dez fases, assets, evidências, testes e limitações: [CAMPANHA.md](CAMPANHA.md). Ponto de restauração: `viva-pre-campaign-evolution-20261027`. Sem publicação automática.

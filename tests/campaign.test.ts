@@ -115,9 +115,9 @@ test("power front arrival and disappearance are spatially consistent, including 
 test("native frame sequences have varying durations and fixed-square storage without runtime axis stretching", () => {
   for (const seq of Object.values(vfxAtlas.sequences)) {
     assert.equal(seq.frames.length, seq.durations.length);
-    assert.ok(seq.frames.length >= 5);
-    assert.ok(new Set(seq.durations).size > 1);
-    assert.ok(seq.frames.every((i) => i >= 0 && i < 64));
+    assert.ok(seq.frames.length === 1 || seq.frames.length >= 7);
+    if (seq.frames.length > 1) assert.ok(new Set(seq.durations).size > 1);
+    assert.ok(seq.frames.every((i) => i >= 0 && i < 80));
   }
 });
 test("each evolution has deterministic shelf support, bounded art and exactly ten collectible destinations", () => {

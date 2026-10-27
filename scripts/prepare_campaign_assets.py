@@ -178,4 +178,8 @@ for i,(name,image) in enumerate(zip(ids,tiles)):
     x=(i%5)*160;y=(i//5)*185;gallery.paste(image,(x,y),image);d.text((x+5,y+163),name,fill='#fff1d5')
 gallery.save(report_dir/'tattoo-sprites.png')
 preview=Image.new('RGBA',sheet.size,'#153429');preview.alpha_composite(sheet);preview.convert('RGB').save(report_dir/'vfx-sequences.png')
+
+# The new curated pipeline supersedes the historical conservative VFX cuts above.
+import subprocess
+subprocess.run([sys.executable,str(root/'scripts/prepare_vfx.py')],check=True)
 print(json.dumps(dict(originals=len(inventory),tattooSprites=len(tiles),active=active,vfxFrames=len(all_frames),sheet=sheet.size),ensure_ascii=False))

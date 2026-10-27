@@ -140,14 +140,6 @@ class BoardVfx {
     for (const index of wave.clear) {
       const p = this.cell(index),
         kind = board[index].kind;
-      const origin = wave.effects[0];
-      const distance = origin
-        ? origin.type === "row"
-          ? Math.abs((index % 7) - (origin.index % 7))
-          : origin.type === "column"
-            ? Math.abs(Math.floor(index / 7) - Math.floor(origin.index / 7))
-            : 0
-        : 0;
       for (
         let j = 0;
         j < perCell && emitted < profile.burstLimit;
@@ -294,30 +286,14 @@ class BoardVfx {
       ) {
         ctx.drawImage(this.images[p.sprite], -size, -size, size * 2, size * 2);
       } else if (p.type === "petal") {
-        ctx.beginPath();
-        ctx.moveTo(0, -size);
-        ctx.bezierCurveTo(size * 1.2, -size * 0.5, size, size * 0.8, 0, size);
-        ctx.bezierCurveTo(
-          -size,
-          size * 0.8,
-          -size * 1.2,
-          -size * 0.5,
-          0,
-          -size,
+        this.atlas.particle(
+          ctx,
+          p.sprite % 2 === 0 ? "leaf" : "petal",
+          size * 1.25,
+          fade * 0.95,
         );
-        ctx.fill();
       } else {
-        ctx.beginPath();
-        ctx.moveTo(0, -size);
-        ctx.lineTo(size * 0.3, -size * 0.3);
-        ctx.lineTo(size, 0);
-        ctx.lineTo(size * 0.3, size * 0.3);
-        ctx.lineTo(0, size);
-        ctx.lineTo(-size * 0.3, size * 0.3);
-        ctx.lineTo(-size, 0);
-        ctx.lineTo(-size * 0.3, -size * 0.3);
-        ctx.closePath();
-        ctx.fill();
+        this.atlas.particle(ctx, "spark", size, fade * 0.9);
       }
       ctx.restore();
     }
