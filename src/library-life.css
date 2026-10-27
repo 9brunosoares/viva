@@ -1,0 +1,280 @@
+/* Room-relative light pools respect the original window, curtain and lamp.
+   The illustration stays still: there are no usable depth layers for parallax. */
+.library-alive .library-atmosphere {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+  contain: layout paint;
+  transition: opacity 0.28s ease;
+}
+.library-light-entry {
+  position: absolute;
+  inset: 0;
+  animation: library-light-arrival 900ms ease-out both;
+}
+.library-window-light,
+.library-lamp-light {
+  position: absolute;
+  inset: 0;
+}
+.library-window-light {
+  background: radial-gradient(
+    ellipse 13% 24% at var(--window-x) var(--window-y),
+    #fff0c730,
+    #fff0c700 100%
+  );
+  animation: library-daylight 17s ease-in-out infinite alternate;
+}
+.library-lamp-light {
+  background: radial-gradient(
+    ellipse 12% 8% at var(--lamp-x) var(--lamp-y),
+    #ffe7b02b,
+    #ffe7b000 100%
+  );
+  opacity: 0.65;
+  animation: library-lamplight 13s -6s ease-in-out infinite alternate;
+}
+.library-dust {
+  position: absolute;
+  inset: 0;
+}
+.library-dust i {
+  position: absolute;
+  border-radius: 50%;
+  background: #fff3ce;
+  opacity: 0;
+  animation: library-drift ease-in-out infinite;
+}
+/* Keep collectibles above decoration without changing their shelf coordinates. */
+.library-alive .shelf-books {
+  z-index: 2;
+}
+.library-alive .shelf-books button img {
+  transition:
+    transform 0.23s cubic-bezier(0.22, 0.7, 0.3, 1),
+    filter 0.23s ease;
+  transform-origin: center bottom;
+}
+.library-alive .shelf-books button:active img,
+.library-alive .shelf-books .book-selected img {
+  transform: translateY(-4px) scale(1.035);
+  filter: drop-shadow(1px 3px 2px #2c170c80) brightness(1.07);
+}
+.library-alive .shelf-books .book-arriving img {
+  animation: library-book-arrival 1200ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+.library-alive .shelf-books .book-arriving::before {
+  background: radial-gradient(ellipse at center, #ffe9af50, #ffe9af00 72%);
+  animation: library-book-glow 1400ms ease-out both;
+}
+.book-backdrop {
+  animation: library-dialog-shade 180ms ease-out both;
+}
+.book-viewer.book-modal {
+  animation: library-book-open 260ms cubic-bezier(0.22, 0.7, 0.3, 1) both;
+}
+.library-alive .blade-layer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 100%;
+  pointer-events: none;
+}
+.library-alive .blade-layer img {
+  animation: none;
+}
+.library-alive .blade-current {
+  animation: library-pose-in 400ms ease-out both;
+}
+.library-alive .blade-resting {
+  animation:
+    library-pose-in 400ms ease-out both,
+    library-breath 6.8s ease-in-out infinite;
+}
+.library-alive .blade-transition {
+  animation: library-pose-in 240ms ease-in-out both;
+}
+.library-alive .blade-transition.blade-resting {
+  animation:
+    library-pose-in 240ms ease-in-out both,
+    library-breath 6.8s 0.24s ease-in-out infinite;
+}
+.library-alive .blade-previous {
+  animation: library-pose-out 240ms ease-in-out both;
+}
+.library-alive .blade-content img {
+  animation: library-content 600ms ease-out both;
+}
+/* Static reflected window light, only after the portrait exists. No pulsing. */
+.library-alive .family-frame::before {
+  content: "";
+  position: absolute;
+  inset: 8% 17% 20% 18%;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(115deg, #fff0c918, transparent 42%);
+}
+.library-alive[data-attention="focused"] .library-atmosphere,
+.library-alive:has(.blade-context.is-open) .library-atmosphere,
+.app:has(.audio-panel) .library-atmosphere {
+  opacity: 0.25;
+}
+.library-alive[data-ambient="paused"] .library-atmosphere *,
+.library-alive[data-ambient="paused"] .blade-layer,
+.library-alive[data-ambient="paused"] .blade-layer img,
+.library-alive:has(.blade-context.is-open) .library-atmosphere * {
+  animation-play-state: paused;
+}
+.library-alive[data-motion="limited"] .library-window-light,
+.library-alive[data-motion="limited"] .library-lamp-light,
+.library-alive[data-motion="still"] .library-atmosphere * {
+  animation: none;
+}
+.library-alive[data-motion="still"] .blade-layer,
+.library-alive[data-motion="still"] .blade-layer img,
+.library-alive[data-motion="still"] .book-arriving img,
+.library-alive[data-motion="still"] .book-arriving::before {
+  animation: none;
+}
+@keyframes library-daylight {
+  from {
+    opacity: 0.58;
+  }
+  to {
+    opacity: 0.82;
+  }
+}
+@keyframes library-lamplight {
+  from {
+    opacity: 0.6;
+  }
+  to {
+    opacity: 0.75;
+  }
+}
+@keyframes library-light-arrival {
+  from {
+    opacity: 0.3;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes library-drift {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+  24% {
+    opacity: 0.21;
+  }
+  72% {
+    opacity: 0.13;
+  }
+  95% {
+    opacity: 0;
+    transform: translate3d(var(--drift), -20px, 0);
+  }
+}
+@keyframes library-breath {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(1.006);
+  }
+}
+@keyframes library-pose-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes library-pose-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes library-content {
+  from {
+    opacity: 0.88;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes library-book-arrival {
+  0% {
+    opacity: 0;
+    transform: translateY(5px) scale(0.97);
+  }
+  65% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: brightness(1.12) drop-shadow(1px 1px 1px #2c170c80);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes library-book-glow {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  45% {
+    opacity: 0.75;
+  }
+}
+@keyframes library-dialog-shade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes library-book-open {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .library-alive .library-atmosphere *,
+  .library-alive .blade-layer,
+  .library-alive .blade-layer img,
+  .library-alive .shelf-books .book-arriving img,
+  .library-alive .shelf-books .book-arriving::before,
+  .book-backdrop,
+  .book-viewer.book-modal {
+    animation: none;
+  }
+  .library-alive .shelf-books button img {
+    transition: none;
+  }
+  .library-alive .shelf-books button:active img,
+  .library-alive .shelf-books .book-selected img {
+    transform: none;
+  }
+}
+.reduced .book-backdrop,
+.reduced .book-viewer.book-modal {
+  animation: none;
+}

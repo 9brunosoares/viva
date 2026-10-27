@@ -94,15 +94,36 @@ for (let stage = 1; stage <= 10; stage++) {
           .querySelector("button")
           ?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
-    await page.waitForFunction(
-      (previous: string) =>
-        !document.querySelector(".board") ||
-        (document.querySelector(".board")?.getAttribute("aria-busy") ===
-          "false" &&
-          document.querySelector(".moves strong")?.textContent !== previous),
-      remaining,
-      { timeout: 12000 },
-    );
+    await page
+      .waitForFunction(
+        (previous: string) =>
+          !document.querySelector(".board") ||
+          (document.querySelector(".board")?.getAttribute("aria-busy") ===
+            "false" &&
+            document.querySelector(".moves strong")?.textContent !== previous),
+        remaining,
+        { timeout: 12000 },
+      )
+      .catch(async (error: Error) => {
+        await page.screenshot({ path: "test-results/campaign-failure.png" });
+        console.log({
+          stage,
+          choice,
+          remaining,
+          state: await page.evaluate(() => ({
+            busy: document.querySelector(".board")?.getAttribute("aria-busy"),
+            moves: document.querySelector(".moves strong")?.textContent,
+            selected: document
+              .querySelector(".tile.selected")
+              ?.getAttribute("aria-label"),
+            message: document.querySelector(".game-message")?.textContent,
+            saved: localStorage.getItem("viva-session-v1"),
+          })),
+          errors,
+        });
+        await browser.close();
+        throw error;
+      });
     totalMoves++;
     assert.ok(totalMoves < 1800);
   }

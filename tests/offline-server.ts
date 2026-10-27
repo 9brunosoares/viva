@@ -4,6 +4,7 @@ import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { resolve, extname } from "node:path";
 import assert from "node:assert/strict";
 import { waitForCache } from "./boardHelper.ts";
+import { tile, moves, type Special } from "../src/engine";
 const require = createRequire(import.meta.url),
   { webkit } = require("playwright");
 const root = resolve("dist"),
@@ -15,6 +16,8 @@ const root = resolve("dist"),
     ".png": "image/png",
     ".json": "application/json",
     ".webmanifest": "application/manifest+json",
+    ".mp3": "audio/mpeg",
+    ".wav": "audio/wav",
   };
 const server = createServer(async (req, res) => {
   try {
@@ -37,7 +40,13 @@ const server = createServer(async (req, res) => {
 await new Promise<void>((r) => server.listen(4199, "127.0.0.1", r));
 const browser = await webkit.launch({ headless: true });
 try {
-  const page = await browser.newPage();
+  const page = await browser.newPage({
+    viewport: { width: 390, height: 844 },
+    isMobile: true,
+    hasTouch: true,
+  });
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("http://127.0.0.1:4199/viva-test/");
   await waitForCache(page);
   await page.reload();
@@ -71,6 +80,14 @@ try {
   await page
     .locator(".room-image")
     .evaluate((img: HTMLImageElement) => img.decode());
+  assert.equal(await page.locator(".library-atmosphere").count(), 1);
+  assert.equal(await page.locator(".library-dust i").count(), 8);
+  await page.locator(".shelf-books button").first().click();
+  await page.getByRole("button", { name: "Ler sinopse", exact: true }).click();
+  assert.ok((await page.locator(".book-synopsis p").innerText()).length > 200);
+  await page
+    .getByRole("button", { name: "Voltar à biblioteca", exact: true })
+    .click();
   await page
     .locator(".family-frame img")
     .evaluate((img: HTMLImageElement) => img.decode());
@@ -81,6 +98,39 @@ try {
     .locator(".portrait-modal img")
     .evaluate((img: HTMLImageElement) => img.decode());
   await page.screenshot({ path: "test-results/webkit-no-server.png" });
+  await page
+    .getByRole("button", { name: "Guardar este carinho", exact: true })
+    .click();
+  await page
+    .getByRole("button", { name: "Modo infinito", exact: true })
+    .click();
+  await page.locator(".tile").first().waitFor();
+  const tiles = await page.locator(".tile").evaluateAll((els) =>
+    els.map((el) => ({
+      kind: Number((el as HTMLElement).dataset.kind),
+      special: (el as HTMLElement).dataset.special,
+    })),
+  );
+  const [a, b] = moves(tiles.map((t) => tile(t.kind, t.special as Special)))[0];
+  await page.locator(".tile").nth(a).click();
+  await page.locator(".tile").nth(b).click();
+  await page.waitForFunction(
+    () =>
+      Number(
+        document.querySelector<HTMLElement>(".game-vfx")?.dataset.emissions,
+      ) > 0,
+  );
+  await page.waitForFunction(
+    () =>
+      document.querySelector(".board")?.getAttribute("aria-busy") === "false",
+  );
+  await page
+    .locator(".tile img")
+    .evaluateAll((imgs) =>
+      Promise.all(imgs.map((img) => (img as HTMLImageElement).decode())),
+    );
+  assert.equal(await page.locator(".tile").count(), 56);
+  assert.deepEqual(errors, []);
   await mkdir("test-results", { recursive: true });
   await writeFile(
     "test-results/webkit-no-server-report.json",
@@ -90,6 +140,8 @@ try {
         reloadFromCache: true,
         libraryImageCached: true,
         officialPortraitCached: true,
+        animatedGameplayOffline: true,
+        errors,
         ...before,
       },
       null,
@@ -97,7 +149,7 @@ try {
     ),
   );
   console.log(
-    "WebKit: navigation and library loaded from cache with HTTP server stopped.",
+    "WebKit: library and animated gameplay loaded from cache with HTTP server stopped.",
   );
 } finally {
   server.close();

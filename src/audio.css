@@ -1,0 +1,131 @@
+.audio-control {
+  position: fixed;
+  z-index: 120;
+  right: max(12px, calc((100vw - 480px) / 2 + 12px));
+  bottom: max(12px, env(safe-area-inset-bottom));
+  width: 44px;
+  height: 44px;
+}
+.audio-toggle {
+  display: block;
+  min-height: 44px;
+  width: 44px;
+  height: 44px;
+  padding: 11px;
+  border-radius: 50%;
+  background: #fff7e8e8;
+  color: #35553d;
+  border: 1px solid #c7ad79b8;
+  box-shadow: 0 2px 7px #24332426;
+}
+.audio-toggle svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.audio-control-top,
+.audio-control-hub,
+.audio-control-modal {
+  top: max(12px, env(safe-area-inset-top));
+  bottom: auto;
+}
+.audio-control-hub {
+  top: max(108px, calc(env(safe-area-inset-top) + 96px));
+}
+.audio-control-modal {
+  right: auto;
+  left: max(12px, calc((100vw - 480px) / 2 + 12px));
+}
+.portrait-fallback .audio-control {
+  right: 12px;
+}
+.portrait-fallback .audio-control-modal {
+  left: 12px;
+  right: auto;
+}
+.audio-panel {
+  position: absolute;
+  top: 52px;
+  right: 0;
+  width: min(244px, calc(100vw - 24px));
+  padding: 8px 14px 14px;
+  background: #fff7eafc;
+  color: #35533c;
+  border: 1px solid #cbb586;
+  border-radius: 18px;
+  box-shadow: 0 8px 26px #142e3540;
+}
+.audio-control-game .audio-panel {
+  top: auto;
+  bottom: 52px;
+}
+.audio-control-modal .audio-panel {
+  right: auto;
+  left: 0;
+}
+.audio-panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.audio-panel-heading button {
+  min-height: 44px;
+  width: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-size: 24px;
+}
+.audio-channel {
+  padding: 3px 0 8px;
+}
+.audio-channel > button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 44px;
+  width: 100%;
+  padding: 6px 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+}
+.audio-channel input {
+  display: block;
+  width: 100%;
+  height: 28px;
+  margin: 0;
+  accent-color: #557657;
+}
+.audio-switch {
+  display: block;
+  width: 40px;
+  height: 24px;
+  border-radius: 20px;
+  background: #c9c0ad;
+  padding: 3px;
+}
+.audio-switch i {
+  display: block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fffaf0;
+  box-shadow: 0 1px 3px #32433040;
+}
+.audio-channel [aria-checked="true"] .audio-switch {
+  background: #668468;
+}
+.audio-channel [aria-checked="true"] .audio-switch i {
+  transform: translateX(16px);
+}
+.audio-master {
+  width: 100%;
+  min-height: 44px;
+  padding: 8px;
+  border-radius: 12px;
+  background: #eee5d3;
+  border: 0;
+  font-size: 14px;
+  margin-top: 4px;
+}

@@ -19,6 +19,12 @@ for (const difficulty of ["easy", "medium", "hard"] as Difficulty[]) {
       activated = 0,
       created = 0,
       reshuffles = 0;
+    let legalSum = 0,
+      states = 0,
+      minLegal = Infinity,
+      wavesTotal = 0,
+      maxWaves = 0;
+    const exposure = [0, 0, 0, 0, 0, 0];
     const attempts = Number(process.env.BALANCE_SAMPLES || 24);
     for (let seed = 1; seed <= attempts; seed++) {
       let state = seed * 9127 + base.id * 701;
@@ -32,6 +38,10 @@ for (const difficulty of ["easy", "medium", "hard"] as Difficulty[]) {
         cascades = 0;
       for (let turn = 0; turn < level.moves; turn++) {
         const options = moves(board);
+        legalSum += options.length;
+        states++;
+        minLegal = Math.min(minLegal, options.length);
+        board.forEach((t) => exposure[t.kind]++);
         if (!options.length) throw Error("unplayable board");
         const choice = options
           .map(([a, b]) => {
@@ -88,6 +98,8 @@ for (const difficulty of ["easy", "medium", "hard"] as Difficulty[]) {
           }
         }
         const next = ensurePlayable(board, rng);
+        wavesTotal += depth;
+        maxWaves = Math.max(maxWaves, depth);
         if (next !== board) reshuffles++;
         board = next;
         played++;
@@ -112,6 +124,13 @@ for (const difficulty of ["easy", "medium", "hard"] as Difficulty[]) {
       createdPerGame: Math.round((created / attempts) * 10) / 10,
       activatedPerGame: Math.round((activated / attempts) * 10) / 10,
       reshuffles,
+      meanLegalMoves: Math.round((legalSum / states) * 100) / 100,
+      minLegalMoves: minLegal,
+      meanWavesPerMove: Math.round((wavesTotal / played) * 100) / 100,
+      maxWaves,
+      stableBoardPieceExposure: exposure.map(
+        (n) => Math.round((n / (states * 56)) * 10000) / 10000,
+      ),
     });
   }
   console.log(

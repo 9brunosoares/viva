@@ -9,3 +9,5 @@ audit.jpg
 dist-qa/
 fotos/
 scripts/__pycache__/
+.audio-tools/
+.audio-render/

@@ -6,6 +6,7 @@ import { asset } from "../src/config";
 import ComboEffects from "../src/ComboEffects";
 import { useReducedMotion } from "../src/useReducedMotion";
 import "../src/style.css";
+import "../src/gameplay-vfx.css";
 const mode = new URLSearchParams(location.search).get("type") || "row";
 let seed = 123;
 const board = createBoard(() => {

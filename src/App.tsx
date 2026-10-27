@@ -12,7 +12,14 @@ import {
   milestoneStage,
 } from "./progress";
 import Game from "./Game";
-import { sound, unlockAudio } from "./audio";
+import {
+  sound,
+  unlockAudio,
+  audioDirector,
+  readAudioPreferences,
+  AUDIO_KEY,
+} from "./audio";
+import SoundToggle from "./SoundToggle";
 import { useReducedMotion } from "./useReducedMotion";
 import { BRUNO_SIGNATURE } from "./narrative";
 import { useDialog } from "./useDialog";
@@ -29,6 +36,7 @@ import {
 import { usePortrait } from "./usePortrait";
 import BladeCompanion from "./BladeCompanion";
 import StageIntro from "./StageIntro";
+import LibraryAtmosphere, { useLibraryActivity } from "./LibraryAtmosphere";
 import {
   GameSession,
   GameSnapshot,
@@ -95,6 +103,9 @@ export default function App() {
         ? "Não foi possível recuperar suas conquistas."
         : "",
     );
+  const [audioPrefs, setAudioPrefs] = useState(() =>
+    readAudioPreferences(initial.current!.progress.sound),
+  );
   const [screen, setScreen] = useState<Screen>(() =>
       initial.current!.progress.pendingCelebration
         ? initial.current!.progress.pendingCelebration.step === "book"
@@ -129,6 +140,49 @@ export default function App() {
   const titleFor = (id: number) =>
     id === 5 && bladeKnown ? "Blade" : levels[id - 1].name;
   const reduced = useReducedMotion();
+  const libraryActivity = useLibraryActivity(screen === "library", reduced);
+  const [arrivingBook, setArrivingBook] = useState<number | null>(
+    () => initial.current!.progress.pendingCelebration?.bookId ?? null,
+  );
+  const [bookArrival, setBookArrival] = useState<number | null>(null);
+  useEffect(() => {
+    if (screen !== "library" || arrivingBook === null) return;
+    setBookArrival(arrivingBook);
+    setArrivingBook(null);
+  }, [screen, arrivingBook]);
+  useEffect(() => {
+    if (bookArrival === null) return;
+    if (screen !== "library") {
+      setBookArrival(null);
+      return;
+    }
+    const timer = window.setTimeout(
+      () => setBookArrival(null),
+      reduced ? 0 : 1400,
+    );
+    return () => clearTimeout(timer);
+  }, [screen, bookArrival, reduced]);
+  useEffect(() => {
+    audioDirector.configure(audioPrefs);
+    try {
+      localStorage.setItem(AUDIO_KEY, JSON.stringify(audioPrefs));
+    } catch {}
+  }, [audioPrefs]);
+  useEffect(() => {
+    audioDirector.prepare();
+    const visibility = () => audioDirector.visibility(document.hidden);
+    const hide = () => audioDirector.visibility(true);
+    const show = () => audioDirector.visibility(document.hidden);
+    document.addEventListener("visibilitychange", visibility);
+    window.addEventListener("pagehide", hide);
+    window.addEventListener("pageshow", show);
+    return () => {
+      document.removeEventListener("visibilitychange", visibility);
+      window.removeEventListener("pagehide", hide);
+      window.removeEventListener("pageshow", show);
+      audioDirector.dispose();
+    };
+  }, []);
   useEffect(() => {
     window.scrollTo(0, 0);
     const heading = document.querySelector<HTMLElement>(".app>section h1");
@@ -200,6 +254,7 @@ export default function App() {
     setFirstGift(first && count === 0);
     setGiftIntro(first && count === 0);
     setReward(first ? progress.order[count] : null);
+    if (first) setArrivingBook(progress.order[count]);
     if (!infinite) setProgress((p) => complete(p, stage));
     setScreen("reward");
   }
@@ -254,7 +309,7 @@ export default function App() {
       ) : screen === "celebration" ? (
         <Celebration
           kind={progress.pendingCelebration?.kind ?? "blade"}
-          audio={true}
+          audio={!audioPrefs.muted && audioPrefs.effects > 0}
           onFinish={finishCelebration}
         />
       ) : screen === "home" ? (
@@ -418,7 +473,22 @@ export default function App() {
             </button>
           )}
           <div className="library-stage">
-            <div className={`library-room ${bladeKnown ? "has-blade" : ""}`}>
+            <div
+              className={`library-room library-alive ${bladeKnown ? "has-blade" : ""}`}
+              data-stage={libraryState(count)}
+              data-ambient={
+                libraryActivity.active &&
+                book === null &&
+                !portrait &&
+                !difficultyOpen
+                  ? "active"
+                  : "paused"
+              }
+              data-motion={libraryActivity.mode}
+              data-attention={
+                book !== null || portrait || difficultyOpen ? "focused" : "room"
+              }
+            >
               <img
                 className="room-image"
                 src={asset(`library-${libraryState(count)}`)}
@@ -426,10 +496,15 @@ export default function App() {
                 height={756}
                 alt={`Seu recanto de leitura, evolução ${libraryState(count) + 1} de 4`}
               />
+              <LibraryAtmosphere
+                stage={libraryState(count)}
+                limited={libraryActivity.mode !== "full"}
+              />
               <div className="shelf-books">
                 {acquired.map((id, i) => (
                   <button
                     key={id}
+                    className={`${book === id ? "book-selected" : ""} ${bookArrival === id ? "book-arriving" : ""}`}
                     style={{
                       left: `${positions[i].left}%`,
                       bottom: `${positions[i].bottom}%`,
@@ -604,6 +679,23 @@ export default function App() {
           </div>
         </div>
       )}
+      <SoundToggle
+        position={
+          book !== null || portrait
+            ? "modal"
+            : screen === "library"
+              ? "hub"
+              : screen === "game"
+                ? "game"
+                : "top"
+        }
+        preferences={audioPrefs}
+        onChange={(next, event) => {
+          audioDirector.configure(next);
+          setAudioPrefs(next);
+          if (!next.muted) unlockAudio(event);
+        }}
+      />
     </main>
   );
 }

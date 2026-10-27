@@ -13,12 +13,28 @@ import {
   COLS,
   Wave,
   tile,
+  adjacent,
 } from "./engine";
 import type { GameSnapshot } from "./session";
-import { sound } from "./audio";
+import { sound, waveSound } from "./audio";
 import { useDialog } from "./useDialog";
 import ComboEffects from "./ComboEffects";
 import { hapticPower } from "./haptics";
+import { useTileMotion, MotionPhase } from "./useTileMotion";
+import { useGameVfx } from "./useGameVfx";
+import { feedbackProfile, fallWait } from "./vfx";
+import { TurnSequence } from "./TurnSequence";
+import { useBoardInput } from "./useBoardInput";
+import { chooseHint } from "./hint";
+
+type TurnPhase =
+  | "idle"
+  | "swapping"
+  | "resolving"
+  | "falling"
+  | "recovering"
+  | "completing"
+  | "transitioning";
 type Props = {
   level: Level;
   audio: boolean;
@@ -45,9 +61,16 @@ export default function Game({
       : createBoard(),
   );
   const current = useRef(board);
-  const [selected, select] = useState<number | null>(null),
-    [busy, setBusy] = useState(false),
+  const [selected, setSelected] = useState<number | null>(null),
+    [phase, setPhase] = useState<TurnPhase>("idle"),
     [clearing, setClearing] = useState<number[]>([]);
+  const busy = phase !== "idle";
+  const selection = useRef<number | null>(null);
+  function select(index: number | null) {
+    selection.current = index;
+    setSelected(index);
+  }
+  const sequence = useRef(new TurnSequence());
   const lock = useRef(false),
     alive = useRef(true),
     [remaining, setRemaining] = useState(
@@ -62,7 +85,16 @@ export default function Game({
     [lost, setLost] = useState(!endless && initialSnapshot?.remaining === 0),
     [message, setMessage] = useState("Combine 3 peças iguais. Sem pressa.");
   const [hint, setHint] = useState<number[]>([]),
-    [offset, setOffset] = useState<Record<number, number>>({});
+    [invalid, setInvalid] = useState<number[]>([]);
+  const [waveVisual, setWaveVisual] = useState<{
+    id: number;
+    tier: number;
+    depth: number;
+    powers: number;
+    power?: Wave["effects"][number]["type"];
+    clearMs: number;
+  } | null>(null);
+  const waveSerial = useRef(0);
   const [effects, setEffects] = useState<Wave["effects"]>([]),
     [created, setCreated] = useState<number[]>([]);
   const [effectCount, setEffectCount] = useState(0);
@@ -72,39 +104,70 @@ export default function Game({
     [],
   );
   const [round, setRound] = useState(initialSnapshot?.round ?? 1);
-  const drag = useRef<{ i: number; x: number; y: number } | null>(null),
-    suppress = useRef(false);
-  const grid = useRef<HTMLDivElement>(null),
-    previous = useRef(board);
-  useLayoutEffect(() => {
-    if (motion && grid.current) {
-      const positions = new Map(previous.current.map((t, i) => [t.id, i]));
-      Array.from(grid.current.children).forEach((node, i) => {
-        const before = positions.get(board[i].id);
-        if (before === undefined || before === i) return;
-        const el = node as HTMLElement;
-        el.animate(
-          [
-            {
-              transform: `translate(${((before % COLS) - (i % COLS)) * (el.offsetWidth + 3)}px,${(Math.floor(before / COLS) - Math.floor(i / COLS)) * (el.offsetHeight + 3)}px)`,
-            },
-            { transform: "translate(0,0)" },
-          ],
-          { duration: 170, easing: "ease-out" },
-        );
-      });
-    }
-    previous.current = board;
-  }, [board, motion]);
-  useEffect(
-    () => () => {
-      alive.current = false;
+  const [recovery, setRecovery] = useState<"out" | "in" | null>(null);
+  const [activity, setActivity] = useState(0);
+  const manualHint = useRef(false);
+  function interact() {
+    manualHint.current = false;
+    setHint([]);
+    setActivity((n) => n + 1);
+  }
+  const input = useBoardInput({
+    enabled: !busy && !paused && !lost,
+    canInteract: () => !lock.current && !paused && !lost,
+    onTap: tap,
+    onSwap: (a, b) => {
+      void play(a, b);
     },
-    [],
-  );
+    onActivity: interact,
+  });
+  const grid = useRef<HTMLDivElement>(null),
+    screen = useRef<HTMLElement>(null),
+    canvas = useRef<HTMLCanvasElement>(null);
+  const motionPhase = useRef<MotionPhase>({ kind: "spawn", depth: 0 });
+  const animateTile = useTileMotion(grid, board, motion, motionPhase);
+  const vfx = useGameVfx(canvas, screen, grid, level.id, motion);
+  const soundedWave = useRef(0),
+    soundedBirth = useRef(created);
+  useLayoutEffect(() => {
+    if (alive.current && waveVisual && soundedWave.current !== waveVisual.id) {
+      soundedWave.current = waveVisual.id;
+      waveSound(audio, waveVisual, motion);
+    }
+  }, [waveVisual, audio, motion]);
+  useLayoutEffect(() => {
+    if (alive.current && created.length && soundedBirth.current !== created)
+      sound(audio, "create");
+    soundedBirth.current = created;
+  }, [created, audio, motion]);
+  useEffect(() => {
+    alive.current = true;
+    // A legacy or interrupted save may contain a stable board with no legal move.
+    if (!lost && !moves(current.current).length) {
+      const turn = sequence.current.begin();
+      lock.current = true;
+      setPhase("recovering");
+      setRecovery("out");
+      setMessage("Peças novas, novas chances.");
+      void (async () => {
+        if (!(await wait(140, turn))) return;
+        motionPhase.current = { kind: "reset", depth: 0 };
+        setRecovery("in");
+        show(ensurePlayable(current.current));
+        if (!(await wait(390, turn))) return;
+        lock.current = false;
+        setRecovery(null);
+        setPhase("idle");
+      })();
+    }
+    return () => {
+      alive.current = false;
+      sequence.current.cancel();
+    };
+  }, []);
   useDialog(paused || lost);
   useEffect(() => {
-    if (!busy && !victory)
+    if (!lock.current && !busy && !victory)
       onSnapshot?.({ board, remaining, counts, powers, cascades, round });
   }, [
     board,
@@ -117,14 +180,69 @@ export default function Game({
     victory,
     onSnapshot,
   ]);
-  const wait = (ms: number) =>
-    new Promise((r) => setTimeout(r, motion ? ms : 25));
+  const wait = (ms: number, turn: number) =>
+    sequence.current.wait(motion ? ms : 25, turn);
+  useEffect(() => {
+    if (busy || paused || lost || victory || input.pressed !== null) return;
+    let appear: ReturnType<typeof setTimeout>,
+      fade: ReturnType<typeof setTimeout>;
+    const clear = () => {
+      clearTimeout(appear);
+      clearTimeout(fade);
+      setHint([]);
+    };
+    const arm = () => {
+      clear();
+      if (document.hidden) return;
+      appear = setTimeout(() => {
+        if (lock.current) return;
+        setHint(
+          chooseHint(
+            current.current,
+            level.targets,
+            counts,
+            powers < level.powers,
+          ),
+        );
+        fade = setTimeout(() => setHint([]), 1600);
+      }, 9000);
+    };
+    const manual = manualHint.current;
+    manualHint.current = false;
+    if (manual) fade = setTimeout(() => setHint([]), 1600);
+    else if (selected === null) arm();
+    const visibility = () => {
+      if (manual || selected !== null) clear();
+      else arm();
+    };
+    document.addEventListener("visibilitychange", visibility);
+    return () => {
+      clearTimeout(appear);
+      clearTimeout(fade);
+      document.removeEventListener("visibilitychange", visibility);
+    };
+  }, [
+    board,
+    activity,
+    busy,
+    paused,
+    lost,
+    victory,
+    selected,
+    input.pressed,
+    counts,
+    powers,
+    level,
+  ]);
   function show(b: Board) {
     current.current = b;
     setBoard(b);
   }
   function restart() {
     if (lock.current) return;
+    sequence.current.cancel();
+    setRecovery(null);
+    motionPhase.current = { kind: "reset", depth: 0 };
     show(createBoard());
     setRemaining(level.moves);
     setCounts([0, 0, 0, 0, 0, 0]);
@@ -136,6 +254,8 @@ export default function Game({
     setEffects([]);
     setCreated([]);
     setClearDelays({});
+    setInvalid([]);
+    setWaveVisual(null);
     setLost(false);
     setVictory("");
     setRound(1);
@@ -143,20 +263,42 @@ export default function Game({
     setMessage("Um novo começo. Vamos juntas!");
   }
   async function play(a: number, b: number) {
-    if (lock.current || paused || lost) return;
+    if (lock.current || paused || lost || !adjacent(a, b)) return;
+    const turn = sequence.current.begin();
     lock.current = true;
-    setBusy(true);
+    setPhase("swapping");
     select(null);
     setHint([]);
     const before = current.current;
     if (!validSwap(before, a, b)) {
-      setOffset({ [a]: b - a, [b]: a - b });
-      await wait(160);
-      setOffset({});
+      setInvalid([a, b]);
+      if (motion && grid.current) {
+        const gap = parseFloat(getComputedStyle(grid.current).columnGap) || 0;
+        for (const [from, to] of [
+          [a, b],
+          [b, a],
+        ]) {
+          const el = grid.current.children[from] as HTMLElement;
+          const dx = ((to % COLS) - (from % COLS)) * (el.offsetWidth + gap);
+          const dy =
+            (Math.floor(to / COLS) - Math.floor(from / COLS)) *
+            (el.offsetHeight + gap);
+          animateTile(
+            el,
+            [
+              { transform: "translate(0,0)" },
+              { transform: `translate(${dx}px,${dy}px)`, offset: 0.46 },
+              { transform: "translate(0,0)" },
+            ],
+            { duration: 330, easing: "cubic-bezier(.2,.75,.3,1)" },
+          );
+        }
+      }
+      if (!(await wait(340, turn))) return;
+      setInvalid([]);
       setMessage("Tente outra combinação.");
-      await wait(150);
       lock.current = false;
-      setBusy(false);
+      setPhase("idle");
       return;
     }
     const swapped = swap(before, a, b);
@@ -166,8 +308,9 @@ export default function Game({
         : swapped[b].special === "color"
           ? swapped[a].kind
           : undefined;
+    motionPhase.current = { kind: "swap", depth: 0 };
     show(swapped);
-    await wait(160);
+    if (!(await wait(210, turn))) return;
     let active = [a, b].filter((i) => swapped[i].special);
     let next = swapped;
     let total = counts.slice(),
@@ -175,11 +318,29 @@ export default function Game({
       chain = cascades,
       depth = 0;
     while (matches(next).length || active.length) {
+      setPhase("resolving");
       const wave = resolveWave(
         next,
         b,
         active,
         active.length ? colorKind : undefined,
+      );
+      const profile = feedbackProfile(wave.board, wave, depth);
+      setWaveVisual({
+        id: ++waveSerial.current,
+        tier: profile.tier,
+        depth,
+        powers: wave.powers,
+        power: wave.effects[0]?.type,
+        clearMs: profile.clearMs,
+      });
+      vfx.current?.wave(
+        next,
+        wave,
+        depth,
+        level.targets
+          .filter((t) => total[t.kind] < t.amount && wave.collected[t.kind] > 0)
+          .map((t) => t.kind),
       );
       active = [];
       if (wave.clear.length)
@@ -215,26 +376,7 @@ export default function Game({
         }
       }
       setClearDelays(delays);
-      sound(
-        audio,
-        wave.powers > 1
-          ? "duo"
-          : wave.powers
-            ? "power"
-            : depth >= 2
-              ? "cascade"
-              : "match",
-      );
-      await wait(
-        wave.powers > 1
-          ? 940
-          : wave.effects.some((e) => e.type === "color")
-            ? 860
-            : wave.powers
-              ? 740
-              : 210,
-      );
-      if (!alive.current) return;
+      if (!(await wait(profile.clearMs, turn))) return;
       total = total.map((n, i) => n + wave.collected[i]);
       power += wave.powers;
       if (depth > 0) chain++;
@@ -245,9 +387,18 @@ export default function Game({
       setEffects([]);
       setEffectCount(0);
       setClearDelays({});
-      setCreated(wave.created);
-      if (wave.created.length) sound(audio, "create");
+      setWaveVisual(null);
+      const createdIds = new Set(wave.created.map((i) => wave.board[i].id));
+      const beforeFall = next;
       next = fall(wave.board, wave.clear);
+      const origins = new Map(wave.created.map((i) => [wave.board[i].id, i]));
+      setCreated(next.flatMap((t, i) => (createdIds.has(t.id) ? [i] : [])));
+      motionPhase.current = {
+        kind: "fall",
+        depth,
+        origins,
+      };
+      setPhase("falling");
       show(next);
       depth++;
       setMessage(
@@ -257,18 +408,43 @@ export default function Game({
             ? `${depth} combinações em sequência!`
             : "Que bela combinação!",
       );
-      await wait(190);
+      const stepY =
+        ((grid.current?.firstElementChild as HTMLElement | null)
+          ?.offsetHeight ?? 44) +
+        (grid.current
+          ? parseFloat(getComputedStyle(grid.current).rowGap) || 0
+          : 0);
+      if (
+        !(await wait(
+          fallWait(beforeFall, next, origins, depth - 1, stepY),
+          turn,
+        ))
+      )
+        return;
       setCreated([]);
       if (depth >= 80) {
+        setPhase("recovering");
+        setRecovery("in");
+        motionPhase.current = { kind: "reset", depth: 0 };
         next = createBoard();
         show(next);
+        setMessage("Peças novas, novas chances.");
+        if (!(await wait(390, turn))) return;
+        setRecovery(null);
         break;
       }
     }
     const playable = ensurePlayable(next);
     if (playable !== next) {
-      show(playable);
+      setPhase("recovering");
+      setRecovery("out");
       setMessage("Peças novas, novas chances.");
+      if (!(await wait(140, turn))) return;
+      motionPhase.current = { kind: "reset", depth: 0 };
+      setRecovery("in");
+      show(playable);
+      if (!(await wait(390, turn))) return;
+      setRecovery(null);
     }
     const left = remaining - 1;
     setRemaining(left);
@@ -276,21 +452,13 @@ export default function Game({
       level.targets.every((t) => total[t.kind] >= t.amount) &&
       power >= level.powers &&
       chain >= level.cascades;
-    if (!won)
-      onSnapshot?.({
-        board: playable,
-        remaining: left,
-        counts: total,
-        powers: power,
-        cascades: chain,
-        round,
-      });
     if (won) {
+      setPhase("completing");
       sound(audio, "win");
       setVictory("shine");
       setMessage("Conseguiu!");
-      await new Promise((r) => setTimeout(r, depth >= 4 ? 2600 : 2200));
-      if (!alive.current) return;
+      if (!(await sequence.current.wait(depth >= 4 ? 2600 : 2200, turn)))
+        return;
       if (endless) {
         setCounts([0, 0, 0, 0, 0, 0]);
         setPowers(0);
@@ -299,26 +467,19 @@ export default function Game({
         setRemaining(level.moves);
         setVictory("");
         setMessage("Mais um momento de alegria. Sem pressa.");
-        onSnapshot?.({
-          board: playable,
-          remaining: level.moves,
-          counts: [0, 0, 0, 0, 0, 0],
-          powers: 0,
-          cascades: 0,
-          round: round + 1,
-        });
       } else {
+        setPhase("transitioning");
         setVictory("leave");
-        await wait(320);
-        if (alive.current) onWin();
+        if (await wait(320, turn)) onWin();
         return;
       }
     } else if (left <= 0 && !endless) setLost(true);
     lock.current = false;
-    setBusy(false);
+    setPhase("idle");
   }
   function tap(i: number) {
     if (lock.current || paused || lost) return;
+    const selected = selection.current;
     sound(audio, "select");
     if (selected === null) {
       select(i);
@@ -334,11 +495,16 @@ export default function Game({
         Math.abs(selected - i) === 1)
     )
       void play(selected, i);
-    else select(i);
+    else {
+      select(i);
+    }
   }
   return (
     <section
+      ref={screen}
       className={`game-screen ${victory ? `victory-${victory}` : ""}`}
+      data-phase={phase}
+      data-recovery={recovery}
       style={{
         backgroundImage: `linear-gradient(#102e2980,#102e29b0),url('${asset(`scene-${level.id}`)}')`,
       }}
@@ -348,6 +514,7 @@ export default function Game({
           className="round atlas-control pause-control"
           disabled={busy}
           onClick={(e) => {
+            interact();
             e.currentTarget.focus({ preventScroll: true });
             pause(true);
           }}
@@ -369,6 +536,12 @@ export default function Game({
       <div className="objectives" aria-label="Objetivos">
         {level.targets.map((t) => (
           <div
+            data-objective-kind={t.kind}
+            role="progressbar"
+            aria-label={`${names[level.id - 1][t.kind]}${counts[t.kind] >= t.amount ? ": objetivo concluído" : ""}`}
+            aria-valuemin={0}
+            aria-valuemax={t.amount}
+            aria-valuenow={Math.min(counts[t.kind], t.amount)}
             className={counts[t.kind] >= t.amount ? "done" : ""}
             key={t.kind}
           >
@@ -382,7 +555,14 @@ export default function Game({
           </div>
         ))}
         {level.powers > 0 && (
-          <div className={powers >= level.powers ? "done" : ""}>
+          <div
+            className={powers >= level.powers ? "done" : ""}
+            role="progressbar"
+            aria-label="Ativar poderes"
+            aria-valuemin={0}
+            aria-valuemax={level.powers}
+            aria-valuenow={Math.min(powers, level.powers)}
+          >
             <img src={asset("power-0")} alt="Ativar poderes" />
             <strong>
               {Math.min(powers, level.powers)}/{level.powers}
@@ -390,7 +570,14 @@ export default function Game({
           </div>
         )}
         {level.cascades > 0 && (
-          <div className={cascades >= level.cascades ? "done" : ""}>
+          <div
+            className={cascades >= level.cascades ? "done" : ""}
+            role="progressbar"
+            aria-label="Sequências"
+            aria-valuemin={0}
+            aria-valuemax={level.cascades}
+            aria-valuenow={Math.min(cascades, level.cascades)}
+          >
             <span>Sequências</span>
             <strong>
               {Math.min(cascades, level.cascades)}/{level.cascades}
@@ -411,86 +598,61 @@ export default function Game({
           {board.map((t, i) => (
             <button
               key={t.id}
-              className={`tile ${t.special ? "special special-" + t.special : ""} ${created.includes(i) ? "power-born" : ""} ${effects.length && clearing.includes(i) ? "power-hit" : ""} ${selected === i ? "selected" : ""} ${clearing.includes(i) ? "clearing" : ""} ${hint.includes(i) ? "hint" : ""}`}
+              className={`tile ${t.special ? "special special-" + t.special : ""} ${created.includes(i) ? "power-born" : ""} ${effects.length && clearing.includes(i) ? "power-hit" : ""} ${selected === i ? "selected" : ""} ${input.pressed === i ? "pressed" : ""} ${clearing.includes(i) ? "clearing" : ""} ${hint.includes(i) ? "hint" : ""} ${invalid.includes(i) ? "invalid" : ""}`}
               style={
                 {
                   "--clear-delay": `${clearDelays[i] ?? 0}ms`,
-                  ...(offset[i]
-                    ? {
-                        transform: `translate(${Math.abs(offset[i]) === 1 ? offset[i] * 100 : 0}%,${Math.abs(offset[i]) === COLS ? (offset[i] / COLS) * 100 : 0}%)`,
-                      }
-                    : {}),
                 } as React.CSSProperties
               }
               data-kind={t.kind}
               data-special={t.special}
               aria-label={`${names[level.id - 1][t.kind]}${t.special ? ", poder " + { row: "horizontal", column: "vertical", area: "em área", color: "de cores" }[t.special] : ""}, linha ${Math.floor(i / COLS) + 1}, coluna ${(i % COLS) + 1}`}
               aria-pressed={selected === i}
+              aria-disabled={busy || paused || lost}
               disabled={paused || lost}
-              onClick={() => {
-                if (suppress.current) {
-                  suppress.current = false;
-                  return;
-                }
-                tap(i);
-              }}
-              onPointerDown={(e) => {
-                if (lock.current) return;
-                drag.current = { i, x: e.clientX, y: e.clientY };
-                e.currentTarget.setPointerCapture(e.pointerId);
-              }}
-              onPointerCancel={() => {
-                drag.current = null;
-                suppress.current = false;
-              }}
-              onPointerUp={(e) => {
-                const d = drag.current;
-                drag.current = null;
-                if (!d || lock.current) return;
-                const rotated =
-                  document.documentElement.classList.contains(
-                    "portrait-fallback",
-                  );
-                const dx = rotated ? e.clientY - d.y : e.clientX - d.x,
-                  dy = rotated ? -(e.clientX - d.x) : e.clientY - d.y;
-                if (Math.max(Math.abs(dx), Math.abs(dy)) < 18) return;
-                const target =
-                  d.i +
-                  (Math.abs(dx) > Math.abs(dy)
-                    ? Math.sign(dx)
-                    : Math.sign(dy) * COLS);
-                suppress.current = true;
-                if (
-                  target >= 0 &&
-                  target < 56 &&
-                  (Math.abs(dx) <= Math.abs(dy) ||
-                    Math.floor(target / COLS) === Math.floor(d.i / COLS))
-                )
-                  void play(d.i, target);
-              }}
+              onClick={(e) => input.click(e, i)}
+              onPointerDown={(e) => input.down(e, i)}
+              onPointerMove={input.move}
+              onPointerUp={input.up}
+              onPointerCancel={input.cancel}
+              onLostPointerCapture={input.cancel}
             >
-              <img
-                draggable="false"
-                src={asset(
-                  t.special
-                    ? `power-${{ row: 0, column: 1, area: 2, color: 3 }[t.special]}`
-                    : `tile-${level.id}-${t.kind}`,
+              <span className="tile-visual">
+                <img
+                  draggable="false"
+                  src={asset(
+                    t.special
+                      ? `power-${{ row: 0, column: 1, area: 2, color: 3 }[t.special]}`
+                      : `tile-${level.id}-${t.kind}`,
+                  )}
+                  alt=""
+                />
+                {t.special && (
+                  <span className="special-badge" aria-hidden="true">
+                    {
+                      { row: "↔", column: "↕", area: "✦", color: "✧" }[
+                        t.special
+                      ]
+                    }
+                  </span>
                 )}
-                alt=""
-              />
-              {t.special && (
-                <span className="special-badge" aria-hidden="true">
-                  {
-                    { row: "↔", column: "↕", area: "✦", color: "✧" }[
-                      t.special
-                    ]
-                  }
-                </span>
-              )}
+              </span>
             </button>
           ))}
         </div>
         <ComboEffects effects={effects} affected={clearing} />
+        {waveVisual && (
+          <span
+            key={waveVisual.id}
+            className={`match-aura match-tier-${waveVisual.tier}`}
+            style={
+              {
+                "--cascade": Math.min(3, waveVisual.depth),
+              } as React.CSSProperties
+            }
+            aria-hidden="true"
+          />
+        )}
         {victory && (
           <div className="victory-light" aria-hidden="true">
             <span className="victory-sweep" />
@@ -512,6 +674,7 @@ export default function Game({
           </div>
         )}
       </div>
+      <canvas ref={canvas} className="game-vfx" aria-hidden="true" />
       <p className="game-message" role="status">
         {message}
       </p>
@@ -520,8 +683,17 @@ export default function Game({
           className="text-button light"
           disabled={busy || paused || lost}
           onClick={() => {
-            const m = moves(current.current)[0];
-            if (m) setHint(m);
+            interact();
+            select(null);
+            manualHint.current = true;
+            setHint(
+              chooseHint(
+                current.current,
+                level.targets,
+                counts,
+                powers < level.powers,
+              ),
+            );
             setMessage("Troque as peças que brilham.");
           }}
         >

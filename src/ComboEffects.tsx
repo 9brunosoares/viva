@@ -25,6 +25,8 @@ export default function ComboEffects({
             } as React.CSSProperties
           }
         >
+          <span className="combo-core" />
+          <span className="combo-shock" />
           <img
             className="combo-atlas"
             src={asset(

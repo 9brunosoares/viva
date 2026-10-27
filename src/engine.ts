@@ -33,6 +33,12 @@ export function matches(b: Board): Match[] {
 }
 export function adjacent(a: number, b: number) {
   return (
+    Number.isInteger(a) &&
+    Number.isInteger(b) &&
+    a >= 0 &&
+    b >= 0 &&
+    a < COLS * ROWS &&
+    b < COLS * ROWS &&
     a !== b &&
     ((Math.floor(a / COLS) === Math.floor(b / COLS) && Math.abs(a - b) === 1) ||
       Math.abs(a - b) === COLS)

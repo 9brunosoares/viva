@@ -52,7 +52,23 @@ Guardar o décimo livro abre o encerramento familiar. O retrato oficial é exclu
 
 Livro, revelação e aceite são persistidos separadamente. Uma interrupção retoma a etapa correta. Campanhas antigas completas preservam seus desbloqueios. O infinito continua disponível após a campanha.
 
-Não há tela de configurações. Som e animações ficam ativos por padrão; a preferência de movimento reduzido do sistema é respeitada, inclusive quando muda com o jogo aberto. O áudio só é liberado após interação real e fica silencioso se a API não existir. Combinações, criação/ativação de poderes, poderes combinados, cascatas e vitória têm sons distintos sintetizados localmente. As cerimônias têm melodias finitas e botão “Ouvir” quando suportado. Vibração é uma melhoria opcional por detecção de suporte; sua ausência não afeta a partida.
+Não há tela de configurações. Os efeitos sonoros e as animações ficam ativos por padrão; a preferência de movimento reduzido do sistema é respeitada, inclusive quando muda com o jogo aberto. O áudio só é liberado após interação real e fica silencioso se a API não existir. O jogo não possui trilha contínua; somente as duas melodias originais das apresentações de Blade/família. Vibração é uma melhoria opcional por detecção de suporte; sua ausência não afeta a partida.
+
+## Áudio original e biblioteca viva
+
+Os efeitos e as melodias curtas de Blade/família foram restaurados da versão anterior ao Upgrade 2/5. Não há trilha contínua, samples Kenney ou sons automáticos de ambiente. O botão Áudio conserva volume e silêncio, sem modificar o progresso. Detalhes e testes: [AUDIO.md](AUDIO.md).
+
+O Upgrade 3/5 acrescenta iluminação localizada na janela e luminária, oito pontos lentos de poeira, entrada e seleção delicadas dos livros, respiração de Blade e crossfade entre poses originais. As posições, imagens e os quatro estágios são preservados. Segundo plano pausa os efeitos; movimento reduzido e indicadores de recursos limitados simplificam a ambientação. Tecnologias nativas, sem novas dependências. Arquitetura e arquivos: [BIBLIOTECA.md](BIBLIOTECA.md).
+
+## Controle e ritmo — Upgrade 4/5
+
+O toque agora reage ao encostar, e o deslize distingue intenção de diagonais ambíguas. Cancelamento, perda de captura e segundo ponteiro são tratados sem consumir o toque seguinte. Trocas inválidas vão à célula vizinha e voltam sem cobrar jogada. Quedas curtas aguardam a própria animação, preservando o tempo de criação de poderes e a contemplação da vitória.
+
+As esperas da jogada são canceladas ao desmontar a partida; o salvamento ocorre somente no estado estável. Sessões sem jogadas válidas também são recuperadas ao abrir, preservando objetivos e movimentos. A dica prioriza objetivos/poderes, dura 1,6 s e pode aparecer uma única vez após nove segundos de inatividade. Nenhuma meta ou dificuldade foi alterada.
+
+Arquivos, arquitetura, verificações e resultados das 960 simulações: [GAMEPLAY.md](GAMEPLAY.md). Os testes de interação passaram em Chromium e WebKit, além das regras, poderes e campanha. Isso não substitui avaliação no iPhone físico.
+
+Versão local: http://127.0.0.1:4173/viva-test/?v=feel4. Nenhuma publicação remota nesta rodada.
 
 ## Assets e efeitos
 
@@ -68,9 +84,13 @@ python tests/controls_test.py
 
 `public/assets/manifest.json` registra as origens. Poderes possuem destaque estático, animação suave em repouso e efeitos específicos de linha, coluna, área e cor; combinações são mais intensas, com orçamento limitado de partículas. Movimento reduzido conserva a identificação visual e elimina a camada animada.
 
+O acabamento do tabuleiro usa CSS, Web Animations API (trocas contínuas, entrada, queda e aterrissagem) e Canvas 2D (fragmentos dos próprios sprites, pétalas, brilhos, ondas e trajetos até os objetivos). Cascatas intensificam os efeitos de forma limitada; o brilho de criação acompanha a posição real do poder. A camada visual tem sorteio próprio, sem consumir o gerador das peças. Não foram adicionadas dependências. O pool reutiliza até 180 partículas, além dos até 18 brilhos e seis atlas da camada de poderes. O canvas limita sua resolução a 1,75 vezes o tamanho CSS, encerra o RAF quando ocioso e libera animações/observadores ao sair ou ativar movimento reduzido. Nenhum asset foi redesenhado.
+
 ## Verificação
 
 `pnpm test` cobre regras, persistência, marcos, áudio e vibração. Scripts Playwright em `tests/` verificam campanha real, sinopses, responsividade, encerramentos, tentativa/repetição, release e cache. Use `BROWSER_CHANNEL=msedge` se não houver Chromium do Playwright. Os scripts compatíveis aceitam `VIVA_TEST_URL` para apontar a outro servidor local. `tests/release.ts` verifica a porta 4173; `tests/offline-server.ts` inicia e desliga seu próprio servidor na 4199. As fixtures visuais de poderes em `tests/fx.html` não entram no build de produção.
+
+Para verificar o upgrade visual, inicie `pnpm dev --port 4175` e execute `pnpm exec tsx tests/vfx-game.ts`. Em PowerShell, `$env:BROWSER_ENGINE='webkit'` seleciona o WebKit; sem essa variável o roteiro usa Chromium/Edge. Os 21 cenários usam o componente real do jogo e comparam seu resultado com o motor puro, com movimento normal e reduzido: 3/4/5, criação dos quatro poderes, ativações, dez pares e cascatas. Também verificam coleta, vitória, arrasto, rotação, telas pequenas, limite Retina e um quadro lento simulado. A fixture `tests/vfx-game.html` existe somente no servidor de desenvolvimento e não é publicada. No jogo normal, combine quatro/cinco ou faça uma interseção para criar poderes e troque-os com vizinhos para ativar; dois poderes vizinhos mostram o efeito combinado.
 
 Resultados e limitações estão em `VALIDACAO.md`; capturas e relatórios ficam em `test-results/`.
 

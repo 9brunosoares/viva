@@ -13,8 +13,21 @@ export default function BladeCompanion({
   const [open, setOpen] = useState(false),
     [present, setPresent] = useState(false);
   const [reaction, setReaction] = useState(0);
+  const [previous, setPrevious] = useState<number | null>(null);
   const root = useRef<HTMLDivElement>(null),
     dog = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    // Warm the two existing awake sprites only after Blade has been revealed.
+    for (const n of [2, 4]) {
+      const image = new Image();
+      image.src = asset(`blade-${n}`);
+    }
+  }, []);
+  useEffect(() => {
+    if (previous === null) return;
+    const timer = window.setTimeout(() => setPrevious(null), reduced ? 0 : 240);
+    return () => clearTimeout(timer);
+  }, [previous, pose, reduced]);
   useEffect(() => {
     if (!present || open) return;
     const timer = window.setTimeout(() => setPresent(false), reduced ? 0 : 180);
@@ -42,6 +55,7 @@ export default function BladeCompanion({
     };
   }, [open]);
   function choose(next: number) {
+    if (next !== pose && !reduced) setPrevious(pose);
     onPose(next);
     setReaction((n) => n + 1);
     setOpen(false);
@@ -64,18 +78,32 @@ export default function BladeCompanion({
         aria-expanded={open}
         aria-controls={present ? "blade-menu" : undefined}
       >
-        <img
+        {previous !== null && (
+          <span
+            className="blade-layer blade-previous"
+            aria-hidden="true"
+            style={{
+              height: `${((previous === 2 ? 30 : 22) / (pose === 2 ? 30 : 22)) * 100}%`,
+            }}
+          >
+            <img src={asset(`blade-${previous}`)} alt="" />
+          </span>
+        )}
+        <span
           key={`${pose}-${reaction}`}
-          className={pose === 4 && reaction ? "blade-happy" : ""}
-          src={asset(`blade-${pose}`)}
-          alt={
-            pose === 5
-              ? "Blade dormindo, chow chow preto"
-              : pose === 2
-                ? "Blade em pé, chow chow preto"
-                : "Blade acordado, chow chow preto"
-          }
-        />
+          className={`blade-layer blade-current ${previous !== null ? "blade-transition" : ""} ${pose === 5 ? "blade-resting" : ""} ${pose === 4 && reaction ? "blade-content" : ""}`}
+        >
+          <img
+            src={asset(`blade-${pose}`)}
+            alt={
+              pose === 5
+                ? "Blade dormindo, chow chow preto"
+                : pose === 2
+                  ? "Blade em pé, chow chow preto"
+                  : "Blade acordado, chow chow preto"
+            }
+          />
+        </span>
       </button>
       {present && (
         <div
