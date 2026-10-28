@@ -111,6 +111,38 @@ try {
   assert.ok(
     (await page.locator(".book-synopsis p").textContent())!.length > 200,
   );
+  await page.keyboard.press("Escape");
+  await page.locator(".book-viewer").waitFor({ state: "detached" });
+  // The new local preference and actual completion flow also work without the origin.
+  await page
+    .getByRole("button", { name: "Configurações", exact: true })
+    .click();
+  const mode = page.getByRole("switch", { name: "Modo teste", exact: true });
+  assert.equal(await mode.getAttribute("aria-checked"), "false");
+  await mode.click();
+  await page
+    .getByRole("button", { name: "Fechar configurações", exact: true })
+    .click();
+  await page.locator(".hub-actions .primary").click();
+  await page.getByRole("button", { name: "Vamos lá!", exact: true }).click();
+  await page.locator(".tile").first().waitFor();
+  assert.equal(
+    await page
+      .locator(".tile:not([data-role]):not([data-special])")
+      .first()
+      .evaluate((e) => getComputedStyle(e).backgroundImage),
+    "none",
+  );
+  await page
+    .getByRole("button", { name: "Concluir fase", exact: true })
+    .click();
+  await page.locator(".reward-book").waitFor();
+  assert.equal(await page.locator(".reward-synopsis").count(), 0);
+  await page
+    .getByRole("button", { name: "Guardar na biblioteca", exact: true })
+    .click();
+  await page.locator(".library-room").waitFor();
+  assert.equal(await page.locator(".shelf-books button").count(), 4);
   const resources = await page.evaluate(async () => {
     const paths = ["gift-wrapped", "gift-unwrapped", "gift-open"].map(
       (p) => "assets/premium6/" + p + ".webp",

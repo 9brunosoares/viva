@@ -26,6 +26,7 @@ import {
   AUDIO_KEY,
 } from "./audio";
 import SoundToggle from "./SoundToggle";
+import { readTestMode, saveTestMode } from "./testMode";
 import { restartJourney } from "./restart";
 import { useReducedMotion } from "./useReducedMotion";
 import { BRUNO_SIGNATURE } from "./narrative";
@@ -86,6 +87,7 @@ function Journey({ onRestarted }: { onRestarted: () => void }) {
   const [updateReturn] = useState(consumeUpdateReturn);
   const [difficulty, setDifficulty] = useState<Difficulty>(readDifficulty);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [testMode, setTestMode] = useState(readTestMode);
   const [firstGift, setFirstGift] = useState(false);
   const [flight, setFlight] = useState<Flight | null>(null);
   const [giftIntro, setGiftIntro] = useState(false);
@@ -417,6 +419,7 @@ function Journey({ onRestarted }: { onRestarted: () => void }) {
         <Game
           key={session}
           level={playingLevel}
+          testMode={testMode}
           endless={infinite}
           initialSnapshot={activeSession?.snapshot}
           onSnapshot={saveMatch}
@@ -733,6 +736,11 @@ function Journey({ onRestarted }: { onRestarted: () => void }) {
         </div>
       )}
       <SoundToggle
+        testMode={testMode}
+        onTestModeChange={(value) => {
+          setTestMode(value);
+          saveTestMode(value);
+        }}
         difficulty={difficulty}
         onDifficultyChange={(value) => {
           setDifficulty(value);

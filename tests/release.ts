@@ -37,7 +37,7 @@ assert.equal(
   await page
     .getByRole("button", { name: "Configurações", exact: true })
     .count(),
-  0,
+  1,
 );
 assert.ok(
   !/offline|Safari|PWA|armazenamento|navegador/i.test(
@@ -51,7 +51,7 @@ await page.locator(".hub-actions .primary").click();
 await page.getByRole("button", { name: "Vamos lá!", exact: true }).click();
 assert.equal(
   await page
-    .getByRole("button", { name: "Concluir fase · QA", exact: true })
+    .getByRole("button", { name: "Concluir fase", exact: true })
     .count(),
   0,
 );
@@ -102,7 +102,8 @@ await writeFile(
   JSON.stringify(
     {
       qaAbsent: true,
-      noSettings: true,
+      settingsAvailable: true,
+      testModeOffByDefault: true,
       manifestValid: true,
       iconsAccessible: true,
       legacyProgressPreserved: true,
@@ -114,6 +115,6 @@ await writeFile(
   ),
 );
 console.log(
-  "Release: no QA/settings, standalone manifest/icons, legacy progress and official portrait offline passed.",
+  "Release: no internal QA, test mode off, settings available, standalone manifest/icons, progress and official portrait offline passed.",
 );
 await browser.close();

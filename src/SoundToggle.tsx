@@ -3,6 +3,8 @@ import { audioAvailable, type AudioPreferences } from "./audio";
 import DifficultySelector from "./DifficultySelector";
 import type { Difficulty } from "./difficulty";
 export default function SoundToggle({
+  testMode,
+  onTestModeChange,
   difficulty,
   onDifficultyChange,
   preferences,
@@ -12,6 +14,8 @@ export default function SoundToggle({
   onOpenChange,
   onRestart,
 }: {
+  testMode: boolean;
+  onTestModeChange: (value: boolean) => void;
   difficulty: Difficulty;
   onDifficultyChange: (value: Difficulty) => void;
   preferences: AudioPreferences;
@@ -155,6 +159,19 @@ export default function SoundToggle({
               </button>
             </>
           )}
+          <div className="audio-channel settings-test-mode">
+            <button
+              role="switch"
+              aria-label="Modo teste"
+              aria-checked={testMode}
+              onClick={() => onTestModeChange(!testMode)}
+            >
+              <span>Modo teste</span>
+              <span className="audio-switch" aria-hidden="true">
+                <i />
+              </span>
+            </button>
+          </div>
           <div className="settings-journey">
             <button
               className="restart-journey"

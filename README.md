@@ -124,6 +124,11 @@ Resultados e limitações estão em `VALIDACAO.md`; capturas e relatórios ficam
 
 ## Publicação e iPhone
 
+O tabuleiro agora usa fundo verde contínuo, com peças comuns maiores e sem caixas
+individuais. Em Configurações, `Modo teste` permite habilitar localmente o botão
+`Concluir fase` nas partidas da campanha; começa desligado. A dificuldade continua
+em Configurações. Implementação e reprodução das verificações: [TABULEIRO.md](TABULEIRO.md).
+
 O workflow `.github/workflows/pages.yml` instala dependências, testa e publica `dist/` quando a branch main é enviada, usando o nome do repositório como caminho-base. O repositório configurado é `https://github.com/9brunosoares/viva`; a publicação é `https://9brunosoares.github.io/viva/`. Esta rodada de refinamento é verificada localmente antes de um novo envio.
 
 Para outro caminho, defina `VIVA_BASE='/nome-do-repositorio/'` antes de `pnpm build`. Para domínio raiz, use `/`; o padrão `./` gera caminhos relativos.

@@ -272,12 +272,17 @@ try {
   await page.waitForFunction(
     () => document.querySelector(".moves strong")?.textContent === "58",
   );
-  // The separate QA build has the requested shortcut; use the complete real reward/reveal flow.
+  // Even QA builds require explicit local opt-in before exposing the shortcut.
   const qa = await context.newPage();
   qa.on("pageerror", (e) => errors.push(e.message));
   await qa.goto("http://127.0.0.1:4177/viva-test/");
   await qa
     .getByRole("button", { name: "Entrar na biblioteca", exact: true })
+    .click();
+  await qa.getByRole("button", { name: "Configurações", exact: true }).click();
+  await qa.getByRole("switch", { name: "Modo teste", exact: true }).click();
+  await qa
+    .getByRole("button", { name: "Fechar configurações", exact: true })
     .click();
   let qaOrder: number[] = [];
   for (let stage = 1; stage <= 10; stage++) {

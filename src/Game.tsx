@@ -28,6 +28,7 @@ import { TurnSequence } from "./TurnSequence";
 import { useBoardInput } from "./useBoardInput";
 import { chooseHint } from "./hint";
 import FlatIcon from "./FlatIcon";
+import { tileArt } from "./tileArt";
 import { newObstacles, recordGiftOpenings, obstaclesDone } from "./obstacles";
 
 type TurnPhase =
@@ -40,6 +41,7 @@ type TurnPhase =
   | "transitioning";
 type Props = {
   level: Level;
+  testMode?: boolean;
   audio: boolean;
   motion: boolean;
   onWin: () => void;
@@ -50,6 +52,7 @@ type Props = {
 };
 export default function Game({
   level,
+  testMode = false,
   audio,
   motion,
   onWin,
@@ -751,6 +754,7 @@ export default function Game({
                 } as React.CSSProperties
               }
               data-kind={t.kind}
+              data-theme={level.id}
               data-role={t.role}
               data-hp={t.hp}
               data-gift-hit={giftHits.includes(i) || undefined}
@@ -769,6 +773,16 @@ export default function Game({
               <span className="tile-visual">
                 <img
                   draggable="false"
+                  style={
+                    !t.role && !t.special
+                      ? ({
+                          "--art-scale":
+                            tileArt[`${level.id}-${t.kind}`]?.[0] ?? 1,
+                          "--art-x": `${tileArt[`${level.id}-${t.kind}`]?.[1] ?? 0}%`,
+                          "--art-y": `${tileArt[`${level.id}-${t.kind}`]?.[2] ?? 0}%`,
+                        } as React.CSSProperties)
+                      : undefined
+                  }
                   src={asset(
                     t.role === "gift"
                       ? `premium6/gift-${clearing.includes(i) ? "open" : t.hp === 2 ? "wrapped" : "unwrapped"}`
@@ -829,22 +843,22 @@ export default function Game({
         {message}
       </p>
       <div className="game-tools" hidden={!!victory}>
-        {(import.meta.env.DEV || import.meta.env.VITE_ENABLE_QA === "true") &&
-          !endless && (
-            <button
-              className="text-button light test-complete"
-              disabled={busy || paused || lost}
-              onClick={() => {
-                if (lock.current) return;
-                lock.current = true;
-                sequence.current.cancel();
-                setPhase("transitioning");
-                onWin();
-              }}
-            >
-              Concluir fase
-            </button>
-          )}
+        {testMode && !endless && (
+          <button
+            className="text-button light test-complete"
+            disabled={busy || paused || lost}
+            onClick={() => {
+              if (!testMode || !alive.current || lock.current || paused || lost)
+                return;
+              lock.current = true;
+              sequence.current.cancel();
+              setPhase("transitioning");
+              onWin();
+            }}
+          >
+            Concluir fase
+          </button>
+        )}
         <button
           className="text-button light"
           disabled={busy || paused || lost}

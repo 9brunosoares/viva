@@ -8,6 +8,7 @@ import "./audio.css";
 import "./library-life.css";
 import "./app-finish.css";
 import "./premium6.css";
+import "./board-presentation.css";
 createRoot(document.getElementById("root")!).render(
   <AppBoundary>
     <App />

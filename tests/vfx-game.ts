@@ -199,9 +199,47 @@ async function settled() {
 try {
   await load("3");
   const before = await page.evaluate(() => (window as any).__vfxSnapshot);
+  await page.getByRole("button", { name: "Uma dica", exact: true }).click();
+  await page.locator(".tile.hint").first().waitFor();
+  assert.ok(
+    await page
+      .locator(".tile.hint img")
+      .first()
+      .evaluate((e) => getComputedStyle(e).filter.includes("drop-shadow")),
+  );
+  assert.equal(
+    await page
+      .locator(".tile.hint")
+      .first()
+      .evaluate((e) => getComputedStyle(e).backgroundColor),
+    "rgba(0, 0, 0, 0)",
+  );
+  await page.screenshot({
+    path: `test-results/board-redesign/hint-${engine}.png`,
+  });
   assert.equal(validSwap(initial("3"), 0, 1), false);
   await page.locator(".tile").nth(0).click();
   await page.waitForTimeout(190);
+  assert.equal(
+    await page
+      .locator(".tile.selected")
+      .evaluate((e) => getComputedStyle(e).backgroundImage),
+    "none",
+  );
+  assert.equal(
+    await page
+      .locator(".tile.selected")
+      .evaluate((e) => getComputedStyle(e).boxShadow),
+    "none",
+  );
+  assert.ok(
+    await page
+      .locator(".tile.selected img")
+      .evaluate((e) => getComputedStyle(e).filter.includes("drop-shadow")),
+  );
+  await page.screenshot({
+    path: `test-results/board-redesign/selected-${engine}.png`,
+  });
   assert.notEqual(
     await page
       .locator(".tile.selected .tile-visual")
@@ -221,6 +259,12 @@ try {
   assert.deepEqual(
     await page.evaluate(() => (window as any).__vfxSnapshot),
     before,
+  );
+  assert.equal(
+    await page
+      .locator(".tile.invalid,.tile.selected,.tile.pressed,.tile.hint")
+      .count(),
+    0,
   );
   for (const mode of [
     "3",

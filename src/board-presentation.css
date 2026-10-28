@@ -1,0 +1,142 @@
+/* Presentation only: the grid, button boxes and Canvas coordinates stay unchanged. */
+.game-screen .board {
+  background: #163d32;
+}
+.game-screen .board .tile:not([data-role="gift"]) {
+  background: transparent !important;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  outline: none;
+  padding: 0;
+  transition: none;
+}
+.game-screen .board .tile:hover {
+  filter: none;
+}
+.game-screen .board .tile img {
+  filter: none;
+}
+.game-screen .board .tile:not([data-role]):not([data-special]) img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform: translate(var(--art-x, 0%), var(--art-y, 0%))
+    scale(var(--art-scale, 1));
+  transform-origin: center;
+}
+.game-screen
+  .board
+  .tile[data-theme="9"][data-kind="6"]:not([data-special])
+  img {
+  filter: brightness(2.6);
+}
+.game-screen .board .tile.selected .tile-visual {
+  transform: translateY(-0.7px) scale(1.025);
+}
+.game-screen .board .tile.pressed .tile-visual {
+  transform: translateY(-0.4px) scale(1.015);
+}
+.game-screen .board .tile.selected img,
+.game-screen .board .tile.pressed img,
+.game-screen .board .tile:focus-visible img,
+.game-screen .board .tile.hint img {
+  filter: drop-shadow(0 0 1px #ffe7a5) drop-shadow(0 0 3px #ebbc61aa);
+}
+.game-screen .board .tile[data-theme="9"][data-kind="6"].selected img,
+.game-screen .board .tile[data-theme="9"][data-kind="6"].hint img,
+.game-screen .board .tile[data-theme="9"][data-kind="6"].pressed img,
+.game-screen .board .tile[data-theme="9"][data-kind="6"]:focus-visible img {
+  filter: brightness(2.6) drop-shadow(0 0 2px #ebbc61aa);
+}
+.game-screen .board .tile.invalid {
+  outline: none;
+}
+.game-screen .board .tile.invalid img {
+  filter: drop-shadow(0 0 2px #e9bc87);
+}
+.game-screen .board .tile.hint {
+  animation: none;
+}
+.game-screen .board .tile.hint .tile-visual {
+  animation: board-hint 850ms ease-in-out 2;
+}
+@keyframes board-hint {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.025);
+    opacity: 0.82;
+  }
+}
+/* Keep floral powers luminous, without a permanent rectangular backing. */
+.game-screen .board .tile.special {
+  overflow: visible;
+}
+.game-screen .board .tile.special img {
+  width: 90%;
+  height: 90%;
+  margin: 5%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 3px #fff9ce);
+}
+.game-screen .board .tile.special::before {
+  inset: 8%;
+  width: 84%;
+  height: 84%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, #f8e4a650, transparent 72%);
+  animation: board-power-light 3.8s ease-in-out infinite;
+}
+@keyframes board-power-light {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.94);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.02);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .game-screen .board .tile.hint .tile-visual,
+  .game-screen .board .tile.special::before {
+    animation: none;
+  }
+  .game-screen .board .tile.selected .tile-visual,
+  .game-screen .board .tile.pressed .tile-visual {
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Larger illustrations retain room for the approved shrink/pop sequence. */
+.game-screen
+  .board
+  .tile:not([data-role]):not([data-special]).clearing
+  .tile-visual {
+  animation-name: board-piece-pop;
+}
+@keyframes board-piece-pop {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  25% {
+    transform: scale(0.83);
+    opacity: 1;
+  }
+  52% {
+    transform: scale(1.06);
+    opacity: 0.95;
+  }
+  100% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+}
