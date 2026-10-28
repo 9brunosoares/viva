@@ -19,7 +19,7 @@ const context = await browser.newContext({
 });
 const page = await context.newPage(),
   errors: string[] = [];
-const order = [7, 2, 9, 1, 8, 4, 10, 3, 6, 5];
+const order = [1, 9, 8, 5, 2, 4, 10, 6, 3, 7];
 page.on("pageerror", (e) => errors.push(e.message));
 page.on("response", (r) => {
   if (r.status() >= 400) errors.push(`${r.status()} ${r.url()}`);

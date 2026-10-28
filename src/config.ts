@@ -340,6 +340,8 @@ export const books = [
       "Depois de um divórcio e de um período de insatisfação pessoal, Elizabeth Gilbert decide viajar sozinha durante um ano em busca de novos significados para sua vida. Na Itália, redescobre os prazeres cotidianos; na Índia, explora a espiritualidade; e na Indonésia, procura equilíbrio e afeto. Um relato autobiográfico sobre recomeços, autoconhecimento e a coragem de construir a própria felicidade.",
   },
 ];
+/** One book per campaign stage, in phase order; IDs verified against books above. */
+export const campaignBookIds = [1, 9, 8, 5, 2, 4, 10, 6, 3, 7] as const;
 export const tattooPieces = [
   "warrior",
   "books",

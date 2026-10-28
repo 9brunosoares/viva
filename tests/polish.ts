@@ -80,7 +80,7 @@ for (const size of sizes) {
   });
 }
 for (const n of [0, 2, 5, 10]) {
-  let p = fresh(() => 0.37);
+  let p = fresh();
   for (let i = 1; i <= n; i++)
     p = finishMilestone(acceptMilestoneBook(complete(p, i)));
   p.sound = false;

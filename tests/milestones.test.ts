@@ -12,7 +12,7 @@ import {
   Progress,
 } from "../src/progress.ts";
 function advance(n: number) {
-  let p = fresh(() => 0.33);
+  let p = fresh();
   for (let i = 1; i <= n; i++)
     p = finishMilestone(acceptMilestoneBook(complete(p, i)));
   return p;
@@ -58,7 +58,7 @@ test("both interruption points restore the exact saved book and moment", () => {
     p = acceptMilestoneBook(p);
   }
 });
-test("legacy campaign preserves all existing achievements and randomized order", () => {
+test("fixed campaign preserves achievements and its canonical order", () => {
   for (const n of [0, 4, 5, 6, 9, 10]) {
     const p = advance(n);
     const { revealed, pendingCelebration, ...legacy } = p;

@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { mkdir, writeFile } from "node:fs/promises";
 import { chromium, webkit } from "playwright";
 import { waitForCache } from "./boardHelper";
+import { campaignBookIds } from "../src/config";
 
 const engine = process.env.BROWSER_ENGINE === "webkit" ? "webkit" : "chromium";
 const browser = await (engine === "webkit" ? webkit : chromium).launch({
@@ -132,6 +133,24 @@ try {
   });
   if (await discover.count()) await discover.click();
   await page.locator(".reward-book").waitFor();
+  await page
+    .locator(".reward-book")
+    .evaluate((image: HTMLImageElement) => image.decode());
+  assert.equal(
+    await page.locator(".reward h2").innerText(),
+    "O Código Da Vinci",
+  );
+  assert.deepEqual(
+    await page.evaluate(
+      () => JSON.parse(localStorage.getItem("viva-progress-v1")!).order,
+    ),
+    campaignBookIds,
+  );
+  const rewardBox = (await page.locator(".reward-content").boundingBox())!;
+  assert.ok(Math.abs(rewardBox.y + rewardBox.height / 2 - 844 / 2) < 3);
+  await page.screenshot({
+    path: `${folder}/published-${engine}-fixed-reward.png`,
+  });
   await page
     .getByRole("button", { name: "Guardar na biblioteca", exact: true })
     .click();

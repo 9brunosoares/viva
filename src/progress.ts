@@ -1,3 +1,5 @@
+import { campaignBookIds } from "./config";
+
 export type Progress = {
   version: 1;
   order: number[];
@@ -32,15 +34,10 @@ export function finishMilestone(p: Progress): Progress {
   return { ...rest, revealed };
 }
 export const KEY = "viva-progress-v1";
-export function fresh(rng = Math.random): Progress {
-  const order = Array.from({ length: 10 }, (_, i) => i + 1);
-  for (let i = 9; i > 0; i--) {
-    const j = Math.floor(rng() * (i + 1));
-    [order[i], order[j]] = [order[j], order[i]];
-  }
+export function fresh(): Progress {
   return {
     version: 1,
-    order,
+    order: [...campaignBookIds],
     completed: [],
     sound: true,
     motion: true,
@@ -54,8 +51,7 @@ export function validate(value: unknown): value is Progress {
     p.version === 1 &&
     Array.isArray(p.order) &&
     p.order.length === 10 &&
-    new Set(p.order).size === 10 &&
-    p.order.every((n) => Number.isInteger(n) && n >= 1 && n <= 10) &&
+    campaignBookIds.every((id, stage) => p.order[stage] === id) &&
     Array.isArray(p.completed) &&
     new Set(p.completed).size === p.completed.length &&
     p.completed.every((n, i) => n === i + 1) &&

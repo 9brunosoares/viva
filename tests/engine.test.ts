@@ -110,7 +110,7 @@ test("no moves detected and reshuffled to playable board", () => {
   assert.equal(matches(n).length, 0);
 });
 test("campaign grants exactly ten unique books, replay is idempotent", () => {
-  let p = fresh(seeded());
+  let p = fresh();
   const order = p.order.slice();
   for (let i = 1; i <= 10; i++) {
     p = finishMilestone(acceptMilestoneBook(complete(p, i)));
@@ -125,7 +125,7 @@ test("campaign grants exactly ten unique books, replay is idempotent", () => {
   assert.equal(libraryState(8), 3);
 });
 test("persistence restores order, preferences and milestones", () => {
-  let p = fresh(seeded());
+  let p = fresh();
   for (let i = 1; i <= 6; i++)
     p = finishMilestone(acceptMilestoneBook(complete(p, i)));
   p.sound = false;
@@ -159,7 +159,7 @@ test("persistence restores order, preferences and milestones", () => {
   );
 });
 test("malformed progress and out-of-order completion rejected", () => {
-  const p = fresh(seeded());
+  const p = fresh();
   assert.deepEqual(complete(p, 2), p);
   assert.equal(validate({ ...p, order: Array(10).fill(1) }), false);
   assert.equal(validate({ ...p, completed: [1, 3] }), false);

@@ -24,9 +24,9 @@ function storage() {
     },
   };
 }
-test("confirmed restart creates a valid fresh shuffled campaign and removes only journey data", () => {
+test("confirmed restart creates a valid fresh fixed-order campaign and removes only journey data", () => {
   const s = storage(),
-    p = restartJourney(s, () => 0.3)!;
+    p = restartJourney(s)!;
   assert.ok(validate(p));
   assert.deepEqual(p.completed, []);
   assert.deepEqual(p.revealed, []);

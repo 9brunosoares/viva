@@ -1,6 +1,6 @@
 # Viva!
 
-Um joguinho pra viver e passar o tempo: dez fases Match-3, dez livros em ordem aleatória persistente e uma biblioteca que cresce com a campanha. Aplicação estática em React e TypeScript, sem contas ou backend.
+Um joguinho pra viver e passar o tempo: dez fases Match-3, dez livros com ordem fixa por fase e uma biblioteca que cresce com a campanha. Aplicação estática em React e TypeScript, sem contas ou backend.
 
 ## Interface e chegada de Blade
 
@@ -64,7 +64,11 @@ A biblioteca ocupa a tela como ambiente, com controles flutuantes de Jogar/Conti
 
 Toque em peças vizinhas ou arraste para trocar. Três combinam; quatro criam limpeza de linha/coluna. Nas novas partidas, as fases iniciais criam poderes direcionais; área chega a partir de Kung Fu e cor a partir de Espiritismo. Poderes podem ser ativados e encadeados. Uma dica não gasta jogada. Não há tempo ou vidas. Cascatas terminam antes de avaliar vitória. Pausar, voltar à biblioteca ou recarregar preserva a última posição estável do tabuleiro, contadores e jogadas. “Recomeçar fase” inicia outro tabuleiro.
 
-Cada fase inédita concede um livro. A ordem é sorteada uma vez e salva. Repetições e infinito não duplicam livros. A chave `viva-progress-v1` permanece compatível com campanhas anteriores. Testes automatizados usam contextos isolados, sem apagar o progresso do usuário.
+Cada fase inédita concede o livro definido em `campaignBookIds`, na sequência 1, 9, 8, 5, 2, 4, 10, 6, 3, 7. Repetições e infinito não duplicam livros. A chave `viva-progress-v1` salva a campanha fixa; ordens experimentais antigas incompatíveis iniciam uma campanha nova. Testes automatizados usam contextos isolados, sem apagar o progresso do usuário.
+
+As recompensas usam uma composição centralizada dentro das safe areas, e as
+lombadas se apoiam na superfície superior da prateleira. Detalhes e evidências:
+[RECOMPENSAS-ESTANTE.md](RECOMPENSAS-ESTANTE.md).
 
 Depois da última cascata, o tabuleiro permanece visível por 2,2 a 2,6 segundos para celebrar os objetivos, com “Conseguiu!” em apoio creme e até oito poderes numa cópia visual silenciosa. Um toque pode avançar; movimento reduzido omite o espetáculo. A vitória pendente é guardada para sobreviver a uma recarga. A transição leva à recompensa. A primeira conquista explica a coleção em uma apresentação curta antes de mostrar o livro. As seguintes variam a mensagem; repetir fase celebra sem duplicar livro. Capa, título e autoria aparecem na recompensa, com “Guardar na biblioteca”; a sinopse é lida posteriormente na estante. Movimento reduzido conserva a mensagem e remove a animação.
 

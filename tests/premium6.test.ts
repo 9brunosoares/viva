@@ -163,7 +163,7 @@ test("clean snapshots preserve gifts, victory and counters; discarded states and
     value: { getItem: (k: string) => values.get(k) ?? null },
   });
   try {
-    const p = fresh(rng()),
+    const p = fresh(),
       session = {
         version: 2,
         campaign: p.order.join(","),

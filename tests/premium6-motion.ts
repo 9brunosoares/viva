@@ -20,13 +20,32 @@ const browser = await chromium.launch({ headless: true, channel: "msedge" }),
     },
   });
 await context.addInitScript("globalThis.__name=fn=>fn");
+await context.addInitScript(() => {
+  const animate = Element.prototype.animate;
+  Element.prototype.animate = function (frames, options) {
+    if (this.classList.contains("reward-flight")) {
+      const target = document.querySelector('[data-book-id="2"]')!;
+      const from = this.getBoundingClientRect(),
+        to = target.getBoundingClientRect();
+      const last = (frames as Keyframe[]).at(-1)!;
+      const matrix = new DOMMatrix(String(last.transform));
+      (window as any).__bookFlight = {
+        dx: matrix.m41,
+        dy: matrix.m42,
+        expectedX: to.x + to.width / 2 - from.x - from.width / 2,
+        expectedY: to.y + to.height / 2 - from.y - from.height / 2,
+      };
+    }
+    return animate.call(this, frames, options);
+  };
+});
 const page = await context.newPage(),
   errors: string[] = [];
 page.on("pageerror", (e) => errors.push(e.message));
 await mkdir("test-results/premium6", { recursive: true });
 let checks = 0;
 function progress(count: number, pending = false) {
-  let p = fresh(() => 0.43);
+  let p = fresh();
   for (let id = 1; id <= count; id++) {
     p = complete(p, id);
     if (!pending || id !== count) p = finishMilestone(acceptMilestoneBook(p));
@@ -97,6 +116,13 @@ try {
     .click();
   await page.locator(".reward-flight").waitFor();
   assert.equal(await page.locator(".reward-flight").count(), 1);
+  const trajectory = await page.evaluate(() => (window as any).__bookFlight);
+  assert.ok(
+    trajectory &&
+      Math.abs(trajectory.dx - trajectory.expectedX) < 0.5 &&
+      Math.abs(trajectory.dy - trajectory.expectedY) < 0.5,
+    JSON.stringify(trajectory),
+  );
   await page.reload();
   await page.locator(".celebration-blade").waitFor();
   assert.equal(await page.locator(".shelf-books button").count(), 5);

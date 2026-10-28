@@ -34,7 +34,7 @@ await waitForCache(page);
 let checks = 0;
 for (const kind of ["blade", "family"] as const) {
   const stage = kind === "blade" ? 5 : 10;
-  let p = fresh(() => 0.4);
+  let p = fresh();
   for (let i = 1; i < stage; i++)
     p = finishMilestone(acceptMilestoneBook(complete(p, i)));
   p = acceptMilestoneBook(complete(p, stage));
@@ -109,7 +109,7 @@ for (const kind of ["blade", "family"] as const) {
   }
 }
 // Old saves keep existing possessions. Preview tools never alter the save.
-let legacy: any = fresh(() => 0.3);
+let legacy: any = fresh();
 legacy.completed = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 delete legacy.revealed;
 await page.evaluate(

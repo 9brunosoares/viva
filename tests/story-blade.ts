@@ -35,7 +35,7 @@ async function seed(count: number, difficulty = "easy") {
         "viva-progress-v1",
         JSON.stringify({
           version: 1,
-          order: [7, 2, 9, 1, 8, 4, 10, 3, 6, 5],
+          order: [1, 9, 8, 5, 2, 4, 10, 6, 3, 7],
           completed: Array.from({ length: count }, (_, i) => i + 1),
           sound: true,
           motion: true,

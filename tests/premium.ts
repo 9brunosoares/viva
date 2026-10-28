@@ -25,7 +25,7 @@ page.on("response", (r: any) => {
 });
 await page.goto("http://127.0.0.1:4173/viva-test/");
 await waitForCache(page);
-const order = [7, 2, 9, 1, 8, 4, 10, 3, 6, 5];
+const order = [1, 9, 8, 5, 2, 4, 10, 6, 3, 7];
 async function seed(count: number) {
   await page.waitForTimeout(120);
   await page.evaluate(() => {

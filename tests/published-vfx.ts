@@ -44,7 +44,7 @@ for (const engine of ["chromium", "webkit"] as const) {
     await page
       .getByRole("button", { name: "Fechar configurações", exact: true })
       .click();
-    const order = [7, 2, 9, 1, 8, 4, 10, 3, 6, 5],
+    const order = [1, 9, 8, 5, 2, 4, 10, 6, 3, 7],
       board = createBoard(undefined, levels[8].rules);
     board[24].special = "row";
     await page.evaluate(

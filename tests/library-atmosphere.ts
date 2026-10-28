@@ -20,7 +20,7 @@ await context.addInitScript(
 );
 const page = await context.newPage();
 page.on("pageerror", (e) => errors.push(e.message));
-const order = [7, 2, 9, 1, 8, 4, 10, 3, 6, 5];
+const order = [1, 9, 8, 5, 2, 4, 10, 6, 3, 7];
 async function enter() {
   if (await page.locator(".home").count())
     await page

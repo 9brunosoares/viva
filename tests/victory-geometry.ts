@@ -51,7 +51,7 @@ for (let seed = 1; seed < 20000; seed++) {
   }
 }
 assert.ok(cascadeSeed);
-const p = fresh(() => 0.43),
+const p = fresh(),
   results: any[] = [];
 await mkdir("test-results/interface-blade", { recursive: true });
 try {

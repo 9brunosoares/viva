@@ -214,8 +214,11 @@ a {
 .shelf-books button:disabled {
   pointer-events: none;
 }
-.reward-in-room {
+.library.immersive.reward-in-room {
   isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
   overflow: hidden;
   padding: calc(var(--safe-top) + 14px) 22px calc(var(--safe-bottom) + 16px);
@@ -239,9 +242,15 @@ a {
   text-align: center;
   gap: 10px;
   max-height: 100%;
+  min-height: 0;
+  width: 100%;
+  flex: 0 1 auto;
   max-width: 360px;
   color: #fff1d7;
   animation: reward-rise 450ms ease-out both;
+}
+.reward-content > :not(.reward-book) {
+  flex: none;
 }
 .reward-content h1 {
   font-size: clamp(25px, 7vw, 34px);
@@ -264,6 +273,8 @@ a {
   object-fit: contain;
   filter: drop-shadow(0 8px 15px #071c1690);
   margin: 4px 0;
+  min-height: 0;
+  flex: 0 1 auto;
 }
 .reward-content .reward-badge {
   width: 46px;

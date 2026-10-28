@@ -21,10 +21,7 @@ page.on("pageerror", (e: Error) => errors.push(e.message));
 const url = "http://127.0.0.1:4173/viva-test/";
 await page.goto(url);
 await waitForCache(page);
-const orders = [
-  [7, 2, 9, 1, 8, 4, 10, 3, 6, 5],
-  [10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
-];
+const orders = [[1, 9, 8, 5, 2, 4, 10, 6, 3, 7]];
 let checks = 0;
 async function saved(order: number[], count: number) {
   await page.evaluate(

@@ -35,7 +35,7 @@ const url = process.env.VIVA_TEST_URL || "http://127.0.0.1:4173/viva-test/";
 await mkdir("test-results/premium6", { recursive: true });
 let checks = 0;
 function progress(count: number, pending = false) {
-  let p = fresh(() => 0.43);
+  let p = fresh();
   for (let id = 1; id <= count; id++) {
     p = complete(p, id);
     if (!pending || id !== count) p = finishMilestone(acceptMilestoneBook(p));

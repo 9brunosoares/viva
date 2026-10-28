@@ -51,7 +51,7 @@ try {
     [430, 932],
   ])
     for (let stage = 1; stage <= 10; stage++) {
-      let p = fresh(() => 0.43);
+      let p = fresh();
       for (let i = 1; i < stage; i++)
         p = finishMilestone(acceptMilestoneBook(complete(p, i)));
       const level = balancedLevel(levels[stage - 1], "easy"),

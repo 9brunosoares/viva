@@ -58,7 +58,7 @@ await page.screenshot({
 await page
   .getByRole("button", { name: "Voltar à biblioteca", exact: true })
   .click();
-const fixture = fresh(() => 0.41);
+const fixture = fresh();
 let p = fixture;
 for (let i = 1; i <= 5; i++)
   p = finishMilestone(acceptMilestoneBook(complete(p, i)));

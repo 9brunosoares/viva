@@ -73,7 +73,7 @@ assert.equal(
   await page.evaluate(() => (window as any).__audioStarts > 0),
   audioSupported,
 );
-let p = fresh(() => 0.42);
+let p = fresh();
 for (let i = 1; i <= 10; i++)
   p = finishMilestone(acceptMilestoneBook(complete(p, i)));
 p.sound = false;

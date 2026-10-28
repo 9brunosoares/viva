@@ -18,7 +18,7 @@ const page = await context.newPage(),
   errors: string[] = [];
 page.on("pageerror", (e) => errors.push(e.message));
 await page.addInitScript("globalThis.__name = (fn) => fn");
-const order = [7, 2, 9, 1, 8, 4, 10, 3, 6, 5];
+const order = [1, 9, 8, 5, 2, 4, 10, 6, 3, 7];
 let layouts = 0;
 async function seed(count: number) {
   await page.waitForTimeout(80);

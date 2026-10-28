@@ -35,7 +35,7 @@ test("session and story records preserve campaigns, board state and difficulty w
     },
   });
   try {
-    const p = fresh(() => 0.3),
+    const p = fresh(),
       before = JSON.stringify(p);
     const snapshot = {
       board: createBoard(),

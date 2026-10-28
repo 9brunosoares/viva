@@ -15,7 +15,7 @@ await context.addInitScript(
 const page = await context.newPage(),
   errors: string[] = [];
 page.on("pageerror", (e) => errors.push(e.message));
-let p = fresh(() => 0.43);
+let p = fresh();
 for (let i = 1; i < 4; i++) p = complete(p, i);
 await mkdir("test-results/premium6", { recursive: true });
 const results = [];

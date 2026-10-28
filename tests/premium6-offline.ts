@@ -60,7 +60,7 @@ try {
   );
   await page.reload();
   await page.waitForFunction(() => !!navigator.serviceWorker.controller);
-  let p = fresh(() => 0.4);
+  let p = fresh();
   for (let id = 1; id < 3; id++)
     p = finishMilestone(acceptMilestoneBook(complete(p, id)));
   const { board } = scenario("win");
@@ -192,7 +192,7 @@ try {
   assert.ok(resources.checks.every((r) => r.status === 200));
   // Both decoded ceremonial assets must also work with the origin still stopped.
   for (const count of [5, 10]) {
-    let milestone = fresh(() => 0.4);
+    let milestone = fresh();
     for (let id = 1; id <= count; id++) {
       milestone = complete(milestone, id);
       milestone =

@@ -27,7 +27,7 @@ test("test mode defaults off for absent, malformed and unavailable preferences",
 });
 test("local mode persists independently and survives a confirmed new journey", () => {
   const data = new Map<string, string>([
-    [KEY, JSON.stringify(fresh(() => 0.43))],
+    [KEY, JSON.stringify(fresh())],
   ]);
   const storage = {
     getItem: (key: string) => data.get(key) ?? null,
@@ -41,7 +41,7 @@ test("local mode persists independently and survives a confirmed new journey", (
   assert.equal(saveTestMode(true, storage), true);
   assert.equal(data.get(TEST_MODE_KEY), "true");
   assert.equal(readTestMode(storage), true);
-  assert.ok(restartJourney(storage, () => 0.3));
+  assert.ok(restartJourney(storage));
   assert.equal(readTestMode(storage), true);
   assert.equal(saveTestMode(false, storage), true);
   assert.equal(readTestMode(storage), false);
