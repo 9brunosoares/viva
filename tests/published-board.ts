@@ -18,6 +18,8 @@ await context.addInitScript("globalThis.__name=fn=>fn");
 const page = await context.newPage(),
   errors: string[] = [],
   httpErrors: string[] = [];
+// A cold Pages cache downloads the full offline set before activating the worker.
+page.setDefaultTimeout(90_000);
 page.on("pageerror", (e) => errors.push(e.message));
 page.on("response", (r) => {
   if (r.status() >= 400) httpErrors.push(`${r.status()} ${r.url()}`);
