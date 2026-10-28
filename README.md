@@ -2,6 +2,12 @@
 
 Um joguinho pra viver e passar o tempo: dez fases Match-3, dez livros em ordem aleatória persistente e uma biblioteca que cresce com a campanha. Aplicação estática em React e TypeScript, sem contas ou backend.
 
+## Interface e chegada de Blade
+
+Dificuldade em Configurações; ação principal da biblioteca em toda a largura. Cerimônias sem “Ouvir”, preservando seus temas. A chegada de Blade espera a imagem aprovada carregar e anuncia “O Blade chegou!”. A comemoração mantém o tabuleiro na mesma posição.
+
+Diagnóstico, medidas e validação: [INTERFACE_BLADE.md](INTERFACE_BLADE.md).
+
 ## Pós-Upgrade 6 — versão atual
 
 Biblioteca com prateleira exclusiva para os dez livros e recompensas dentro do cenário. Encerramento com aproximação do retrato e dedicatória manuscrita; controles planos e fontes locais Fraunces/Nunito/Caveat. A vitória conserva sua apresentação e ativações apenas visuais.

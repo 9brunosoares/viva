@@ -1,0 +1,41 @@
+{
+  "before": {
+    "x": 13,
+    "y": 211.125,
+    "width": 364,
+    "height": 460.75
+  },
+  "during": {
+    "x": 13,
+    "y": 257.125,
+    "width": 364,
+    "height": 460.75
+  },
+  "dy": 46,
+  "blade": {
+    "art": {
+      "display": "none",
+      "visibility": "hidden",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      }
+    },
+    "image": {
+      "complete": true,
+      "naturalWidth": 400
+    },
+    "roomLayer": {
+      "opacity": "0",
+      "animation": "library-pose-in, library-breath",
+      "playState": "paused"
+    },
+    "ambient": "paused"
+  }
+}

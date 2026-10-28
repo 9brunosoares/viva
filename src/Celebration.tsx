@@ -1,7 +1,7 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { asset } from "./config";
 import { Milestone } from "./progress";
-import { ceremonyMusic, audioAvailable } from "./audio";
+import { ceremonyMusic } from "./audio";
 import { BRUNO_SIGNATURE } from "./narrative";
 const dedicationBreaks = [
   0,
@@ -24,18 +24,48 @@ export default function Celebration({
   scene?: React.ReactNode;
 }) {
   const stop = useRef<() => void>(() => {});
-  const listen = () => {
-    stop.current();
-    stop.current = ceremonyMusic(audio, kind);
-  };
+  const family = kind === "family";
+  const [artState, setArtState] = useState<"loading" | "ready" | "error">(
+    family ? "ready" : "loading",
+  );
+  const [attempt, setAttempt] = useState(0);
+  const image = useRef<HTMLImageElement>(null);
+  const ready = family || artState === "ready";
+  useEffect(() => {
+    if (family) return;
+    let active = true;
+    const img = image.current!;
+    const loaded = async () => {
+      try {
+        await img.decode();
+        if (active && img.naturalWidth > 0) setArtState("ready");
+      } catch {
+        if (active) setArtState("error");
+      }
+    };
+    const failed = () => {
+      if (active) setArtState("error");
+    };
+    img.addEventListener("load", loaded);
+    img.addEventListener("error", failed);
+    if (img.complete) {
+      if (img.naturalWidth > 0) void loaded();
+      else failed();
+    }
+    return () => {
+      active = false;
+      img.removeEventListener("load", loaded);
+      img.removeEventListener("error", failed);
+    };
+  }, [family, attempt]);
   const title = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
-    title.current?.focus();
+    if (!ready) return;
+    title.current?.focus({ preventScroll: true });
     stop.current();
     stop.current = ceremonyMusic(audio, kind);
     return () => stop.current();
-  }, [audio, kind]);
-  const family = kind === "family";
+  }, [audio, kind, ready]);
   const root = useRef<HTMLElement>(null);
   useEffect(() => {
     const visibility = () => {
@@ -50,6 +80,8 @@ export default function Celebration({
       ref={root}
       className={`celebration celebration-${kind} library immersive ceremony-in-room`}
       aria-labelledby="celebration-title"
+      aria-busy={!ready}
+      data-art-ready={ready}
     >
       {scene}
       <div className="ceremony-dim" aria-hidden="true" />
@@ -58,10 +90,23 @@ export default function Celebration({
         {family ? "AS HISTÓRIAS MAIS BONITAS" : "UMA COMPANHIA ESPECIAL"}
       </small>
       <h1 ref={title} tabIndex={-1} id="celebration-title">
-        {family ? "Seu lugar é junto de quem você ama." : "Este é o Blade."}
+        {family ? "Seu lugar é junto de quem você ama." : "O Blade chegou!"}
       </h1>
+      {!family && artState !== "ready" && (
+        <p
+          className="ceremony-loading"
+          role={artState === "error" ? "alert" : "status"}
+        >
+          {artState === "error"
+            ? "Não foi possível carregar a imagem."
+            : "Um instante…"}
+        </p>
+      )}
       <div className="celebration-art">
         <img
+          key={attempt}
+          ref={image}
+          decoding="async"
           src={asset(family ? "family-object" : "blade-4")}
           alt={
             family
@@ -81,14 +126,22 @@ export default function Celebration({
           "Chegou uma companhia para as próximas páginas."
         )}
       </p>
-      <button className="primary" onClick={onFinish}>
-        {family ? "Voltar ao meu cantinho" : "Vem, Blade!"}
+      <button
+        className="primary"
+        disabled={!ready && artState !== "error"}
+        onClick={() => {
+          if (artState === "error") {
+            setArtState("loading");
+            setAttempt((n) => n + 1);
+          } else onFinish();
+        }}
+      >
+        {artState === "error"
+          ? "Tentar novamente"
+          : family
+            ? "Voltar ao meu cantinho"
+            : "Vem, Blade!"}
       </button>
-      {audio && audioAvailable() && (
-        <button className="text-button ceremony-audio" onClick={listen}>
-          Ouvir
-        </button>
-      )}
     </section>
   );
 }

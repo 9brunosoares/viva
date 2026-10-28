@@ -1,0 +1,12 @@
+{
+  "engine": "chromium",
+  "layouts": 15,
+  "iphone14ProViewport": true,
+  "internalChapterScroll": true,
+  "modalFocusAndEscape": true,
+  "hiddenFacesExcluded": true,
+  "safeAreaGeometry": true,
+  "progressUnchanged": true,
+  "reducedMotion": true,
+  "errors": []
+}

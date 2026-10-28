@@ -1,0 +1,235 @@
+{
+  "engine": "chromium",
+  "results": [
+    {
+      "width": 375,
+      "settings": {
+        "x": 89,
+        "y": 72,
+        "width": 270,
+        "height": 378
+      },
+      "mainAction": {
+        "x": 16,
+        "y": 599,
+        "width": 343,
+        "height": 52
+      },
+      "difficultyPersists": true,
+      "activeMatchUnchanged": true
+    },
+    {
+      "width": 390,
+      "settings": {
+        "x": 104,
+        "y": 72,
+        "width": 270,
+        "height": 378
+      },
+      "mainAction": {
+        "x": 16,
+        "y": 776,
+        "width": 358,
+        "height": 52
+      },
+      "difficultyPersists": true,
+      "activeMatchUnchanged": true
+    },
+    {
+      "width": 430,
+      "settings": {
+        "x": 144,
+        "y": 72,
+        "width": 270,
+        "height": 378
+      },
+      "mainAction": {
+        "x": 16,
+        "y": 864,
+        "width": 398,
+        "height": 52
+      },
+      "difficultyPersists": true,
+      "activeMatchUnchanged": true
+    },
+    {
+      "width": 375,
+      "reduced": false,
+      "blade": {
+        "loaded": true,
+        "src": "/viva-test/assets/blade-4.webp",
+        "naturalWidth": 400,
+        "rect": {
+          "x": 24,
+          "y": 140.1658477783203,
+          "width": 327,
+          "height": 377,
+          "top": 140.1658477783203,
+          "right": 351,
+          "bottom": 517.1658477783203,
+          "left": 24
+        },
+        "opacity": 0.972358,
+        "visible": true,
+        "inViewport": true,
+        "uncovered": true
+      },
+      "visibilityResume": true,
+      "libraryUnlocked": true
+    },
+    {
+      "width": 375,
+      "reduced": true,
+      "blade": {
+        "loaded": true,
+        "src": "/viva-test/assets/blade-4.webp",
+        "naturalWidth": 400,
+        "rect": {
+          "x": 24,
+          "y": 140,
+          "width": 327,
+          "height": 377,
+          "top": 140,
+          "right": 351,
+          "bottom": 517,
+          "left": 24
+        },
+        "opacity": 1,
+        "visible": true,
+        "inViewport": true,
+        "uncovered": true
+      },
+      "visibilityResume": true,
+      "libraryUnlocked": true
+    },
+    {
+      "width": 390,
+      "reduced": false,
+      "blade": {
+        "loaded": true,
+        "src": "/viva-test/assets/blade-4.webp",
+        "naturalWidth": 400,
+        "rect": {
+          "x": 24,
+          "y": 140.1658172607422,
+          "width": 342,
+          "height": 554,
+          "top": 140.1658172607422,
+          "right": 366,
+          "bottom": 694.1658172607422,
+          "left": 24
+        },
+        "opacity": 0.972365,
+        "visible": true,
+        "inViewport": true,
+        "uncovered": true
+      },
+      "visibilityResume": true,
+      "libraryUnlocked": true
+    },
+    {
+      "width": 390,
+      "reduced": true,
+      "blade": {
+        "loaded": true,
+        "src": "/viva-test/assets/blade-4.webp",
+        "naturalWidth": 400,
+        "rect": {
+          "x": 24,
+          "y": 140,
+          "width": 342,
+          "height": 554,
+          "top": 140,
+          "right": 366,
+          "bottom": 694,
+          "left": 24
+        },
+        "opacity": 1,
+        "visible": true,
+        "inViewport": true,
+        "uncovered": true
+      },
+      "visibilityResume": true,
+      "libraryUnlocked": true
+    },
+    {
+      "width": 430,
+      "reduced": false,
+      "blade": {
+        "loaded": true,
+        "src": "/viva-test/assets/blade-4.webp",
+        "naturalWidth": 400,
+        "rect": {
+          "x": 24,
+          "y": 140.0941925048828,
+          "width": 382,
+          "height": 642,
+          "top": 140.0941925048828,
+          "right": 406,
+          "bottom": 782.0941925048828,
+          "left": 24
+        },
+        "opacity": 0.984301,
+        "visible": true,
+        "inViewport": true,
+        "uncovered": true
+      },
+      "visibilityResume": true,
+      "libraryUnlocked": true
+    },
+    {
+      "width": 430,
+      "reduced": true,
+      "blade": {
+        "loaded": true,
+        "src": "/viva-test/assets/blade-4.webp",
+        "naturalWidth": 400,
+        "rect": {
+          "x": 24,
+          "y": 140,
+          "width": 382,
+          "height": 642,
+          "top": 140,
+          "right": 406,
+          "bottom": 782,
+          "left": 24
+        },
+        "opacity": 1,
+        "visible": true,
+        "inViewport": true,
+        "uncovered": true
+      },
+      "visibilityResume": true,
+      "libraryUnlocked": true
+    },
+    {
+      "slowAsset": true,
+      "blade": {
+        "loaded": true,
+        "src": "/viva-test/assets/blade-4.webp",
+        "naturalWidth": 400,
+        "rect": {
+          "x": 24,
+          "y": 140.09645080566406,
+          "width": 382,
+          "height": 642,
+          "top": 140.09645080566406,
+          "right": 406,
+          "bottom": 782.0964508056641,
+          "left": 24
+        },
+        "opacity": 0.983925,
+        "visible": true,
+        "inViewport": true,
+        "uncovered": true
+      }
+    },
+    {
+      "assetRetry": true
+    }
+  ],
+  "familyPreserved": true,
+  "listenButtons": 0,
+  "errors": [],
+  "realIPhone": false
+}

@@ -44,7 +44,6 @@ import {
 } from "./difficulty";
 import { usePortrait } from "./usePortrait";
 import StageIntro from "./StageIntro";
-import DifficultySelector from "./DifficultySelector";
 import { useSceneTransition } from "./useSceneTransition";
 import { useDialogExit } from "./useDialogExit";
 import { consumeUpdateReturn, usePwaUpdates } from "./usePwaUpdates";
@@ -86,7 +85,6 @@ function Journey({ onRestarted }: { onRestarted: () => void }) {
   const appRoot = useRef<HTMLElement>(null);
   const [updateReturn] = useState(consumeUpdateReturn);
   const [difficulty, setDifficulty] = useState<Difficulty>(readDifficulty);
-  const [difficultyOpen, setDifficultyOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [firstGift, setFirstGift] = useState(false);
   const [flight, setFlight] = useState<Flight | null>(null);
@@ -256,7 +254,6 @@ function Journey({ onRestarted }: { onRestarted: () => void }) {
       ["home", "library", "levels"].includes(screen) &&
       book === null &&
       !portrait &&
-      !difficultyOpen &&
       !settingsOpen &&
       !progress.pendingCelebration &&
       arrivingBook === null &&
@@ -444,7 +441,7 @@ function Journey({ onRestarted }: { onRestarted: () => void }) {
               completed={progress.completed}
               acquired={acquired}
               blade={
-                bladeKnown || progress.pendingCelebration?.kind === "blade"
+                bladeKnown && progress.pendingCelebration?.kind !== "blade"
               }
               family={
                 familyKnown || progress.pendingCelebration?.kind === "family"
@@ -577,17 +574,6 @@ function Journey({ onRestarted }: { onRestarted: () => void }) {
               </span>
             </button>
           </nav>
-          <DifficultySelector
-            value={difficulty}
-            open={difficultyOpen}
-            onOpen={setDifficultyOpen}
-            onChange={(value) => {
-              setDifficulty(value);
-              try {
-                localStorage.setItem(DIFFICULTY_KEY, value);
-              } catch {}
-            }}
-          />
           {count === 10 && (
             <button
               className="gold hub-infinite"
@@ -609,9 +595,7 @@ function Journey({ onRestarted }: { onRestarted: () => void }) {
             hiddenBook={flight?.book}
             onBook={setBook}
             onPortrait={() => setPortrait(true)}
-            focused={
-              book !== null || portrait || difficultyOpen || settingsOpen
-            }
+            focused={book !== null || portrait || settingsOpen}
           />
         </section>
       ) : (
@@ -749,6 +733,13 @@ function Journey({ onRestarted }: { onRestarted: () => void }) {
         </div>
       )}
       <SoundToggle
+        difficulty={difficulty}
+        onDifficultyChange={(value) => {
+          setDifficulty(value);
+          try {
+            localStorage.setItem(DIFFICULTY_KEY, value);
+          } catch {}
+        }}
         open={settingsOpen}
         onOpenChange={setSettingsOpen}
         onRestart={() => {

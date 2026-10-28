@@ -1159,12 +1159,6 @@ small,
   font-size: 17px;
   min-height: 58px;
 }
-.ceremony-audio {
-  font-size: 12px;
-  text-decoration: underline;
-  min-height: 36px;
-  padding: 4px 10px;
-}
 .ceremony-light {
   position: absolute;
   inset: 0;
@@ -1721,9 +1715,6 @@ small,
 .celebration-art {
   max-height: 39dvh;
 }
-.ceremony-audio {
-  font-size: 13px;
-}
 .tile.special {
   border: 1px solid #fff3ab;
   box-shadow:
@@ -2149,46 +2140,6 @@ small,
 .immersive .hub-actions .primary span {
   display: none;
 }
-.difficulty-picker {
-  position: absolute;
-  bottom: max(8px, env(safe-area-inset-bottom));
-  width: 260px;
-  max-width: calc(100% - 32px);
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 5;
-  margin: 0;
-  padding: 4px;
-  border: 1px solid #dac09265;
-  border-radius: 18px;
-  background: #163a2ee8;
-  color: #fff5dc;
-}
-.difficulty-picker > div {
-  display: flex;
-  gap: 3px;
-}
-.difficulty-picker button {
-  min-height: 38px;
-  padding: 4px 10px;
-  flex: 1;
-  border: 0;
-  border-radius: 12px;
-  color: #f9e8c4;
-  background: transparent;
-  font-size: 14px;
-}
-.difficulty-picker button[aria-pressed="true"] {
-  background: #edcf85;
-  color: #254334;
-}
-.difficulty-picker p {
-  font-size: 12px;
-  text-align: center;
-  min-height: 18px;
-  line-height: 1.4;
-  padding-top: 3px;
-}
 .immersive .hub-infinite {
   position: absolute;
   left: 50%;
@@ -2575,23 +2526,7 @@ small,
 .immersive .hub-actions {
   bottom: max(16px, env(safe-area-inset-bottom));
   left: 16px;
-  right: 31%;
-}
-.difficulty-trigger {
-  position: absolute;
-  z-index: 6;
-  right: 16px;
-  bottom: max(16px, env(safe-area-inset-bottom));
-  width: 25%;
-  min-height: 52px;
-  padding: 8px;
-  color: #fff1d5;
-  background: #183d30ee;
-  border-color: #d8b977;
-}
-.difficulty-picker {
-  bottom: calc(max(16px, env(safe-area-inset-bottom)) + 62px);
-  z-index: 8;
+  right: max(16px, var(--safe-right));
 }
 .immersive .hub-infinite {
   bottom: calc(max(16px, env(safe-area-inset-bottom)) + 62px);
@@ -2681,8 +2616,7 @@ small,
 .portrait-fallback .immersive .hub-header {
   top: max(12px, env(safe-area-inset-left), env(safe-area-inset-right));
 }
-.portrait-fallback .immersive .hub-actions,
-.portrait-fallback .difficulty-trigger {
+.portrait-fallback .immersive .hub-actions {
   bottom: max(16px, env(safe-area-inset-left), env(safe-area-inset-right));
 }
 .portrait-fallback .book-viewer {
@@ -2735,9 +2669,6 @@ small,
 .immersive .blade-prompts button {
   min-height: 44px;
   font-size: 13px;
-}
-.difficulty-picker button {
-  min-height: 44px;
 }
 
 /* Blade is a discovery inside the room, with no permanent surrounding HUD. */

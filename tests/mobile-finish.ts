@@ -85,7 +85,6 @@ try {
       );
       for (const selector of [
         ".hub-actions .primary",
-        ".difficulty-trigger",
         ".hub-map",
         ".collection-link",
       ]) {
@@ -185,20 +184,23 @@ try {
   const progress = await page.evaluate(() =>
     localStorage.getItem("viva-progress-v1"),
   );
-  await page.locator(".difficulty-trigger").click();
+  await page
+    .getByRole("button", { name: "Configurações", exact: true })
+    .click();
   await page.getByRole("button", { name: "Médio", exact: true }).click();
-  assert.equal(await page.locator(".difficulty-picker").count(), 0);
-  assert.ok(
-    (await page.evaluate(() => document.activeElement?.className))?.includes(
-      "difficulty-trigger",
-    ),
+  assert.equal(
+    await page
+      .getByRole("button", { name: "Médio", exact: true })
+      .getAttribute("aria-pressed"),
+    "true",
   );
-  await page.locator(".difficulty-trigger").click();
   await page.keyboard.press("Escape");
-  assert.equal(await page.locator(".difficulty-picker").count(), 0);
-  await page.locator(".difficulty-trigger").click();
+  assert.equal(await page.locator(".settings-panel").count(), 0);
+  await page
+    .getByRole("button", { name: "Configurações", exact: true })
+    .click();
   await page.locator(".hub-header h1").click();
-  assert.equal(await page.locator(".difficulty-picker").count(), 0);
+  assert.equal(await page.locator(".settings-panel").count(), 0);
 
   const source = page.locator(".shelf-books button").first();
   await source.click();
@@ -244,11 +246,7 @@ try {
     document.documentElement.style.setProperty("--safe-top", "59px");
     document.documentElement.style.setProperty("--safe-bottom", "34px");
   });
-  for (const selector of [
-    ".hub-map",
-    ".hub-actions .primary",
-    ".difficulty-trigger",
-  ]) {
+  for (const selector of [".hub-map", ".hub-actions .primary"]) {
     const b = (await page.locator(selector).boundingBox())!;
     assert.ok(b.y >= 59 && b.y + b.height <= 852 - 34, selector);
   }

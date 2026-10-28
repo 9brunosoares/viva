@@ -41,19 +41,25 @@ try {
   );
   assert.equal(await page.locator(".blade,.family-frame").count(), 0);
   await page
-    .getByRole("button", { name: "Dificuldade: Difícil", exact: true })
+    .getByRole("button", { name: "Configurações", exact: true })
     .click();
   await page
-    .locator(".difficulty-picker")
+    .locator(".settings-difficulty")
     .getByRole("button", { name: "Médio", exact: true })
     .click();
   await page.reload();
+  await page
+    .getByRole("button", { name: "Configurações", exact: true })
+    .click();
   assert.equal(
     await page
-      .getByRole("button", { name: "Dificuldade: Médio", exact: true })
-      .count(),
-    1,
+      .getByRole("button", { name: "Médio", exact: true })
+      .getAttribute("aria-pressed"),
+    "true",
   );
+  await page
+    .getByRole("button", { name: "Fechar configurações", exact: true })
+    .click();
   await page.locator(".hub-actions .primary").click();
   await page.getByRole("button", { name: "Vamos lá!", exact: true }).click();
   await page.locator(".tile").first().waitFor();

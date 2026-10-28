@@ -159,7 +159,7 @@ button:disabled {
 }
 .immersive .hub-actions {
   left: 16px;
-  right: 31%;
+  right: max(16px, var(--safe-right));
   bottom: calc(var(--safe-bottom) + 16px);
   margin: 0;
 }
@@ -168,50 +168,11 @@ button:disabled {
   font-size: 19px;
   box-shadow: 0 2px 8px #10291c65;
 }
-.difficulty-control {
-  display: contents;
-}
-.difficulty-trigger {
-  bottom: calc(var(--safe-bottom) + 16px);
-  min-height: 52px;
-  font-size: 16px;
-}
-.difficulty-picker {
-  bottom: calc(var(--safe-bottom) + 78px);
-  padding: 8px;
-  border-radius: 20px;
-  background: #163a2ef5;
-  box-shadow: 0 5px 14px #0a201b40;
-  animation: choice-in 150ms ease-out both;
-}
-.difficulty-picker button {
-  min-height: 44px;
-  font-size: 15px;
-}
-.difficulty-picker p {
-  font-size: 13px;
-  line-height: 1.4;
-  padding: 5px 4px 0;
-}
-.difficulty-picker [aria-pressed="true"] {
-  box-shadow: inset 0 0 0 1px #f9e6b3;
-}
 .immersive .hub-infinite {
   bottom: calc(var(--safe-bottom) + 77px);
   min-height: 44px;
   font-size: 14px;
   margin: 0;
-}
-.library:has(.difficulty-picker) .hub-infinite {
-  visibility: hidden;
-}
-@keyframes choice-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
 }
 
 /* The journey is a scrollable set of illustrated chapters, inside a steady viewport. */
@@ -354,6 +315,7 @@ button:disabled {
   padding-bottom: max(14px, var(--safe-bottom));
 }
 .app .board-wrap {
+  min-height: 0;
   width: min(
     100%,
     420px,
@@ -519,10 +481,6 @@ button:disabled {
   font-size: 11px;
   letter-spacing: 1.6px;
 }
-.celebration .ceremony-audio {
-  min-height: 44px;
-  font-size: 14px;
-}
 .storage-warning {
   bottom: calc(var(--safe-bottom) + 12px);
 }
@@ -628,7 +586,6 @@ button:disabled {
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .difficulty-picker,
   .modal:not(.book-viewer) {
     animation: none;
   }

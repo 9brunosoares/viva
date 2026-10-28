@@ -78,7 +78,7 @@ try {
     ),
   );
   // An attention surface pauses every actual environmental animation, then resumes it.
-  await page.locator(".difficulty-trigger").click();
+  await page.locator(".audio-toggle").click();
   await page.waitForFunction(
     () =>
       document.querySelector(".library-room")?.getAttribute("data-ambient") ===

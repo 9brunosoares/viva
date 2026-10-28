@@ -75,8 +75,7 @@ a {
   font-weight: 800;
 }
 .text-button,
-.collection-link,
-.ceremony-audio {
+.collection-link {
   min-height: 44px;
   border: 1px solid #c4a46c;
   border-radius: 22px;
@@ -107,7 +106,9 @@ a {
 }
 .game-message[hidden],
 .game-tools[hidden] {
-  display: none;
+  display: flex;
+  visibility: hidden;
+  pointer-events: none;
 }
 .victory-word {
   background: #fff0d0;
@@ -330,13 +331,6 @@ a {
   position: relative;
   z-index: 5;
 }
-.ceremony-in-room.celebration-blade .celebration-art {
-  height: 18dvh;
-  visibility: hidden;
-}
-.ceremony-in-room.celebration-blade .blade {
-  animation: blade-in-room 1100ms 250ms ease-out both;
-}
 .ceremony-in-room.celebration-family .celebration-art {
   height: 25dvh;
   min-height: 100px;
@@ -378,8 +372,7 @@ a {
 .celebration-family .bruno-signature span:nth-child(3) {
   animation-delay: 4900ms;
 }
-.celebration-family > .primary,
-.celebration-family > .ceremony-audio {
+.celebration-family > .primary {
   animation: ceremony-copy 600ms 5500ms ease-out both;
 }
 .ceremony-in-room > small {
@@ -424,19 +417,6 @@ a {
   min-height: 52px;
   font-size: 17px;
 }
-.ceremony-in-room > .ceremony-audio {
-  position: absolute;
-  top: auto;
-  bottom: calc(var(--safe-bottom) + 89px);
-  left: calc(50% - 48px);
-  right: auto;
-  transform: none;
-  color: #254c38 !important;
-  background: #fff0d8;
-  width: 96px;
-  margin: 0;
-  min-width: 80px;
-}
 .ceremony-in-room[data-paused="true"] * {
   animation-play-state: paused !important;
 }
@@ -444,7 +424,7 @@ a {
 .library-room[data-ready="false"] * {
   animation-play-state: paused !important;
 }
-.ceremony-in-room .celebration-art {
+.ceremony-in-room.celebration-family .celebration-art {
   display: none;
 }
 .immersive .hub-infinite {
@@ -482,16 +462,6 @@ a {
   from {
     opacity: 0;
     transform: translateY(18px) scale(0.97);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-@keyframes blade-in-room {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
   }
   to {
     opacity: 1;
@@ -591,5 +561,58 @@ a {
   .reward-shade,
   .ceremony-dim {
     animation: none !important;
+  }
+}
+
+/* A dedicated, decoded sprite is the focal point of Blade's ceremony. */
+.ceremony-in-room.celebration-blade .celebration-art {
+  position: absolute;
+  display: grid;
+  visibility: visible;
+  top: calc(var(--safe-top) + 140px);
+  bottom: calc(var(--safe-bottom) + 150px);
+  left: 24px;
+  right: 24px;
+  width: calc(100% - 48px);
+  max-width: 440px;
+  height: auto;
+  max-height: none;
+  margin: 0 auto;
+  animation: none;
+}
+.celebration-blade .celebration-art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 12px #071d1890);
+}
+.ceremony-in-room.celebration-blade > p:not(.ceremony-loading) {
+  top: auto;
+  bottom: calc(var(--safe-bottom) + 94px);
+}
+.celebration-blade[data-art-ready="false"] > h1,
+.celebration-blade[data-art-ready="false"] > small,
+.celebration-blade[data-art-ready="false"] > p:not(.ceremony-loading),
+.celebration-blade[data-art-ready="false"] .celebration-art {
+  visibility: hidden;
+}
+.ceremony-in-room > .ceremony-loading {
+  top: 46%;
+  font-size: 16px;
+}
+.celebration-blade[data-art-ready="true"] .celebration-art,
+.celebration-blade[data-art-ready="true"] > h1,
+.celebration-blade[data-art-ready="true"] > small,
+.celebration-blade[data-art-ready="true"] > p {
+  animation: ceremony-copy 500ms ease-out both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .celebration-blade[data-art-ready="true"] .celebration-art,
+  .celebration-blade[data-art-ready="true"] > h1,
+  .celebration-blade[data-art-ready="true"] > small,
+  .celebration-blade[data-art-ready="true"] > p {
+    animation: none;
   }
 }

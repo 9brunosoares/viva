@@ -100,6 +100,12 @@ try {
   await page.reload();
   await page.locator(".celebration-blade").waitFor();
   assert.equal(await page.locator(".shelf-books button").count(), 5);
+  await page.locator('.celebration-blade[data-art-ready="true"]').waitFor();
+  assert.equal(await page.locator(".celebration-art img").isVisible(), true);
+  assert.equal(
+    await page.getByRole("button", { name: "Ouvir", exact: true }).count(),
+    0,
+  );
   checks++;
   await page.waitForTimeout(1300);
   await page.screenshot({ path: "test-results/premium6/blade-arrival.png" });

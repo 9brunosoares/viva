@@ -128,8 +128,14 @@ try {
     await document.fonts.load("800 16px Nunito");
     await document.fonts.load("600 24px Fraunces");
     await document.fonts.load("500 32px Caveat");
+    await document.fonts.ready;
     return {
       checks,
+      fontFaces: Array.from(document.fonts).map((f) => ({
+        family: f.family,
+        status: f.status,
+        weight: f.weight,
+      })),
       cachedRemoved: (
         await Promise.all(
           (await caches.keys()).map(async (key) =>
@@ -150,8 +156,34 @@ try {
     };
   });
   assert.deepEqual(resources.cachedRemoved, []);
-  assert.ok(resources.fonts);
+  assert.ok(resources.fonts, JSON.stringify(resources));
   assert.ok(resources.checks.every((r) => r.status === 200));
+  // Both decoded ceremonial assets must also work with the origin still stopped.
+  for (const count of [5, 10]) {
+    let milestone = fresh(() => 0.4);
+    for (let id = 1; id <= count; id++) {
+      milestone = complete(milestone, id);
+      milestone =
+        id === count
+          ? acceptMilestoneBook(milestone)
+          : finishMilestone(acceptMilestoneBook(milestone));
+    }
+    await page.evaluate((p) => {
+      localStorage.setItem("viva-progress-v1", JSON.stringify(p));
+      localStorage.removeItem("viva-session-v1");
+    }, milestone);
+    await page.reload();
+    if (count === 5) {
+      await page.locator('.celebration-blade[data-art-ready="true"]').waitFor();
+      assert.ok(await page.locator(".celebration-art img").isVisible());
+    } else await page.locator(".family-frame img").waitFor();
+    assert.equal(
+      await page.getByRole("button", { name: "Ouvir", exact: true }).count(),
+      0,
+    );
+    await page.locator(".celebration .primary").click();
+    await page.locator(".hub-actions").waitFor();
+  }
   const criticalErrors = errors.filter(
     (e) => !e.endsWith("/viva-test/sw.js due to access control checks."),
   );
@@ -163,6 +195,7 @@ try {
         engine: "webkit",
         originServerStopped: true,
         earnedBookOffline: true,
+        bladeAndFamilyCeremoniesOffline: true,
         reloadPreserved: true,
         resources,
         criticalErrors,

@@ -15,6 +15,9 @@ const browser = await chromium.launch({ headless: true, channel: "msedge" }),
 await context.addInitScript(
   "globalThis.__name=fn=>fn;let seed=38259;Math.random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296}",
 );
+await context.addInitScript(`window.__ceremonyStarts=[];
+const Audio=window.AudioContext||window.webkitAudioContext;
+if(Audio){const create=Audio.prototype.createOscillator;Audio.prototype.createOscillator=function(...args){const osc=create.apply(this,args),start=osc.start;osc.start=function(...times){const c=document.querySelector('.celebration');if(c)window.__ceremonyStarts.push(c.classList.contains('celebration-blade')?'blade':'family');return start.apply(this,times)};return osc;};}`);
 const page = await context.newPage(),
   errors: string[] = [];
 page.on("pageerror", (e) => errors.push(e.message));
@@ -148,8 +151,46 @@ try {
     await page
       .getByRole("button", { name: "Guardar na biblioteca", exact: true })
       .click();
-    if (stage === 5 || stage === 10)
+    if (stage === 5) {
+      await page.locator('.celebration-blade[data-art-ready="true"]').waitFor();
+      const sprite = await page
+        .locator(".celebration-art img")
+        .evaluate((img: HTMLImageElement) => {
+          const r = img.getBoundingClientRect();
+          return {
+            loaded: img.complete && img.naturalWidth > 0,
+            width: r.width,
+            height: r.height,
+            display: getComputedStyle(img.parentElement!).display,
+            visibility: getComputedStyle(img.parentElement!).visibility,
+          };
+        });
+      assert.ok(
+        sprite.loaded &&
+          sprite.width > 280 &&
+          sprite.height > 200 &&
+          sprite.display !== "none" &&
+          sprite.visibility === "visible",
+      );
+      assert.equal(
+        await page.locator("#celebration-title").textContent(),
+        "O Blade chegou!",
+      );
+      assert.equal(
+        await page.getByRole("button", { name: "Ouvir", exact: true }).count(),
+        0,
+      );
+      await page.screenshot({
+        path: "test-results/interface-blade/blade-after-real-win.png",
+      });
+    }
+    if (stage === 5 || stage === 10) {
+      await page.waitForFunction(
+        (kind) => (window as any).__ceremonyStarts.includes(kind),
+        stage === 5 ? "blade" : "family",
+      );
       await page.locator(".celebration .primary").click();
+    }
     await page.locator(".hub-actions").waitFor();
     console.log(`Real Easy stage ${stage}:`, results.at(-1));
   }
@@ -181,7 +222,14 @@ try {
   await writeFile(
     "test-results/premium6/journey-report.json",
     JSON.stringify(
-      { results, errors, usedSkipButton: false, physicalDevice: false },
+      {
+        results,
+        errors,
+        usedSkipButton: false,
+        bladeVisibleAfterRealWin: true,
+        ceremonyAudioStartedWithoutListenButton: true,
+        physicalDevice: false,
+      },
       null,
       2,
     ),

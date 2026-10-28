@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState, type SyntheticEvent } from "react";
 import { audioAvailable, type AudioPreferences } from "./audio";
+import DifficultySelector from "./DifficultySelector";
+import type { Difficulty } from "./difficulty";
 export default function SoundToggle({
+  difficulty,
+  onDifficultyChange,
   preferences,
   onChange,
   position,
@@ -8,6 +12,8 @@ export default function SoundToggle({
   onOpenChange,
   onRestart,
 }: {
+  difficulty: Difficulty;
+  onDifficultyChange: (value: Difficulty) => void;
   preferences: AudioPreferences;
   onChange: (next: AudioPreferences, event: SyntheticEvent) => void;
   position: "hub" | "top" | "game" | "modal";
@@ -34,7 +40,9 @@ export default function SoundToggle({
   useEffect(() => {
     if (!open) return;
     root.current
-      ?.querySelector<HTMLButtonElement>('[role="switch"]')
+      ?.querySelector<HTMLButtonElement>(
+        '.settings-difficulty [aria-pressed="true"]',
+      )
       ?.focus({ preventScroll: true });
     function outside(event: PointerEvent) {
       if (!confirm && !root.current?.contains(event.target as Node))
@@ -99,6 +107,10 @@ export default function SoundToggle({
               ×
             </button>
           </div>
+          <DifficultySelector
+            value={difficulty}
+            onChange={onDifficultyChange}
+          />
           {audioAvailable() && (
             <>
               <div className="audio-channel">

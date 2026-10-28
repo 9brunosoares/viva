@@ -1,0 +1,83 @@
+{
+  "engine": "webkit",
+  "originServerStopped": true,
+  "earnedBookOffline": true,
+  "bladeAndFamilyCeremoniesOffline": true,
+  "reloadPreserved": true,
+  "resources": {
+    "checks": [
+      {
+        "path": "assets/premium6/gift-wrapped.webp",
+        "status": 200
+      },
+      {
+        "path": "assets/premium6/gift-unwrapped.webp",
+        "status": 200
+      },
+      {
+        "path": "assets/premium6/gift-open.webp",
+        "status": 200
+      },
+      {
+        "path": "assets/fonts/nunito-latin.woff2",
+        "status": 200
+      },
+      {
+        "path": "assets/fonts/nunito-latin-ext.woff2",
+        "status": 200
+      },
+      {
+        "path": "assets/fonts/fraunces-latin.woff2",
+        "status": 200
+      },
+      {
+        "path": "assets/fonts/fraunces-latin-ext.woff2",
+        "status": 200
+      },
+      {
+        "path": "assets/fonts/caveat-latin.woff2",
+        "status": 200
+      },
+      {
+        "path": "assets/fonts/caveat-latin-ext.woff2",
+        "status": 200
+      }
+    ],
+    "fontFaces": [
+      {
+        "family": "Caveat",
+        "status": "unloaded",
+        "weight": "500 700"
+      },
+      {
+        "family": "Caveat",
+        "status": "loaded",
+        "weight": "500 700"
+      },
+      {
+        "family": "Fraunces",
+        "status": "unloaded",
+        "weight": "600 700"
+      },
+      {
+        "family": "Fraunces",
+        "status": "loaded",
+        "weight": "600 700"
+      },
+      {
+        "family": "Nunito",
+        "status": "unloaded",
+        "weight": "400 800"
+      },
+      {
+        "family": "Nunito",
+        "status": "loaded",
+        "weight": "400 800"
+      }
+    ],
+    "cachedRemoved": [],
+    "fonts": true
+  },
+  "criticalErrors": [],
+  "offlineWorkerDiagnostics": []
+}

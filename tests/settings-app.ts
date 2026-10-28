@@ -180,9 +180,16 @@ try {
     .getByRole("button", { name: "Entrar na biblioteca", exact: true })
     .click();
   assert.equal(await page.locator(".shelf-books button").count(), 0);
-  assert.ok(
-    (await page.locator(".difficulty-trigger").innerText()).includes("Fácil"),
+  await open();
+  assert.equal(
+    await page
+      .getByRole("button", { name: "Fácil", exact: true })
+      .getAttribute("aria-pressed"),
+    "true",
   );
+  await page
+    .getByRole("button", { name: "Fechar configurações", exact: true })
+    .click();
   // Reset an in-flight real power; unmount must cancel late snapshots/rewards.
   const board = createBoard(undefined, levels[8].rules);
   board[24].special = "row";
