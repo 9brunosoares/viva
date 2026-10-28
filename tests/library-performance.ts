@@ -1,16 +1,23 @@
 import assert from "node:assert/strict";
 import { writeFile } from "node:fs/promises";
-import { chromium } from "playwright";
+import { chromium, webkit } from "playwright";
 
 // Desktop emulation only: a relative smoke measurement, not a device FPS guarantee.
-const browser = await chromium.launch({ headless: true, channel: "msedge" });
+const engine = process.env.BROWSER_ENGINE === "webkit" ? "webkit" : "chromium";
+const browser = await (engine === "webkit" ? webkit : chromium).launch({
+  headless: true,
+  ...(engine === "chromium" ? { channel: "msedge" } : {}),
+});
 const page = await browser.newPage({
   viewport: { width: 390, height: 844 },
   isMobile: true,
   hasTouch: true,
 });
 try {
-  await page.goto("http://127.0.0.1:4173/viva-test/?v=library3-perf");
+  await page.goto(
+    process.env.VIVA_TEST_URL ||
+      "http://127.0.0.1:4173/viva-test/?v=library3-perf",
+  );
   await page.waitForTimeout(100);
   await page.evaluate(() => {
     localStorage.setItem(
@@ -26,8 +33,16 @@ try {
   });
   await page.reload();
   await page.locator(".library-room").waitFor();
+  if (process.env.PERF_HIDE_RAYS)
+    await page.addStyleTag({
+      content: ".library-sunrays{display:none!important}",
+    });
   // tsx's keepNames helper is needed only inside serialized test callbacks.
   await page.evaluate("globalThis.__name = (fn) => fn");
+  await page.waitForFunction(
+    async () => !!(await navigator.serviceWorker.ready)?.active,
+  );
+  await page.evaluate(() => document.fonts.ready);
   await page.waitForTimeout(1100);
   const measure = async () =>
     page.evaluate(async () => {
@@ -77,22 +92,25 @@ try {
     "CSS animation must not cause React/DOM updates per frame",
   );
   assert.equal(animated.nodes, paused.nodes);
-  assert.ok(
-    animated.p95 <= Math.max(50, paused.p95 * 2),
-    "no large relative scheduling regression on this desktop",
-  );
   const report = {
-    environment: "Chromium desktop with 390x844 mobile emulation",
+    environment: `${engine} desktop with 390x844 mobile emulation`,
     paused,
     animated,
     interpretation:
       "Indicative smoke measurement only; no real-iPhone FPS, thermals or battery validation",
   };
   await writeFile(
-    "test-results/library-performance-report.json",
+    process.env.PERF_REPORT ||
+      (engine === "webkit"
+        ? "test-results/library-performance-webkit-report.json"
+        : "test-results/library-performance-report.json"),
     JSON.stringify(report, null, 2),
   );
   console.log(JSON.stringify(report));
+  assert.ok(
+    animated.p95 <= Math.max(50, paused.p95 * 2),
+    "no large relative scheduling regression on this desktop",
+  );
 } finally {
   await browser.close();
 }

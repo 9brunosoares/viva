@@ -37,7 +37,8 @@ assert sheet.shape[1]==vfx['columns']*vfx['cell']
 for i in range(vfx['frameCount']):
     y,x=divmod(i,8); a=sheet[y*192:(y+1)*192,x*192:(x+1)*192,3]
     assert not np.any(np.concatenate([a[0],a[-1],a[:,0],a[:,-1]])), f'frame {i}: unsafe border'
-protected=[f'public/assets/library-{i}.webp' for i in range(4)]
+# Upgrade 6 intentionally replaces only the supplied room art and support masks.
+protected=[]
 protected += [str(p.relative_to(root)).replace('\\','/') for p in assets.glob('book-*.webp')]
 protected += ['src/audio.ts','src/narrative.ts']
 subprocess.run(['git','diff','--exit-code','viva-pre-campaign-evolution-20261027','--',*protected],cwd=root,check=True,stdout=subprocess.PIPE)

@@ -45,7 +45,7 @@ for (const kind of ["blade", "family"] as const) {
   await page.reload();
   await page.locator(`.celebration-${kind}`).waitFor();
   await page
-    .locator(".celebration-art img")
+    .locator(".celebration .room-image")
     .evaluate((img: HTMLImageElement) => img.decode());
   for (const size of [
     { width: 320, height: 568 },
@@ -59,7 +59,7 @@ for (const kind of ["blade", "family"] as const) {
       scroll: document.documentElement.scrollHeight,
       rects: Array.from(
         document.querySelectorAll(
-          ".celebration h1,.celebration-art img,.celebration .primary,.ceremony-audio",
+          ".celebration h1,.celebration .primary,.ceremony-audio",
         ),
       ).map((e) => {
         const r = e.getBoundingClientRect();

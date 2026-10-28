@@ -54,6 +54,7 @@ type Props = {
   endless?: boolean;
   initialSnapshot?: GameSnapshot;
   onSnapshot?: (snapshot: GameSnapshot) => void;
+  overlayOpen?: boolean;
 };
 export default function Game({
   level,
@@ -64,6 +65,7 @@ export default function Game({
   endless = false,
   initialSnapshot,
   onSnapshot,
+  overlayOpen = false,
 }: Props) {
   const rules = level.rules;
   const freshCounts = () =>
@@ -801,6 +803,7 @@ export default function Game({
             motion &&
             !busy &&
             !paused &&
+            !overlayOpen &&
             !lost &&
             !victory &&
             selected === null &&

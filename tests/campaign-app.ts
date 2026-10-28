@@ -228,7 +228,7 @@ try {
   const stored = await page.evaluate(() =>
     JSON.parse(localStorage.getItem("viva-session-v1")!),
   );
-  assert.equal(stored.campaignVersion, 2);
+  assert.equal(stored.campaignVersion, 3);
   assert.equal(stored.snapshot.counts.length, 7);
   await page.reload();
   await page.locator(".board").waitFor();
@@ -318,7 +318,7 @@ try {
       await qa.locator(".celebration .primary").waitFor();
       if (stage === 10)
         assert.equal(
-          await qa.locator(".bruno-signature").innerText(),
+          await qa.locator(".bruno-signature").textContent(),
           BRUNO_SIGNATURE,
         );
       await qa.locator(".celebration .primary").click();

@@ -1,0 +1,9 @@
+import {webkit} from 'playwright';import {writeFile} from 'node:fs/promises';
+const b=await webkit.launch({headless:true}),p=await b.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
+try{await p.goto('http://127.0.0.1:4173/viva-test/');await p.locator('.home').waitFor();await p.waitForFunction(async()=>!!(await navigator.serviceWorker.ready)?.active);await p.evaluate(()=>localStorage.setItem('viva-progress-v1',JSON.stringify({version:1,order:[1,2,3,4,5,6,7,8,9,10],completed:[1,2,3,4,5,6,7,8,9,10],sound:false,motion:true})));await p.reload();await p.locator('.library-room').waitFor();await p.evaluate(()=>document.fonts.ready);await p.evaluate(()=>{const s=document.createElement('style');s.id='profile-layer';document.head.append(s)});
+const results=[];
+for(const [name,css] of [['all',''],['cached-layers','.library-room,.library-atmosphere,.room-image{transform:translateZ(0);backface-visibility:hidden}.blade-layer,.immersive::before{will-change:transform}'],['none','.library-atmosphere{display:none!important}.blade-layer{animation:none!important}']]){
+ const result=await p.evaluate(async({name,css})=>{document.querySelector('#profile-layer').textContent=css;const times=[];let last=performance.now();await new Promise(r=>{function step(t){times.push(t-last);last=t;if(times.length<49)requestAnimationFrame(step);else r()}requestAnimationFrame(step)});times.shift();times.sort((a,b)=>a-b);return {name,p50:times[24],p95:times[45],rays:getComputedStyle(document.querySelector('.library-sunrays')).display,breath:getComputedStyle(document.querySelector('.blade-layer')).animationName}},{name,css});results.push(result);console.log(result);
+}
+await writeFile('test-results/premium6/webkit-layer-profile.json',JSON.stringify(results,null,2));
+}finally{await b.close()}

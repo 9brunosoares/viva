@@ -4,6 +4,8 @@ import { readFile, writeFile } from "node:fs/promises";
 import { resolve, extname } from "node:path";
 import { chromium, webkit } from "playwright";
 import { tile, moves } from "../src/engine";
+import { levels } from "../src/config";
+import { balancedLevel } from "../src/difficulty";
 import { waitForCache } from "./boardHelper";
 
 const root = resolve("dist"),
@@ -145,10 +147,11 @@ try {
   await page.locator(".tile").nth(a).click();
   await page.locator(".tile").nth(c).click();
   await page.waitForFunction(
-    () =>
+    (expected: number) =>
       document.querySelector(".board")?.getAttribute("aria-busy") === "false" &&
       JSON.parse(localStorage.getItem("viva-session-v1")!).snapshot
-        .remaining === 48,
+        .remaining === expected,
+    balancedLevel(levels[4], "medium").moves - 1,
   );
   const stored = await savedState();
   version = 2;
@@ -229,7 +232,10 @@ try {
   } else await context.setOffline(true);
   await page.reload();
   await page.locator(".board").waitFor();
-  assert.equal(await page.locator(".moves strong").innerText(), "48");
+  assert.equal(
+    await page.locator(".moves strong").innerText(),
+    String(balancedLevel(levels[4], "medium").moves - 1),
+  );
   assert.equal(await page.locator("html").getAttribute("data-release"), "3");
   assert.deepEqual(errors, []);
   const report = {
@@ -254,18 +260,16 @@ try {
 } catch (error) {
   console.log(
     await Promise.all(
-      context
-        .pages()
-        .map((p) =>
-          p.evaluate(async () => ({
-            version: document.documentElement.dataset.release,
-            screen: document.querySelector<HTMLElement>(".app")?.dataset.screen,
-            hidden: document.hidden,
-            waiting: (await navigator.serviceWorker.getRegistration())?.waiting
-              ?.state,
-            trace: (window as any).__pwaTrace,
-          })),
-        ),
+      context.pages().map((p) =>
+        p.evaluate(async () => ({
+          version: document.documentElement.dataset.release,
+          screen: document.querySelector<HTMLElement>(".app")?.dataset.screen,
+          hidden: document.hidden,
+          waiting: (await navigator.serviceWorker.getRegistration())?.waiting
+            ?.state,
+          trace: (window as any).__pwaTrace,
+        })),
+      ),
     ),
   );
   throw error;

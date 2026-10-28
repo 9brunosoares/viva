@@ -445,6 +445,7 @@ function Journey({ onRestarted }: { onRestarted: () => void }) {
           endless={infinite}
           initialSnapshot={activeSession?.snapshot}
           onSnapshot={saveMatch}
+          overlayOpen={settingsOpen}
           audio={true}
           motion={!reduced}
           onWin={win}

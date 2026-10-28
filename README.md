@@ -2,7 +2,15 @@
 
 Um joguinho pra viver e passar o tempo: dez fases Match-3, dez livros em ordem aleatória persistente e uma biblioteca que cresce com a campanha. Aplicação estática em React e TypeScript, sem contas ou backend.
 
-## Evolução da campanha — versão atual
+## Upgrade 6 — versão atual
+
+Biblioteca com prateleira exclusiva para os dez livros, lembranças decorativas e recompensas dentro do cenário. Encerramento com aproximação do retrato e dedicatória manuscrita; controles planos e fontes locais Fraunces/Nunito/Caveat. Pétalas e presentes acrescentam objetivos leves às novas partidas. A vitória tem apresentação legível e até oito ativações visuais, sem alterar o tabuleiro salvo nem o áudio.
+
+O Fácil ficou em 99–100% de vitórias por fase no bot de 100 sementes. Para cumprir esse limite sem mudar jogadas/metas, ingredientes descendentes e obstáculos no Fácil de Tatuagens foram adiados. Sessões anteriores continuam sem os novos obstáculos; progresso e ordem dos livros permanecem compatíveis. Não há trilha de fundo nem alterações no áudio aprovado.
+
+Implementação, recortes reais, tabela de balanceamento, testes e limitações: [PREMIUM6.md](PREMIUM6.md). Restauração: `viva-pre-premium-6-20261027`. Publicação em Pages autorizada pelo briefing desta etapa.
+
+## Base da evolução da campanha
 
 Revisão posterior dos efeitos: 74 recortes curados, sequências florais completas, impactos nas peças e vórtice multicolorido maior. A engrenagem **Configurações** conserva o som e inclui **Novo jogo**, com confirmação antes de reiniciar o progresso. Detalhes, comparação, evidências e limites: [VFX_FINAL.md](VFX_FINAL.md).
 
@@ -32,7 +40,7 @@ pnpm build
 node scripts/serve.mjs
 ```
 
-Abra http://127.0.0.1:4173/viva-test/?v=finish5. Atualizações aguardam uma tela segura e o consentimento das outras janelas do jogo, preservando partida e conquistas. Na primeira migração de uma versão antiga, pode ser necessário fechar e reabrir as abas uma vez.
+Abra http://127.0.0.1:4173/viva-test/?v=premium6. Atualizações aguardam uma tela segura e o consentimento das outras janelas do jogo, preservando partida e conquistas. Na primeira migração de uma versão antiga, pode ser necessário fechar e reabrir as abas uma vez.
 
 ## Acabamento mobile — upgrade 5/5
 
@@ -40,17 +48,17 @@ Biblioteca com controles integrados, fases como capítulos com rolagem interna, 
 
 ## Navegação rápida para testes
 
-O botão **Concluir fase** foi restaurado por solicitação para desenvolvimento e `pnpm build:qa`. A prévia QA local está em http://127.0.0.1:4177/viva-test/?v=campaign. `pnpm build` continua forçando QA desativado, e a distribuição não mostra atalhos. Os testes ficam em contextos isolados, sem apagar o progresso da jogadora.
+O botão **Concluir fase** foi restaurado por solicitação para desenvolvimento e `pnpm build:qa`. A prévia QA local está em http://127.0.0.1:4177/viva-test/?v=premium6. `pnpm build` continua forçando QA desativado, e a distribuição não mostra atalhos. Os testes ficam em contextos isolados, sem apagar o progresso da jogadora.
 
 ## Experiência e progresso
 
-A biblioteca ocupa a tela como ambiente, com controles flutuantes de Jogar/Continuar, fases, coleção e infinito quando desbloqueado. As artes e posições relativas de livros, Blade e quadro são preservadas. Fases bloqueadas ocultam nomes, temas e imagens. “Meus livros” e as lombadas abrem a capa do livro; “Ler sinopse” vira o volume e mostra título, autor e texto no verso. “Voltar à capa” desfaz o movimento. Somente a sinopse rola; a face oculta fica fora da navegação assistiva.
+A biblioteca ocupa a tela como ambiente, com controles flutuantes de Jogar/Continuar, fases, coleção e infinito quando desbloqueado. Os livros ocupam a prateleira reservada nas artes retocadas fornecidas; Blade e o quadro mantêm suas funções afetivas. Lembranças dos temas concluídos decoram o ambiente. Fases bloqueadas ocultam nomes, temas e imagens. “Meus livros” e as lombadas abrem a capa do livro; “Ler sinopse” vira o volume e mostra título, autor e texto no verso. “Voltar à capa” desfaz o movimento. Somente a sinopse rola; a face oculta fica fora da navegação assistiva.
 
 Toque em peças vizinhas ou arraste para trocar. Três combinam; quatro criam limpeza de linha/coluna. Nas novas partidas, as fases iniciais criam poderes direcionais; área chega a partir de Kung Fu e cor a partir de Espiritismo. Poderes podem ser ativados e encadeados. Uma dica não gasta jogada. Não há tempo ou vidas. Cascatas terminam antes de avaliar vitória. Pausar, voltar à biblioteca ou recarregar preserva a última posição estável do tabuleiro, contadores e jogadas. “Recomeçar fase” inicia outro tabuleiro.
 
 Cada fase inédita concede um livro. A ordem é sorteada uma vez e salva. Repetições e infinito não duplicam livros. A chave `viva-progress-v1` permanece compatível com campanhas anteriores. Testes automatizados usam contextos isolados, sem apagar o progresso do usuário.
 
-Depois da última cascata, o tabuleiro permanece visível por 2,2 a 2,6 segundos para celebrar os objetivos, com luz dourada e “Conseguiu!”. A transição leva à recompensa. A primeira conquista explica a coleção em uma apresentação curta antes de mostrar o livro. As seguintes variam a mensagem; repetir fase celebra sem duplicar livro. Capa, título e autoria aparecem na recompensa, com “Guardar na biblioteca”; a sinopse é lida posteriormente na estante. Movimento reduzido conserva a mensagem e remove a animação.
+Depois da última cascata, o tabuleiro permanece visível por 2,2 a 2,6 segundos para celebrar os objetivos, com “Conseguiu!” em apoio creme e até oito poderes numa cópia visual silenciosa. Um toque pode avançar; movimento reduzido omite o espetáculo. A vitória pendente é guardada para sobreviver a uma recarga. A transição leva à recompensa. A primeira conquista explica a coleção em uma apresentação curta antes de mostrar o livro. As seguintes variam a mensagem; repetir fase celebra sem duplicar livro. Capa, título e autoria aparecem na recompensa, com “Guardar na biblioteca”; a sinopse é lida posteriormente na estante. Movimento reduzido conserva a mensagem e remove a animação.
 
 Ao lado de Jogar, o botão de dificuldade abre Fácil, Médio e Difícil. Fácil usa o perfil base de cada fase; Médio aumenta coleções em 35% e soma cinco jogadas; Difícil aumenta em 65% e soma três. Fases com objetivos de poderes/cascatas recebem metas próprias. A seleção é salva separadamente em `viva-difficulty-v1`; não modifica `viva-progress-v1`. Cada partida congela seu balanceamento ao começar; sessões anteriores à evolução conservam o perfil legado. O infinito renova objetivos no mesmo tabuleiro, sem limite de jogadas, derrota obrigatória ou livros adicionais.
 
@@ -64,11 +72,11 @@ Guardar o décimo livro abre o encerramento familiar. O retrato oficial é exclu
 
 Livro, revelação e aceite são persistidos separadamente. Uma interrupção retoma a etapa correta. Campanhas antigas completas preservam seus desbloqueios. O infinito continua disponível após a campanha.
 
-Não há tela de configurações. Os efeitos sonoros e as animações ficam ativos por padrão; a preferência de movimento reduzido do sistema é respeitada, inclusive quando muda com o jogo aberto. O áudio só é liberado após interação real e fica silencioso se a API não existir. O jogo não possui trilha contínua; somente as duas melodias originais das apresentações de Blade/família. Vibração é uma melhoria opcional por detecção de suporte; sua ausência não afeta a partida.
+A engrenagem Configurações reúne os efeitos e Novo jogo, com confirmação antes de apagar a jornada. Os efeitos sonoros e as animações ficam ativos por padrão; a preferência de movimento reduzido do sistema é respeitada, inclusive quando muda com o jogo aberto. O áudio só é liberado após interação real e fica silencioso se a API não existir. O jogo não possui trilha contínua; somente as duas melodias originais das apresentações de Blade/família. Vibração é uma melhoria opcional por detecção de suporte; sua ausência não afeta a partida.
 
 ## Áudio original e biblioteca viva
 
-Os efeitos e as melodias curtas de Blade/família foram restaurados da versão anterior ao Upgrade 2/5. Não há trilha contínua, samples Kenney ou sons automáticos de ambiente. O botão Áudio conserva volume e silêncio, sem modificar o progresso. Detalhes e testes: [AUDIO.md](AUDIO.md).
+Os efeitos e as melodias curtas de Blade/família foram restaurados da versão anterior ao Upgrade 2/5. Não há trilha contínua, samples Kenney ou sons automáticos de ambiente. A seção Efeitos nas Configurações conserva volume e silêncio, sem modificar o progresso. Detalhes e testes: [AUDIO.md](AUDIO.md).
 
 O Upgrade 3/5 acrescenta iluminação localizada, entrada e seleção delicadas dos livros, respiração de Blade e crossfade entre poses originais. A ambientação foi recalibrada após comparação de capturas reais: três feixes solares suaves, oito pontos de poeira visíveis na faixa de sol e reflexo delicado na cortina. O modo simplificado mantém três pontos e um feixe animado; movimento reduzido conserva luz estática. Posições, imagens e quatro estágios preservados. Tecnologias nativas, sem novas dependências. Arquitetura: [BIBLIOTECA.md](BIBLIOTECA.md); diagnóstico, intensidades, gravação e testes: [AMBIENTACAO.md](AMBIENTACAO.md).
 
