@@ -1,0 +1,14 @@
+{
+  "engine": "chromium",
+  "layouts": 13,
+  "sevenTattooKinds": true,
+  "cleanSessionPreserved": true,
+  "newSessionRoundTrip": true,
+  "rewardSynopsisSeparated": true,
+  "booksAndHitAreas": true,
+  "tenStageQaNavigation": true,
+  "milestonesPreserved": true,
+  "endless": true,
+  "offline": true,
+  "errors": []
+}

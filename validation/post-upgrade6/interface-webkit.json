@@ -1,0 +1,13 @@
+{
+  "engine": "webkit",
+  "url": "http://127.0.0.1:4173/viva-test/",
+  "checks": 35,
+  "errors": [],
+  "workerDiagnostics": [],
+  "workerHealth": {
+    "controlled": true,
+    "active": true,
+    "status": 200
+  },
+  "realIPhone": false
+}

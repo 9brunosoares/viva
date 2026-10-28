@@ -81,10 +81,7 @@ try {
       await page.locator(".family-frame").count(),
       count === 10 ? 1 : 0,
     );
-    assert.equal(
-      await page.locator("[data-keepsake]").count(),
-      Math.min(count, 4) + Math.max(0, Math.min(count, 9) - 5),
-    );
+    assert.equal(await page.locator("[data-keepsake]").count(), 0);
     for (const [width, height] of [
       [375, 667],
       [390, 844],
@@ -153,12 +150,11 @@ try {
         .click();
     }
   }
-  // Previous build: no obstacles may be retrofitted into a saved mid-phase board.
+  // Clean sessions restore the exact stable board and difficulty.
   const p = progress(8),
     b = createBoard(() => 0.42, levels[8].rules);
   const legacy = {
-    version: 1,
-    campaignVersion: 2,
+    version: 2,
     campaign: p.order.join(","),
     completedCount: 8,
     stage: 9,
@@ -223,17 +219,16 @@ try {
   await page.locator(".tile").first().waitFor();
   assert.equal(
     await page.locator('[data-obstacle-objective="petals"]').count(),
-    1,
+    0,
   );
   assert.equal(await page.locator(".test-complete").count(), 0);
-  await page.screenshot({ path: `test-results/premium6/${engine}-petals.png` });
+  await page.screenshot({ path: `test-results/premium6/${engine}-beach.png` });
   checks++;
   // A later phase has five objective chips. Verify the actual board and footer fit,
   // including a simulated iPhone notch, not just the library composition.
   const late = progress(8);
   await seed(8, {
-    version: 1,
-    campaignVersion: 3,
+    version: 2,
     campaign: late.order.join(","),
     completedCount: 8,
     stage: 9,
@@ -284,6 +279,51 @@ try {
     );
     await page.screenshot({
       path: `test-results/premium6/${engine}-tattoos-${width}-safe${safeTop}.png`,
+    });
+    checks++;
+  }
+  for (const stage of [3, 4, 5, 7, 9]) {
+    const p = progress(stage - 1);
+    await seed(stage - 1, {
+      version: 2,
+      campaign: p.order.join(","),
+      completedCount: stage - 1,
+      stage,
+      endless: false,
+      difficulty: "easy",
+      phase: "game",
+    });
+    await page.locator(".board").waitFor();
+    assert.equal(
+      await page
+        .locator(".petal-grid,.room-keepsakes,[data-keepsake],.tail-peek")
+        .count(),
+      0,
+    );
+    assert.equal(
+      await page.locator('[data-role="gift"]').count(),
+      [4, 7].includes(stage) ? 1 : 0,
+    );
+    assert.equal(await page.locator('[data-role="keepsake"]').count(), 0);
+    const stored = await page.evaluate(() =>
+      JSON.parse(localStorage.getItem("viva-session-v1")!),
+    );
+    assert.equal(stored.version, 2);
+    if (stored.snapshot.obstacles)
+      assert.deepEqual(Object.keys(stored.snapshot.obstacles), ["opened"]);
+    assert.ok(
+      await page
+        .locator(".tile img")
+        .evaluateAll((images) =>
+          images.every(
+            (img) =>
+              (img as HTMLImageElement).complete &&
+              (img as HTMLImageElement).naturalWidth > 0,
+          ),
+        ),
+    );
+    await page.screenshot({
+      path: `test-results/premium6/${engine}-game-${stage}.png`,
     });
     checks++;
   }

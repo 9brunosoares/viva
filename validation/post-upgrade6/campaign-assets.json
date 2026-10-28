@@ -1,0 +1,15 @@
+{
+  "originalsVerified": 8,
+  "individualSprites": 20,
+  "activeTattooKinds": 7,
+  "whiteArtworkPixels": {
+    "warrior": 615,
+    "coffee": 856,
+    "books": 218
+  },
+  "emptySquare": true,
+  "proportionalScene": true,
+  "originalWoodOcclusion": true,
+  "safeAtlasBorders": 74,
+  "protectedFilesUnchanged": 22
+}

@@ -44,7 +44,7 @@ test("session persistence reports success/failure so an update can defer without
   const old = Object.getOwnPropertyDescriptor(globalThis, "localStorage"),
     calls: string[] = [];
   const session = {
-    version: 1,
+    version: 2,
     campaign: "1,2,3,4,5,6,7,8,9,10",
     completedCount: 0,
     stage: 1,

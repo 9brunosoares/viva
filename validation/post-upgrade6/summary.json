@@ -1,0 +1,17 @@
+{
+  "unitTests": {
+    "passed": 52,
+    "failed": 0
+  },
+  "build": {
+    "production": true,
+    "tester": true,
+    "cache": "viva-1e9d03968ea7"
+  },
+  "balanceGames": 3000,
+  "browserCriticalErrors": 0,
+  "visualChecks": "screenshots + DOM interaction; video recorded, not critically reviewed frame by frame",
+  "performanceWebkitGate": "failed; existing ambient scheduling limitation remains independent",
+  "physicalIPhoneTested": false,
+  "published": false
+}

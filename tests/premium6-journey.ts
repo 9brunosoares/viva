@@ -63,7 +63,7 @@ async function play(stage: number, mode: Difficulty = "easy") {
           score:
             obstacleMoveScore(
               next,
-              new Set(w.affected ?? w.clear),
+              new Set([...w.clear, ...(w.giftHits ?? [])]),
               snapshot.obstacles,
             ) +
             level.targets.reduce(

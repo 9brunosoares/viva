@@ -1,0 +1,8 @@
+{
+  "checks": 9,
+  "errors": [],
+  "visualFinaleDoesNotMutateSave": true,
+  "reloadsDuringFlightAndEnding": true,
+  "liveReducedMotion": true,
+  "physicalDevice": false
+}

@@ -189,8 +189,7 @@ try {
   await page.clock.install();
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await seed(8, {
-    version: 1,
-    campaignVersion: 2,
+    version: 2,
     campaign: order.join(","),
     completedCount: 8,
     stage: 9,

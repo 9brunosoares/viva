@@ -27,6 +27,7 @@ const version = hash.digest("hex").slice(0, 12);
 await writeFile(
   `${root}/sw.js`,
   `const CACHE='viva-${version}';
+const RETIRED=${JSON.stringify(["petals", "tail", "diploma", "drawing", "caipirinha", "belt", "candle", "album", "speaker", "tattoo-frame"].map((name) => "/assets/premium6/" + name + ".webp"))};
 const FILES=${JSON.stringify(["./", ...files.map((f) => "./" + f.slice(root.length + 1))])};
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES))));
 self.addEventListener('message',event=>{
@@ -45,7 +46,12 @@ self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=
   const older=keys.filter(key=>key.startsWith('viva-')&&key!==CACHE);
   const keep=older.slice(-1);
   return Promise.all(older.filter(key=>!keep.includes(key)).map(key=>caches.delete(key)));
-}).then(()=>self.clients.claim())));
+// Keep the previous hashed chunks for safe adoption, but retire discarded art.
+}).then(()=>caches.keys()).then(keys=>Promise.all(keys.filter(key=>key.startsWith('viva-')).map(async key=>{
+  const cache=await caches.open(key);
+  const retired=(await cache.keys()).filter(request=>RETIRED.some(path=>new URL(request.url).pathname.endsWith(path)));
+  await Promise.all(retired.map(request=>cache.delete(request)));
+}))).then(()=>self.clients.claim())));
 self.addEventListener('fetch',event=>{
   if(event.request.method!=='GET'||new URL(event.request.url).origin!==self.location.origin)return;
   event.respondWith(caches.open(CACHE).then(async cache=>{

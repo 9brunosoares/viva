@@ -54,8 +54,7 @@ try {
   const p = progress(4),
     { board } = scenario("win");
   await seed(p, {
-    version: 1,
-    campaignVersion: 3,
+    version: 2,
     campaign: p.order.join(","),
     completedCount: 4,
     stage: 5,
@@ -69,13 +68,6 @@ try {
       powers: 0,
       cascades: 0,
       round: 1,
-      obstacles: {
-        petals: Array(56).fill(false),
-        swept: 3,
-        opened: 0,
-        brought: 0,
-        spawned: 0,
-      },
     },
   });
   await page.locator(".board").waitFor();
@@ -166,13 +158,12 @@ try {
   await page.locator(".hub-actions").waitFor();
   await page.reload();
   assert.equal(await page.locator(".celebration").count(), 0);
-  // Only idle Meu Pet has the two silent peeks. The virtual clock avoids waiting a minute.
+  // No tail, even after the old idle interval, with full or reduced motion.
   await page.emulateMedia({ reducedMotion: "no-preference" });
   const idle = scenario("3").board;
   const pp = progress(4);
   await seed(pp, {
-    version: 1,
-    campaignVersion: 3,
+    version: 2,
     campaign: pp.order.join(","),
     completedCount: 4,
     stage: 5,
@@ -186,21 +177,13 @@ try {
       powers: 0,
       cascades: 0,
       round: 1,
-      obstacles: {
-        petals: Array(56).fill(false),
-        swept: 3,
-        opened: 0,
-        brought: 0,
-        spawned: 0,
-      },
     },
   });
   await page.locator(".board").waitFor();
   await page.clock.install();
-  await page.clock.fastForward(13000);
-  await page.locator(".tail-peek").waitFor();
-  await page.clock.runFor(400);
-  await page.screenshot({ path: "test-results/premium6/tail-peek.png" });
+  await page.clock.fastForward(25000);
+  assert.equal(await page.locator(".tail-peek,.petal-grid").count(), 0);
+  await page.screenshot({ path: "test-results/premium6/pet-no-tail.png" });
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.waitForTimeout(100);
   assert.equal(await page.locator(".tail-peek").count(), 0);

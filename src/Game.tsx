@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { asset, Level, names, themes } from "./config";
+import { asset, Level, names } from "./config";
 import {
   Board,
   createBoard,
@@ -28,14 +28,7 @@ import { TurnSequence } from "./TurnSequence";
 import { useBoardInput } from "./useBoardInput";
 import { chooseHint } from "./hint";
 import FlatIcon from "./FlatIcon";
-import TailPeek from "./TailPeek";
-import {
-  newObstacles,
-  sweepObstacles,
-  spawnKeepsake,
-  bottomKeepsakes,
-  obstaclesDone,
-} from "./obstacles";
+import { newObstacles, recordGiftOpenings, obstaclesDone } from "./obstacles";
 
 type TurnPhase =
   | "idle"
@@ -54,7 +47,6 @@ type Props = {
   endless?: boolean;
   initialSnapshot?: GameSnapshot;
   onSnapshot?: (snapshot: GameSnapshot) => void;
-  overlayOpen?: boolean;
 };
 export default function Game({
   level,
@@ -65,7 +57,6 @@ export default function Game({
   endless = false,
   initialSnapshot,
   onSnapshot,
-  overlayOpen = false,
 }: Props) {
   const rules = level.rules;
   const freshCounts = () =>
@@ -82,7 +73,6 @@ export default function Game({
     initialSnapshot?.obstacles ?? setup.state,
   );
   const [giftHits, setGiftHits] = useState<number[]>([]);
-  const [brought, setBrought] = useState<number[]>([]);
   const [board, setBoard] = useState<Board>(() =>
     initialSnapshot
       ? initialSnapshot.board.map((t) => ({ ...t, ...tile(t.kind, t.special) }))
@@ -367,7 +357,6 @@ export default function Game({
     show(fresh.board);
     setObstacles(fresh.state);
     setGiftHits([]);
-    setBrought([]);
     setRemaining(level.moves);
     setCounts(freshCounts());
     setPowers(0);
@@ -450,33 +439,7 @@ export default function Game({
       chain = cascades,
       depth = 0;
     let obstacleState = obstacles;
-    let spawnedThisTurn = false;
-    for (;;) {
-      if (!matches(next).length && !active.length) {
-        if (!spawnedThisTurn && level.obstacles) {
-          const spawned = spawnKeepsake(next, obstacleState, level.obstacles);
-          next = spawned.board;
-          obstacleState = spawned.state;
-          spawnedThisTurn = true;
-          setObstacles(obstacleState);
-          show(next);
-        }
-        const bottom = bottomKeepsakes(next);
-        if (!bottom.length) break;
-        setBrought(bottom);
-        if (!(await wait(320, turn))) return;
-        obstacleState = {
-          ...obstacleState,
-          brought: obstacleState.brought + bottom.length,
-        };
-        setObstacles(obstacleState);
-        setBrought([]);
-        next = fall(next, bottom, Math.random, rules);
-        motionPhase.current = { kind: "fall", depth };
-        show(next);
-        if (!(await wait(430, turn))) return;
-        continue;
-      }
+    while (matches(next).length || active.length) {
       setPhase("resolving");
       const wave = resolveWave(
         next,
@@ -486,7 +449,7 @@ export default function Game({
         rules,
       );
       const profile = feedbackProfile(wave.board, wave, depth);
-      const swept = sweepObstacles(obstacleState, wave);
+      const swept = recordGiftOpenings(obstacleState, wave);
       setGiftHits(wave.giftHits ?? []);
       setWaveVisual({
         id: ++waveSerial.current,
@@ -700,48 +663,23 @@ export default function Game({
         </div>
       </header>
       <div className="objectives" aria-label="Objetivos">
-        {level.obstacles &&
-          [
-            {
-              key: "petals",
-              name: "Varrer pétalas",
-              amount: level.obstacles.petals,
-              value: obstacles.swept,
-              icon: "petals",
-            },
-            {
-              key: "gifts",
-              name: "Abrir presentes",
-              amount: level.obstacles.gifts,
-              value: obstacles.opened,
-              icon: "gift-wrapped",
-            },
-            {
-              key: "keepsakes",
-              name: "Levar a lembrança até o fundo",
-              amount: level.obstacles.keepsakes,
-              value: obstacles.brought,
-              icon: level.obstacles.keepsake,
-            },
-          ]
-            .filter((t) => t.amount > 0)
-            .map((t) => (
-              <div
-                key={t.key}
-                data-obstacle-objective={t.key}
-                className={t.value >= t.amount ? "done" : ""}
-                role="progressbar"
-                aria-label={t.name}
-                aria-valuemin={0}
-                aria-valuemax={t.amount}
-                aria-valuenow={Math.min(t.value, t.amount)}
-              >
-                <img src={asset(`premium6/${t.icon}`)} alt="" />
-                <strong>
-                  {Math.min(t.value, t.amount)}/{t.amount}
-                </strong>
-              </div>
-            ))}
+        {level.obstacles && (
+          <div
+            data-obstacle-objective="gifts"
+            className={obstacles.opened >= level.obstacles.gifts ? "done" : ""}
+            role="progressbar"
+            aria-label="Abrir presentes"
+            aria-valuemin={0}
+            aria-valuemax={level.obstacles.gifts}
+            aria-valuenow={Math.min(obstacles.opened, level.obstacles.gifts)}
+          >
+            <img src={asset("premium6/gift-wrapped")} alt="" />
+            <strong>
+              {Math.min(obstacles.opened, level.obstacles.gifts)}/
+              {level.obstacles.gifts}
+            </strong>
+          </div>
+        )}
         {level.targets.map((t) => (
           <div
             data-objective-kind={t.kind}
@@ -796,34 +734,6 @@ export default function Game({
       <div
         className={`board-wrap ${effects.length ? "power-active" : ""} ${effectCount > 1 ? "powers-combined" : ""}`}
       >
-        <TailPeek
-          enabled={
-            themes[level.id - 1] === "Meu Pet" &&
-            !endless &&
-            motion &&
-            !busy &&
-            !paused &&
-            !overlayOpen &&
-            !lost &&
-            !victory &&
-            selected === null &&
-            input.pressed === null
-          }
-          motion={motion}
-        />
-        <div className="petal-grid" aria-hidden="true">
-          {obstacles.petals.map((p, i) => (
-            <span key={i}>
-              {p && (
-                <img
-                  className={clearing.includes(i) ? "petals-swept" : ""}
-                  src={asset("premium6/petals")}
-                  alt=""
-                />
-              )}
-            </span>
-          ))}
-        </div>
         <div
           ref={grid}
           className="board"
@@ -844,9 +754,8 @@ export default function Game({
               data-role={t.role}
               data-hp={t.hp}
               data-gift-hit={giftHits.includes(i) || undefined}
-              data-brought={brought.includes(i) || undefined}
               data-special={t.special}
-              aria-label={`${t.role === "gift" ? (t.hp === 2 ? "presente fechado" : "presente sem laço") : t.role === "keepsake" ? "lembrança" : names[level.id - 1][t.kind]}${obstacles.petals[i] ? ", com pétalas" : ""}${t.special ? ", poder " + { row: "horizontal", column: "vertical", area: "em área", color: "de cores" }[t.special] : ""}, linha ${Math.floor(i / COLS) + 1}, coluna ${(i % COLS) + 1}`}
+              aria-label={`${t.role === "gift" ? (t.hp === 2 ? "presente fechado" : "presente sem laço") : names[level.id - 1][t.kind]}${t.special ? ", poder " + { row: "horizontal", column: "vertical", area: "em área", color: "de cores" }[t.special] : ""}, linha ${Math.floor(i / COLS) + 1}, coluna ${(i % COLS) + 1}`}
               aria-pressed={selected === i}
               aria-disabled={busy || paused || lost || t.role === "gift"}
               disabled={paused || lost || t.role === "gift"}
@@ -863,11 +772,9 @@ export default function Game({
                   src={asset(
                     t.role === "gift"
                       ? `premium6/gift-${clearing.includes(i) ? "open" : t.hp === 2 ? "wrapped" : "unwrapped"}`
-                      : t.role === "keepsake"
-                        ? `premium6/${level.obstacles?.keepsake}`
-                        : t.special
-                          ? `power-${{ row: 0, column: 1, area: 2, color: 3 }[t.special]}`
-                          : `tile-${level.id}-${t.kind}`,
+                      : t.special
+                        ? `power-${{ row: 0, column: 1, area: 2, color: 3 }[t.special]}`
+                        : `tile-${level.id}-${t.kind}`,
                   )}
                   alt=""
                 />

@@ -1,0 +1,50 @@
+{
+  "engine": "webkit",
+  "originServerStopped": true,
+  "earnedBookOffline": true,
+  "reloadPreserved": true,
+  "resources": {
+    "checks": [
+      {
+        "path": "assets/premium6/gift-wrapped.webp",
+        "status": 200
+      },
+      {
+        "path": "assets/premium6/gift-unwrapped.webp",
+        "status": 200
+      },
+      {
+        "path": "assets/premium6/gift-open.webp",
+        "status": 200
+      },
+      {
+        "path": "assets/fonts/nunito-latin.woff2",
+        "status": 200
+      },
+      {
+        "path": "assets/fonts/nunito-latin-ext.woff2",
+        "status": 200
+      },
+      {
+        "path": "assets/fonts/fraunces-latin.woff2",
+        "status": 200
+      },
+      {
+        "path": "assets/fonts/fraunces-latin-ext.woff2",
+        "status": 200
+      },
+      {
+        "path": "assets/fonts/caveat-latin.woff2",
+        "status": 200
+      },
+      {
+        "path": "assets/fonts/caveat-latin-ext.woff2",
+        "status": 200
+      }
+    ],
+    "cachedRemoved": [],
+    "fonts": true
+  },
+  "criticalErrors": [],
+  "offlineWorkerDiagnostics": []
+}

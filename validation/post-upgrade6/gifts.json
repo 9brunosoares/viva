@@ -1,0 +1,24 @@
+{
+  "results": [
+    {
+      "hp": 2,
+      "sources": [
+        "/viva-test/assets/premium6/gift-wrapped.webp",
+        "/viva-test/assets/premium6/gift-unwrapped.webp"
+      ],
+      "opened": 0,
+      "remaining": 29
+    },
+    {
+      "hp": 1,
+      "sources": [
+        "/viva-test/assets/premium6/gift-unwrapped.webp",
+        "/viva-test/assets/premium6/gift-open.webp"
+      ],
+      "opened": 1,
+      "remaining": 29
+    }
+  ],
+  "errors": [],
+  "realIPhone": false
+}

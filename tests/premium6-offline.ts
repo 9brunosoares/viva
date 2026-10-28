@@ -65,8 +65,7 @@ try {
     p = finishMilestone(acceptMilestoneBook(complete(p, id)));
   const { board } = scenario("win");
   const session = {
-    version: 1,
-    campaignVersion: 3,
+    version: 2,
     campaign: p.order.join(","),
     completedCount: 2,
     stage: 3,
@@ -80,13 +79,6 @@ try {
       powers: 1,
       cascades: 2,
       round: 1,
-      obstacles: {
-        petals: Array(56).fill(false),
-        swept: 4,
-        opened: 0,
-        brought: 0,
-        spawned: 0,
-      },
     },
   };
   await page.evaluate(
@@ -120,21 +112,9 @@ try {
     (await page.locator(".book-synopsis p").textContent())!.length > 200,
   );
   const resources = await page.evaluate(async () => {
-    const paths = [
-      "petals",
-      "gift-wrapped",
-      "gift-unwrapped",
-      "gift-open",
-      "tail",
-      "diploma",
-      "drawing",
-      "caipirinha",
-      "belt",
-      "candle",
-      "album",
-      "speaker",
-      "tattoo-frame",
-    ].map((p) => "assets/premium6/" + p + ".webp");
+    const paths = ["gift-wrapped", "gift-unwrapped", "gift-open"].map(
+      (p) => "assets/premium6/" + p + ".webp",
+    );
     paths.push(
       ...["nunito", "fraunces", "caveat"].flatMap((f) =>
         ["latin", "latin-ext"].map(
@@ -150,12 +130,26 @@ try {
     await document.fonts.load("500 32px Caveat");
     return {
       checks,
+      cachedRemoved: (
+        await Promise.all(
+          (await caches.keys()).map(async (key) =>
+            (await (await caches.open(key)).keys()).map((r) => r.url),
+          ),
+        )
+      )
+        .flat()
+        .filter((url) =>
+          /assets\/premium6\/(petals|tail|diploma|drawing|caipirinha|belt|candle|album|speaker|tattoo-frame)\.webp/.test(
+            url,
+          ),
+        ),
       fonts:
         document.fonts.check("800 16px Nunito") &&
         document.fonts.check("600 24px Fraunces") &&
         document.fonts.check("500 32px Caveat"),
     };
   });
+  assert.deepEqual(resources.cachedRemoved, []);
   assert.ok(resources.fonts);
   assert.ok(resources.checks.every((r) => r.status === 200));
   const criticalErrors = errors.filter(

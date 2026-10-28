@@ -1,0 +1,18 @@
+{
+  "environment": "chromium desktop with 390x844 mobile emulation",
+  "paused": {
+    "p50": 16.700000000000728,
+    "p95": 17,
+    "longFrames": 0,
+    "mutations": 0,
+    "nodes": 75
+  },
+  "animated": {
+    "p50": 16.700000000000728,
+    "p95": 17,
+    "longFrames": 0,
+    "mutations": 0,
+    "nodes": 75
+  },
+  "interpretation": "Indicative smoke measurement only; no real-iPhone FPS, thermals or battery validation"
+}

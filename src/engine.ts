@@ -5,7 +5,7 @@ export type Tile = {
   id: number;
   kind: number;
   special?: Special;
-  role?: "gift" | "keepsake";
+  role?: "gift";
   hp?: 1 | 2;
 };
 export const isPiece = (t: Tile) => !t.role;
@@ -14,7 +14,6 @@ export const gift = (hp: 1 | 2 = 2): Tile => ({
   role: "gift",
   hp,
 });
-export const keepsake = (): Tile => ({ ...tile(-1), role: "keepsake" });
 export type Board = Tile[];
 export type Match = { cells: number[]; axis: "row" | "column" };
 export type Rng = () => number;
@@ -119,7 +118,6 @@ export type Wave = {
   collected: number[];
   powers: number;
   effects: { index: number; type: Special }[];
-  affected?: number[];
   giftHits?: number[];
   giftsOpened?: number[];
 };
@@ -181,7 +179,6 @@ export function resolveWave(
   }
   const collected = Array(Math.max(6, ...b.map((t) => t.kind + 1))).fill(0);
   const next = b.slice();
-  const affected = [...clear];
   const matched = new Set(groups.flatMap((g) => g.cells));
   const giftHits = b.flatMap((t, i) =>
     t.role === "gift" &&
@@ -216,7 +213,6 @@ export function resolveWave(
     collected,
     powers,
     effects: [...fired].map((index) => ({ index, type: b[index].special! })),
-    affected: [...new Set([...affected, ...giftsOpened])],
     giftHits,
     giftsOpened,
   };

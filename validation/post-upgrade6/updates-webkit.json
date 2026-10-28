@@ -1,0 +1,13 @@
+{
+  "engine": "webkit",
+  "threeVersions": true,
+  "gameAndReadingDeferred": true,
+  "multipleWindowsCoordinated": true,
+  "returnToLibraryPreserved": true,
+  "progressAndBoardPreserved": true,
+  "previousChunkAvailable": true,
+  "twoCachesOnly": true,
+  "retiredArtPurgedFromPreviousCache": true,
+  "newVersionOffline": true,
+  "errors": []
+}

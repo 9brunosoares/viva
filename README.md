@@ -2,13 +2,15 @@
 
 Um joguinho pra viver e passar o tempo: dez fases Match-3, dez livros em ordem aleatória persistente e uma biblioteca que cresce com a campanha. Aplicação estática em React e TypeScript, sem contas ou backend.
 
-## Upgrade 6 — versão atual
+## Pós-Upgrade 6 — versão atual
 
-Biblioteca com prateleira exclusiva para os dez livros, lembranças decorativas e recompensas dentro do cenário. Encerramento com aproximação do retrato e dedicatória manuscrita; controles planos e fontes locais Fraunces/Nunito/Caveat. Pétalas e presentes acrescentam objetivos leves às novas partidas. A vitória tem apresentação legível e até oito ativações visuais, sem alterar o tabuleiro salvo nem o áudio.
+Biblioteca com prateleira exclusiva para os dez livros e recompensas dentro do cenário. Encerramento com aproximação do retrato e dedicatória manuscrita; controles planos e fontes locais Fraunces/Nunito/Caveat. A vitória conserva sua apresentação e ativações apenas visuais.
 
-O Fácil ficou em 99–100% de vitórias por fase no bot de 100 sementes. Para cumprir esse limite sem mudar jogadas/metas, ingredientes descendentes e obstáculos no Fácil de Tatuagens foram adiados. Sessões anteriores continuam sem os novos obstáculos; progresso e ordem dos livros permanecem compatíveis. Não há trilha de fundo nem alterações no áudio aprovado.
+Foram removidos as oito lembranças decorativas, a camada de pétalas do tabuleiro e o rabinho em Meu Pet. Os presentes permanecem com duas vidas e sua distribuição aprovada. Livros, voo para a estante, Blade, encerramento, som e demais melhorias foram preservados.
 
-Implementação, recortes reais, tabela de balanceamento, testes e limitações: [PREMIUM6.md](PREMIUM6.md). Restauração: `viva-pre-premium-6-20261027`. Publicação em Pages autorizada pelo briefing desta etapa.
+Partidas novas usam o schema de sessão 2; sessões experimentais anteriores são ignoradas, sem conversão. O progresso da campanha e as preferências continuam sendo salvos. Não há trilha de fundo nova nem mudanças no áudio aprovado.
+
+Entrega, simulação de 3.000 partidas e validações: [POS_UPGRADE6.md](POS_UPGRADE6.md). Restauração local: `viva-pre-simplification-20261028`. Esta rodada não foi publicada. O relatório histórico do Upgrade 6 permanece em [PREMIUM6.md](PREMIUM6.md).
 
 ## Base da evolução da campanha
 
@@ -52,7 +54,7 @@ O botão **Concluir fase** foi restaurado por solicitação para desenvolvimento
 
 ## Experiência e progresso
 
-A biblioteca ocupa a tela como ambiente, com controles flutuantes de Jogar/Continuar, fases, coleção e infinito quando desbloqueado. Os livros ocupam a prateleira reservada nas artes retocadas fornecidas; Blade e o quadro mantêm suas funções afetivas. Lembranças dos temas concluídos decoram o ambiente. Fases bloqueadas ocultam nomes, temas e imagens. “Meus livros” e as lombadas abrem a capa do livro; “Ler sinopse” vira o volume e mostra título, autor e texto no verso. “Voltar à capa” desfaz o movimento. Somente a sinopse rola; a face oculta fica fora da navegação assistiva.
+A biblioteca ocupa a tela como ambiente, com controles flutuantes de Jogar/Continuar, fases, coleção e infinito quando desbloqueado. Os livros ocupam a prateleira reservada nas artes retocadas fornecidas; Blade e o quadro mantêm suas funções afetivas. Fases bloqueadas ocultam nomes, temas e imagens. “Meus livros” e as lombadas abrem a capa do livro; “Ler sinopse” vira o volume e mostra título, autor e texto no verso. “Voltar à capa” desfaz o movimento. Somente a sinopse rola; a face oculta fica fora da navegação assistiva.
 
 Toque em peças vizinhas ou arraste para trocar. Três combinam; quatro criam limpeza de linha/coluna. Nas novas partidas, as fases iniciais criam poderes direcionais; área chega a partir de Kung Fu e cor a partir de Espiritismo. Poderes podem ser ativados e encadeados. Uma dica não gasta jogada. Não há tempo ou vidas. Cascatas terminam antes de avaliar vitória. Pausar, voltar à biblioteca ou recarregar preserva a última posição estável do tabuleiro, contadores e jogadas. “Recomeçar fase” inicia outro tabuleiro.
 

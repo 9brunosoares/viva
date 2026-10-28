@@ -168,7 +168,7 @@ try {
   };
   const legacyBoard = createBoard(rng);
   const oldSession = {
-    version: 1,
+    version: 2,
     campaign: order.join(","),
     completedCount: 8,
     stage: 9,
@@ -193,7 +193,7 @@ try {
   );
   assert.ok(
     (await page.locator('[data-objective-kind="0"]').innerText()).includes(
-      "24",
+      "20",
     ),
   );
   assert.ok(
@@ -228,7 +228,7 @@ try {
   const stored = await page.evaluate(() =>
     JSON.parse(localStorage.getItem("viva-session-v1")!),
   );
-  assert.equal(stored.campaignVersion, 3);
+  assert.equal(stored.version, 2);
   assert.equal(stored.snapshot.counts.length, 7);
   await page.reload();
   await page.locator(".board").waitFor();
@@ -255,7 +255,6 @@ try {
   }
   const lose = {
     ...oldSession,
-    campaignVersion: 2,
     snapshot: {
       ...oldSession.snapshot,
       board: createBoard(rng, levels[8].rules),
@@ -342,7 +341,7 @@ try {
     engine,
     layouts,
     sevenTattooKinds: true,
-    legacyCinemaSessionPreserved: true,
+    cleanSessionPreserved: true,
     newSessionRoundTrip: true,
     rewardSynopsisSeparated: true,
     booksAndHitAreas: true,

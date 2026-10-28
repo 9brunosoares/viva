@@ -154,6 +154,27 @@ try {
     balancedLevel(levels[4], "medium").moves - 1,
   );
   const stored = await savedState();
+  // Old installs may retain one previous chunk cache: discarded art must still go.
+  await page.evaluate(async () => {
+    const key = (await caches.keys()).find((key) => key.startsWith("viva-"))!;
+    const cache = await caches.open(key);
+    for (const name of [
+      "petals",
+      "tail",
+      "diploma",
+      "drawing",
+      "caipirinha",
+      "belt",
+      "candle",
+      "album",
+      "speaker",
+      "tattoo-frame",
+    ])
+      await cache.put(
+        new URL("assets/premium6/" + name + ".webp", location.href),
+        new Response("obsolete fixture"),
+      );
+  });
   version = 2;
   await page.evaluate(
     async () =>
@@ -189,6 +210,23 @@ try {
     .click();
   await release(page, 2);
   assert.deepEqual(await savedState(), stored);
+  assert.equal(
+    await page.evaluate(async () => {
+      const requests = (
+        await Promise.all(
+          (await caches.keys()).map(
+            async (key) => await (await caches.open(key)).keys(),
+          ),
+        )
+      ).flat();
+      return requests.filter((request) =>
+        /assets\/premium6\/(petals|tail|diploma|drawing|caipirinha|belt|candle|album|speaker|tattoo-frame)\.webp$/.test(
+          new URL(request.url).pathname,
+        ),
+      ).length;
+    }),
+    0,
+  );
   assert.match(
     await page.evaluate(
       async () => await (await fetch("./assets/previous-00000001.js")).text(),
@@ -247,6 +285,7 @@ try {
     progressAndBoardPreserved: true,
     previousChunkAvailable: true,
     twoCachesOnly: true,
+    retiredArtPurgedFromPreviousCache: true,
     newVersionOffline: true,
     errors,
   };

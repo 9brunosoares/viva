@@ -1,0 +1,16 @@
+{
+  "engine": "chromium",
+  "audioApiAvailable": true,
+  "confirmationRequired": true,
+  "escapeAndCancelPreserveProgress": true,
+  "tenBooksReset": true,
+  "freshOnReload": true,
+  "preferencesPreserved": true,
+  "snapshotsAndStoriesRemoved": true,
+  "noPrematureReveals": true,
+  "busyAtReset": "true",
+  "oldTurnCannotRestoreProgress": true,
+  "offlineReset": true,
+  "worksWithoutAudioApi": true,
+  "errors": []
+}

@@ -1,8 +1,7 @@
-import { asset, books, themes } from "./config";
+import { asset, books } from "./config";
 import { useEffect, useState } from "react";
 import { libraryState } from "./progress";
-import { shelfPositions, keepsakePlaces } from "./libraryLayout";
-import { keepsakeByTheme } from "./obstacles";
+import { shelfPositions } from "./libraryLayout";
 import { spineMetrics } from "./spineMetrics";
 import BladeCompanion from "./BladeCompanion";
 import LibraryAtmosphere, { useLibraryActivity } from "./LibraryAtmosphere";
@@ -19,7 +18,6 @@ type Props = {
   selected?: number | null;
   arrival?: number | null;
   hiddenBook?: number | null;
-  hiddenKeepsake?: number | null;
   focused?: boolean;
   cinematic?: boolean;
 };
@@ -69,28 +67,6 @@ export default function LibraryScene(p: Props) {
           limited={activity.mode !== "full"}
           still={activity.mode === "still"}
         />
-        <div className="room-keepsakes" aria-hidden="true">
-          {p.completed.map((id) => {
-            const name = keepsakeByTheme[themes[id - 1]];
-            if (!name) return null;
-            const spot = keepsakePlaces[name];
-            return (
-              <img
-                key={id}
-                data-keepsake={id}
-                className={p.hiddenKeepsake === id ? "arrival-hidden" : ""}
-                src={asset(`premium6/${name}`)}
-                alt=""
-                style={{
-                  left: `${(spot.x / 496) * 100}%`,
-                  bottom: `${((756 - spot.y) / 756) * 100}%`,
-                  width: `${(spot.w / 496) * 100}%`,
-                  height: `${(spot.h / 756) * 100}%`,
-                }}
-              />
-            );
-          })}
-        </div>
         <div className="shelf-books">
           {p.acquired.map((id, i) => {
             const slot = positions[i],

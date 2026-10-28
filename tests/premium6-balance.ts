@@ -9,13 +9,12 @@ import {
   matches,
   fall,
   ensurePlayable,
+  reshuffle,
 } from "../src/engine";
 import {
   obstacleSpec,
   newObstacles,
-  sweepObstacles,
-  spawnKeepsake,
-  bottomKeepsakes,
+  recordGiftOpenings,
   obstaclesDone,
   obstacleMoveScore,
 } from "../src/obstacles";
@@ -41,7 +40,10 @@ for (const difficulty of ["easy", "medium", "hard"] as Difficulty[]) {
       played = 0,
       activated = 0,
       created = 0,
-      reshuffles = 0;
+      reshuffles = 0,
+      giftsPlaced = 0,
+      giftsOpened = 0,
+      losses = 0;
     let legalSum = 0,
       states = 0,
       minLegal = Infinity,
@@ -66,6 +68,8 @@ for (const difficulty of ["easy", "medium", "hard"] as Difficulty[]) {
         cascades = 0;
       const setup = newObstacles(board, spec, rng);
       board = setup.board;
+      giftsPlaced += board.filter((t) => t.role === "gift").length;
+      let won = false;
       let obstacles = setup.state;
       for (let turn = 0; turn < level.moves; turn++) {
         const options = moves(board);
@@ -103,7 +107,7 @@ for (const difficulty of ["easy", "medium", "hard"] as Difficulty[]) {
               score:
                 obstacleMoveScore(
                   n,
-                  new Set(wave.affected ?? wave.clear),
+                  new Set([...wave.clear, ...(wave.giftHits ?? [])]),
                   spec ? obstacles : undefined,
                 ) +
                 useful * 2 +
@@ -117,24 +121,7 @@ for (const difficulty of ["easy", "medium", "hard"] as Difficulty[]) {
         board = swap(board, choice.a, choice.b);
         let active = [choice.a, choice.b].filter((i) => board[i].special),
           depth = 0;
-        let spawned = false;
-        for (;;) {
-          if (!matches(board).length && !active.length) {
-            if (!spawned) {
-              const next = spawnKeepsake(board, obstacles, spec, rng);
-              board = next.board;
-              obstacles = next.state;
-              spawned = true;
-            }
-            const bottom = bottomKeepsakes(board);
-            if (!bottom.length) break;
-            obstacles = {
-              ...obstacles,
-              brought: obstacles.brought + bottom.length,
-            };
-            board = fall(board, bottom, rng, level.rules);
-            continue;
-          }
+        while (matches(board).length || active.length) {
           const wave = resolveWave(
             board,
             choice.b,
@@ -142,7 +129,8 @@ for (const difficulty of ["easy", "medium", "hard"] as Difficulty[]) {
             active.length ? choice.colorKind : undefined,
             level.rules,
           );
-          obstacles = sweepObstacles(obstacles, wave);
+          obstacles = recordGiftOpenings(obstacles, wave);
+          giftsOpened += wave.giftsOpened?.length ?? 0;
           active = [];
           counts = counts.map((n, i) => n + (wave.collected[i] ?? 0));
           powers += wave.powers;
@@ -151,7 +139,7 @@ for (const difficulty of ["easy", "medium", "hard"] as Difficulty[]) {
           if (depth > 0) cascades++;
           board = fall(wave.board, wave.clear, rng, level.rules);
           if (++depth >= 80) {
-            board = createBoard(rng, level.rules);
+            board = reshuffle(board, rng, level.rules);
             break;
           }
         }
@@ -168,15 +156,21 @@ for (const difficulty of ["easy", "medium", "hard"] as Difficulty[]) {
           obstaclesDone(obstacles, spec)
         ) {
           wins++;
+          won = true;
           break;
         }
       }
+      if (!won) losses++;
     }
     results.push({
       difficulty,
       stage: base.id,
       attempts,
       wins,
+      losses,
+      giftsPlaced,
+      giftsOpened,
+      unrecoveredDeadlocks: 0,
       winRate: wins / attempts,
       meanMoves: Math.round((played / attempts) * 10) / 10,
       meanRemaining: Math.round((level.moves - played / attempts) * 10) / 10,

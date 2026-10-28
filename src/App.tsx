@@ -5,7 +5,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { asset, books, levels, legacyLevels, names } from "./config";
+import { asset, books, levels, names } from "./config";
 import {
   complete,
   libraryState,
@@ -69,12 +69,11 @@ function preparedLevel(
   base: import("./config").Level,
   mode: Difficulty,
   endless: boolean,
-  edition?: number,
 ) {
   const level = balancedLevel(base, mode, endless);
   return {
     ...level,
-    obstacles: edition === 3 ? obstacleSpec(level, mode, endless) : undefined,
+    obstacles: obstacleSpec(level, mode, endless),
   };
 }
 export default function App() {
@@ -91,7 +90,6 @@ function Journey({ onRestarted }: { onRestarted: () => void }) {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [firstGift, setFirstGift] = useState(false);
   const [flight, setFlight] = useState<Flight | null>(null);
-  const [bookFlying, setBookFlying] = useState(false);
   const [giftIntro, setGiftIntro] = useState(false);
   const [bladePose, setBladePose] = useState(5);
   const initial = useRef<ReturnType<typeof load> | null>(null);
@@ -115,9 +113,7 @@ function Journey({ onRestarted }: { onRestarted: () => void }) {
     activeSession
       ? preparedLevel(
           {
-            ...((activeSession.campaignVersion ?? 0) >= 2
-              ? levels
-              : legacyLevels)[activeSession.stage - 1],
+            ...levels[activeSession.stage - 1],
             name:
               activeSession.stage === 5 &&
               isRevealed(initial.current!.progress, "blade")
@@ -126,7 +122,6 @@ function Journey({ onRestarted }: { onRestarted: () => void }) {
           },
           activeSession.difficulty,
           activeSession.endless,
-          activeSession.campaignVersion,
         )
       : levels[0],
   );
@@ -322,8 +317,7 @@ function Journey({ onRestarted }: { onRestarted: () => void }) {
       resume?.phase ??
       (!endless && !storySeen(progress, id) ? "intro" : "game");
     const metadata: GameSession = resume ?? {
-      version: 1,
-      campaignVersion: 3,
+      version: 2,
       campaign: progress.order.join(","),
       completedCount: progress.completed.length,
       stage: id,
@@ -338,14 +332,11 @@ function Journey({ onRestarted }: { onRestarted: () => void }) {
     setPlayingLevel(
       preparedLevel(
         {
-          ...((metadata.campaignVersion ?? 0) >= 2 ? levels : legacyLevels)[
-            id - 1
-          ],
+          ...levels[id - 1],
           name: titleFor(id),
         },
         mode,
         endless,
-        metadata.campaignVersion,
       ),
     );
     setInfinite(endless);
@@ -391,14 +382,9 @@ function Journey({ onRestarted }: { onRestarted: () => void }) {
       const to = document
         .querySelector(`[data-book-id="${reward}"]`)
         ?.getBoundingClientRect();
-      const keepsake = document
-        .querySelector(`[data-keepsake="${stage}"]`)
-        ?.getBoundingClientRect();
       if (from && to) {
-        setBookFlying(true);
         setFlight({
           book: reward,
-          stage,
           from: {
             x: from.x,
             y: from.y,
@@ -406,14 +392,6 @@ function Journey({ onRestarted }: { onRestarted: () => void }) {
             height: from.height,
           },
           to: { x: to.x, y: to.y, width: to.width, height: to.height },
-          keepsake: keepsake
-            ? {
-                x: keepsake.x,
-                y: keepsake.y,
-                width: keepsake.width,
-                height: keepsake.height,
-              }
-            : undefined,
         });
       }
     }
@@ -445,7 +423,6 @@ function Journey({ onRestarted }: { onRestarted: () => void }) {
           endless={infinite}
           initialSnapshot={activeSession?.snapshot}
           onSnapshot={saveMatch}
-          overlayOpen={settingsOpen}
           audio={true}
           motion={!reduced}
           onWin={win}
@@ -475,8 +452,7 @@ function Journey({ onRestarted }: { onRestarted: () => void }) {
               reduced={reduced}
               pose={bladePose}
               onPose={setBladePose}
-              hiddenBook={bookFlying ? flight?.book : null}
-              hiddenKeepsake={flight?.stage}
+              hiddenBook={flight?.book}
               focused
               cinematic={progress.pendingCelebration?.kind === "family"}
             />
@@ -630,8 +606,7 @@ function Journey({ onRestarted }: { onRestarted: () => void }) {
             onPose={setBladePose}
             selected={book}
             arrival={bookArrival}
-            hiddenBook={bookFlying ? flight?.book : null}
-            hiddenKeepsake={flight?.stage}
+            hiddenBook={flight?.book}
             onBook={setBook}
             onPortrait={() => setPortrait(true)}
             focused={
@@ -650,7 +625,6 @@ function Journey({ onRestarted }: { onRestarted: () => void }) {
             pose={bladePose}
             onPose={setBladePose}
             hiddenBook={reward}
-            hiddenKeepsake={reward ? stage : null}
             focused
           />
           <div className="reward-shade" aria-hidden="true" />
@@ -698,7 +672,7 @@ function Journey({ onRestarted }: { onRestarted: () => void }) {
                 {reward ? (
                   <>
                     <img
-                      className={`reward-book ${bookFlying ? "arrival-hidden" : ""}`}
+                      className={`reward-book ${flight ? "arrival-hidden" : ""}`}
                       src={asset(`book-${reward}-cover`)}
                       alt={`Capa de ${books[reward - 1].title}`}
                     />
@@ -738,10 +712,8 @@ function Journey({ onRestarted }: { onRestarted: () => void }) {
         <RewardFlight
           flight={flight}
           reduced={reduced}
-          onBookSettled={() => setBookFlying(false)}
           onFinish={() => {
             setFlight(null);
-            setBookFlying(false);
           }}
         />
       )}

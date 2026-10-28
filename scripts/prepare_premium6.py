@@ -38,33 +38,13 @@ def matte(im,inside=False):
     im=im.convert('RGBA');im.putalpha(alpha);return im
 
 audit=[]
-def save(im,name,size,trim=True):
-    if trim:
-        # The supplied grid is approximate: discard isolated neighboring fragments.
-        alpha=np.asarray(im.getchannel('A')); seen=np.zeros(alpha.shape,bool); components=[]
-        for sy,sx in zip(*np.where(alpha>128)):
-            if seen[sy,sx]:continue
-            q=deque([(sx,sy)]);seen[sy,sx]=True;points=[]
-            while q:
-                x,y=q.popleft();points.append((x,y))
-                for a,b in [(x-1,y),(x+1,y),(x,y-1),(x,y+1)]:
-                    if 0<=a<im.width and 0<=b<im.height and alpha[b,a]>128 and not seen[b,a]:seen[b,a]=True;q.append((a,b))
-            components.append(points)
-        main=max(components,key=len);xs,ys=zip(*main)
-        im=im.crop((max(0,min(xs)-2),max(0,min(ys)-2),min(im.width,max(xs)+3),min(im.height,max(ys)+3)))
+def save(im,name,size):
     im.thumbnail((size-12,size-12),Image.Resampling.LANCZOS)
     pad=Image.new('RGBA',(im.width+12,im.height+12));pad.paste(im,(6,6))
     path=out/f'{name}.webp';pad.save(path,'WEBP',quality=93,method=6)
     audit.append(dict(name='premium6/'+name,file='assets/premium6/'+name+'.webp',size=pad.size,bytes=path.stat().st_size))
-for name in ['petals','gift-wrapped','gift-unwrapped','gift-open','tail']:
-    save(matte(Image.open(source/f'{name}.jpg'),name=='gift-open'),name,256 if name!='tail' else 384,False)
-keepsakes=['diploma','drawing','caipirinha','belt','candle','album','speaker','tattoo-frame']
-sheet=Image.open(source/'keepsakes.jpg')
-for i,name in enumerate(keepsakes):
-    x=i%4;y=i//4;rect=(x*320,y*320,(x+1)*320,(y+1)*320)
-    if name=="candle":rect=(0,296,320,640)
-    save(matte(sheet.crop(rect)),name,256)
-    audit[-1]['sourceRect']=rect
+for name in ['gift-wrapped','gift-unwrapped','gift-open']:
+    save(matte(Image.open(source/f'{name}.jpg'),name=='gift-open'),name,256)
 # Delivered stage art is a compressed montage, not four high-resolution files.
 # Align it to the existing 496x756 coordinate system; never claim HD recovery.
 montage=Image.open(source/'room-stages.jpg')

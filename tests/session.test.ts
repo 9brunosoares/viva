@@ -55,7 +55,7 @@ test("session and story records preserve campaigns, board state and difficulty w
       }),
     );
     writeSession({
-      version: 1,
+      version: 2,
       campaign: p.order.join(","),
       completedCount: p.completed.length,
       stage: 1,

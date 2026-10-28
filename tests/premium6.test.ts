@@ -1,9 +1,9 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync, existsSync, readdirSync } from "node:fs";
 import {
   tile,
   gift,
-  keepsake,
   matches,
   validSwap,
   moves,
@@ -11,19 +11,17 @@ import {
   fall,
   reshuffle,
   createBoard,
-  COLS,
 } from "../src/engine";
 import {
   newObstacles,
-  sweepObstacles,
-  bottomKeepsakes,
-  spawnKeepsake,
+  recordGiftOpenings,
   obstaclesDone,
   obstacleSpec,
 } from "../src/obstacles";
 import { levels } from "../src/config";
 import { balancedLevel } from "../src/difficulty";
-import { validSnapshot } from "../src/session";
+import { validSnapshot, readSession, SESSION_KEY } from "../src/session";
+import { fresh } from "../src/progress";
 import { chooseHint } from "../src/hint";
 const rng =
   (seed = 42) =>
@@ -33,26 +31,16 @@ const rng =
   };
 const plain = () =>
   Array.from({ length: 56 }, (_, i) => tile((Math.floor(i / 7) + (i % 7)) % 6));
-test("roles never match; gifts never swap, ingredients require a genuine match even beside a power", () => {
+test("gifts never match or swap, even beside a power", () => {
   const b = plain();
   b[0] = gift();
   b[1] = gift();
   b[2] = gift();
+  b[7] = tile(0, "row");
   assert.equal(matches(b).length, 0);
   assert.equal(validSwap(b, 0, 7), false);
-  b[0] = keepsake();
-  b[1] = keepsake();
-  b[2] = keepsake();
-  assert.equal(matches(b).length, 0);
-  b[7] = tile(5, "row");
-  assert.equal(validSwap(b, 0, 7), false);
-  b[0] = tile(1);
-  b[1] = keepsake();
-  b[2] = tile(1);
-  b[3] = tile(1);
-  assert.equal(validSwap(b, 0, 1), true);
 });
-test("gift takes one hit per wave from orthogonal matches and powers, survives the first", () => {
+test("orthogonal matches and overlapping powers deal at most one gift damage per wave", () => {
   const b = plain();
   b[0] = tile(5, "row");
   b[1] = tile(5);
@@ -62,6 +50,7 @@ test("gift takes one hit per wave from orthogonal matches and powers, survives t
   assert.deepEqual(w.giftHits, [8]);
   assert.equal(w.board[8].hp, 1);
   assert.ok(!w.clear.includes(8));
+  assert.deepEqual(recordGiftOpenings({ opened: 0 }, w), { opened: 0 });
   w = resolveWave(w.board, 0, [0]);
   assert.deepEqual(w.giftsOpened, [8]);
   assert.ok(w.clear.includes(8));
@@ -69,127 +58,157 @@ test("gift takes one hit per wave from orthogonal matches and powers, survives t
     w.collected.reduce((a, b) => a + b, 0),
     7,
   );
+  assert.ok(obstaclesDone(recordGiftOpenings({ opened: 0 }, w), { gifts: 1 }));
+  const overlap = plain();
+  overlap[0] = tile(0, "row");
+  overlap[2] = tile(1, "column");
+  overlap[1] = gift();
+  const power = resolveWave(overlap, 0, [0, 2]);
+  assert.equal(power.board[1].hp, 1);
+  assert.deepEqual(power.giftHits, [1]);
 });
-test("powers sweep petals even over a surviving ingredient, never destroy that ingredient", () => {
-  const b = plain();
-  b[1] = keepsake();
-  b[0] = tile(0, "row");
-  const spec = { petals: 1, gifts: 0, keepsakes: 0 };
-  const { state } = newObstacles(b);
-  state.petals[1] = true;
-  const w = resolveWave(b, 0, [0]);
-  assert.ok(!w.clear.includes(1));
-  const s = sweepObstacles(state, w);
-  assert.equal(s.swept, 1);
-  assert.ok(obstaclesDone(s, spec));
-  assert.equal(w.board[1].role, "keepsake");
-});
-test("opening a gift by adjacency also sweeps its cell, color never treats obstacle sentinels as a color", () => {
+test("diagonal matches do not damage gifts; color sentinel is never treated as a color", () => {
   const b = plain();
   b[0] = tile(5);
   b[1] = tile(5);
   b[2] = tile(5);
-  b[8] = gift(1);
-  const state = newObstacles(b).state;
-  state.petals[8] = true;
-  const wave = resolveWave(b);
-  assert.ok(wave.clear.includes(8));
-  assert.equal(sweepObstacles(state, wave).swept, 1);
-  const colored = plain();
-  colored[0] = tile(0, "color");
-  colored[1] = keepsake();
-  colored[20] = gift();
-  const colorWave = resolveWave(colored, 0, [0], -1);
-  assert.equal(colorWave.giftHits?.length, 0);
-  assert.ok(!colorWave.clear.includes(1));
-  assert.ok(colorWave.collected[0] > 0);
+  b[10] = gift();
+  assert.deepEqual(resolveWave(b).giftHits, []);
+  b[0] = tile(0, "color");
+  b[20] = gift();
+  const wave = resolveWave(b, 0, [0], -1);
+  assert.ok(!wave.clear.includes(20));
+  assert.ok(wave.collected[0] > 0);
 });
-test("gravity preserves role and health; collection only at stable bottom, spawn stays at top", () => {
+test("gravity preserves gift identity and health; recovery preserves gifts and yields playable hints", () => {
   const b = plain();
   b[0] = gift(1);
-  b[1] = keepsake();
-  let n = fall(b, [7, 8, 14, 15], rng());
+  const id = b[0].id;
+  const n = fall(b, [7, 14], rng());
   assert.equal(n[14].hp, 1);
-  assert.equal(n[15].role, "keepsake");
-  assert.deepEqual(bottomKeepsakes(n), []);
-  n[50] = keepsake();
-  assert.deepEqual(bottomKeepsakes(n), [50]);
-  const initial = newObstacles(plain());
-  const spawned = spawnKeepsake(
-    initial.board,
-    initial.state,
-    { petals: 0, gifts: 0, keepsakes: 1 },
-    rng(),
-  );
-  assert.equal(spawned.state.spawned, 1);
-  assert.ok(spawned.board.slice(0, COLS).some((t) => t.role === "keepsake"));
-  assert.equal(
-    spawnKeepsake(spawned.board, spawned.state, {
-      petals: 0,
-      gifts: 0,
-      keepsakes: 1,
-    }).board,
-    spawned.board,
-  );
-});
-test("generation and recovery preserve roles and petals, produce no matches and legal hints", () => {
-  for (let seed = 1; seed <= 30; seed++) {
-    const r = rng(seed);
-    const setup = newObstacles(
-      createBoard(r),
-      { petals: 6, gifts: 3, keepsakes: 1 },
-      r,
-    );
-    setup.board[0] = keepsake();
-    const roles = setup.board.flatMap((t, i) => (t.role ? [{ i, t }] : []));
-    const b = reshuffle(setup.board, r);
-    assert.equal(matches(b).length, 0);
-    assert.ok(moves(b).length);
-    roles.forEach(({ i, t }) => assert.deepEqual(b[i], t));
-    assert.equal(setup.state.petals.filter(Boolean).length, 6);
-    const hint = chooseHint(b, [], Array(6).fill(0), false, setup.state);
-    assert.ok(validSwap(b, hint[0], hint[1]));
-    assert.ok(hint.every((i) => b[i].role !== "gift"));
+  assert.equal(n[14].id, id);
+  for (let seed = 1; seed <= 100; seed++) {
+    const r = rng(seed),
+      setup = newObstacles(createBoard(r), { gifts: 2 }, r);
+    const gifts = setup.board.flatMap((t, i) => (t.role ? [{ i, t }] : []));
+    const shuffled = reshuffle(setup.board, r);
+    assert.equal(matches(shuffled).length, 0);
+    assert.ok(moves(shuffled).length);
+    gifts.forEach(({ i, t }) => assert.deepEqual(shuffled[i], t));
+    const hint = chooseHint(shuffled, [], Array(6).fill(0), false, setup.state);
+    assert.ok(validSwap(shuffled, hint[0], hint[1]));
+    assert.ok(hint.every((i) => !shuffled[i].role));
   }
 });
-test("legacy snapshots remain valid, new roles require valid obstacle state; goals and moves are frozen", () => {
-  const base = {
-    board: plain(),
+test("all 30 campaign configurations contain only approved gifts, without changing base moves/targets", () => {
+  const frozenMoves = [28, 34, 38, 44, 40, 48, 48, 44, 58, 50];
+  for (const [i, l] of levels.entries()) {
+    assert.equal(l.moves, frozenMoves[i]);
+    for (const d of ["easy", "medium", "hard"] as const) {
+      const level = balancedLevel(l, d),
+        before = JSON.stringify(level),
+        spec = obstacleSpec(level, d);
+      const count = [4, 7].includes(l.id)
+        ? d === "easy"
+          ? 1
+          : 2
+        : l.id === 9 && d !== "easy"
+          ? 2
+          : 0;
+      assert.deepEqual(spec, count ? { gifts: count } : undefined);
+      assert.equal(JSON.stringify(level), before);
+      assert.equal(obstacleSpec(level, d, true), undefined);
+      const setup = newObstacles(
+        createBoard(rng(i + 1), level.rules),
+        spec,
+        rng(),
+      );
+      assert.deepEqual(Object.keys(setup.state), ["opened"]);
+      assert.equal(setup.board.filter((t) => t.role).length, count);
+    }
+  }
+});
+test("clean snapshots preserve gifts, victory and counters; discarded states and sessions are rejected", () => {
+  const setup = newObstacles(createBoard(rng()), { gifts: 1 }, rng());
+  const snapshot = {
+    board: setup.board,
     remaining: 20,
     counts: Array(6).fill(0),
     powers: 0,
     cascades: 0,
     round: 1,
+    obstacles: setup.state,
+    won: true,
   };
-  assert.ok(validSnapshot(base));
-  const next = newObstacles(
-    createBoard(rng()),
-    { petals: 1, gifts: 1, keepsakes: 1 },
-    rng(),
-  );
-  assert.ok(
-    validSnapshot({
-      ...base,
-      board: next.board,
-      obstacles: next.state,
-      won: true,
-    }),
-  );
-  assert.ok(!validSnapshot({ ...base, board: next.board }));
+  assert.ok(validSnapshot(snapshot));
+  assert.ok(!validSnapshot({ ...snapshot, obstacles: undefined }));
   assert.ok(
     !validSnapshot({
-      ...base,
-      board: next.board,
-      obstacles: { ...next.state, petals: [false] },
+      ...snapshot,
+      obstacles: { opened: 0, petals: Array(56).fill(false) },
     }),
   );
-  for (const l of levels)
-    for (const d of ["easy", "medium", "hard"] as const) {
-      const original = balancedLevel(l, d),
-        spec = obstacleSpec(original, d);
-      assert.equal(original.moves, balancedLevel(l, d).moves);
-      assert.deepEqual(original.targets, balancedLevel(l, d).targets);
-      if (spec) assert.ok(spec.petals + spec.gifts + spec.keepsakes > 0);
-      assert.equal(obstacleSpec(original, d, true), undefined);
-    }
+  assert.ok(
+    !validSnapshot({
+      ...snapshot,
+      board: setup.board.map((t) =>
+        t.role ? { ...t, role: "keepsake", hp: undefined } : t,
+      ),
+    }),
+  );
+  const values = new Map<string, string>(),
+    previous = Object.getOwnPropertyDescriptor(globalThis, "localStorage");
+  Object.defineProperty(globalThis, "localStorage", {
+    configurable: true,
+    value: { getItem: (k: string) => values.get(k) ?? null },
+  });
+  try {
+    const p = fresh(rng()),
+      session = {
+        version: 2,
+        campaign: p.order.join(","),
+        completedCount: 0,
+        stage: 1,
+        endless: false,
+        difficulty: "easy",
+        phase: "game",
+        snapshot,
+      };
+    values.set(SESSION_KEY, JSON.stringify(session));
+    assert.deepEqual(readSession(p), JSON.parse(JSON.stringify(session)));
+    values.set(
+      SESSION_KEY,
+      JSON.stringify({ ...session, version: 1, campaignVersion: 3 }),
+    );
+    assert.equal(readSession(p), null);
+  } finally {
+    if (previous) Object.defineProperty(globalThis, "localStorage", previous);
+    else Reflect.deleteProperty(globalThis, "localStorage");
+  }
+});
+test("discarded UI, timers and public assets are absent, while book flight and gifts remain", () => {
+  assert.ok(!existsSync("src/TailPeek.tsx"));
+  for (const p of [
+    "src/Game.tsx",
+    "src/LibraryScene.tsx",
+    "src/RewardFlight.tsx",
+    "src/libraryLayout.ts",
+    "src/premium6.css",
+  ]) {
+    assert.doesNotMatch(
+      readFileSync(p, "utf8"),
+      /TailPeek|tail-peek|petal-grid|petals-swept|room-keepsakes|keepsakePlaces|hiddenKeepsake|spawnKeepsake|bottomKeepsakes|data-brought/,
+    );
+  }
+  assert.deepEqual(
+    readdirSync("public/assets/premium6")
+      .filter((f) => f.endsWith(".webp"))
+      .sort(),
+    ["gift-open.webp", "gift-unwrapped.webp", "gift-wrapped.webp"],
+  );
+  const flight = readFileSync("src/RewardFlight.tsx", "utf8");
+  assert.match(flight, /book-\$\{flight.book\}-cover/);
+  assert.doesNotMatch(flight, /keepsake|setTimeout|setInterval/);
+  assert.ok(existsSync("source-assets/premium6/keepsakes.jpg"));
+  assert.ok(existsSync("source-assets/premium6/tail.jpg"));
 });
