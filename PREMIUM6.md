@@ -4,7 +4,7 @@ Entrega incremental iniciada em 27/10 e validada em 28/10/2026. Restauração: `
 
 ## 1. Arte e fontes
 
-Os oito JPGs e o briefing foram copiados sem alteração para `source-assets/premium6/`, com dimensões reais e SHA-256 em `originals.json`. `scripts/prepare_premium6.py` exporta 13 sprites com alpha e margem: pétalas, três estados do presente, oito lembranças e rabinho. O maior componente de cada célula elimina fragmentos dos vizinhos; o fundo é removido por conectividade para preservar papel, vidro e tons claros. O presente aberto tem transparência real também no centro.
+Os oito JPGs e o briefing foram copiados sem alteração para `source-assets/premium6/`, com dimensões reais e SHA-256 em `originals.json`. `scripts/prepare_premium6.py` exporta 13 sprites com alpha e margem: pétalas, três estados do presente, oito lembranças e rabinho. O maior componente de cada célula elimina fragmentos dos vizinhos; o fundo é removido por conectividade para preservar papel, vidro e tons claros. O presente aberto tem transparência real também no centro. Na inspeção a 46 CSS px, as silhuetas das lembranças são reconhecíveis; os traços internos do quadro da tatuagem e textos pequenos de diploma/álbum não ficam legíveis nessa escala.
 
 Os arquivos de fundo HD previstos no documento **não foram fornecidos**. A imagem vazia mede 503 × 757; a montagem dos quatro estados mede 853 × 1280. A composição mantém as coordenadas 496 × 756: estados 0/1 usam a sala vazia; estados 2/3 usam o trecho superior retocado da montagem e o piso da sala vazia, evitando duplicar o cachorro embutido. Não há geração de uma ilustração substituta. A qualidade fica limitada à resolução entregue.
 
@@ -125,4 +125,8 @@ Comandos: `pnpm test`, `pnpm build`, `pnpm build:qa`; `pnpm exec tsx tests/premi
 
 Autorizada expressamente no item 8.4 do briefing. O build gera um novo hash de cache e conserva a atualização coordenada em telas seguras. O teste de atualização exercita três versões, múltiplas janelas, adiamento durante jogo/leitura, preservação da partida e disponibilidade offline da nova versão.
 
-Status de publicação: aguardando o commit final e a confirmação do workflow Pages. A verificação remota será registrada após o envio a `main`.
+Build funcional publicado e verificado: `3d71c1cabfe5b5e0a3b810448b78f10cebf90632`, enviado a `main`. O [workflow 40630072457](https://github.com/9brunosoares/viva/actions/runs/40630072457) terminou com **success**.
+
+Endereço: [Viva! no GitHub Pages](https://9brunosoares.github.io/viva/). Cache remoto verificado: `viva-dfcfae60b5a1`; sw.js e a fonte Nunito responderam HTTP 200. No site publicado, os dois motores concluíram as 30 verificações funcionais cada, sem erros críticos; controles de QA ausentes. O WebKit registrou dois avisos internos específicos do worker, com controller/worker ativos e sw.js respondendo 200. Resultados locais em `test-results/premium6/published-chromium-report.json` e `published-webkit-report.json`.
+
+A revisão textual que registra esta confirmação não altera o bundle nem os assets. As limitações de balanceamento, resolução e WebKit de desktop descritas acima permanecem; não foi declarado teste em iPhone físico.
