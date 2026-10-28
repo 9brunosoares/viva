@@ -203,13 +203,22 @@ a {
   opacity: 1;
 }
 .library-alive .shelf-books button img {
-  filter: brightness(0.89) sepia(0.08) drop-shadow(1px 1px 1px #2a160c90);
+  filter: brightness(0.89) sepia(0.08);
 }
 .library-alive .shelf-books button::after {
-  height: 2px;
-  bottom: 0;
-  filter: blur(0.8px);
-  background: #311b10bb;
+  top: var(--contact-y);
+  left: var(--contact-x);
+  bottom: auto;
+  width: 86%;
+  height: max(0.55px, 2%);
+  transform: translate(-50%, -35%) rotate(var(--contact-angle));
+  filter: none;
+  background: radial-gradient(
+    ellipse,
+    #281409b0 12%,
+    #28140960 48%,
+    transparent 75%
+  );
 }
 .shelf-books button:disabled {
   pointer-events: none;

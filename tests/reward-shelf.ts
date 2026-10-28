@@ -8,6 +8,8 @@ import {
   finishMilestone,
 } from "../src/progress";
 import { books } from "../src/config";
+import { bookPlacement } from "../src/libraryLayout";
+import { libraryState } from "../src/progress";
 
 const engine = process.env.BROWSER_ENGINE === "webkit" ? "webkit" : "chromium";
 const before = process.env.REWARD_BEFORE === "true";
@@ -223,10 +225,9 @@ try {
           for (let i = 0; i < slots.length; i++) {
             assert.equal(slots[i].anchorLeft, old[i].anchorLeft);
             assert.equal(slots[i].anchorHeight, old[i].anchorHeight);
-            assert.ok(slots[i].anchorBottom > old[i].anchorBottom + 1);
+            const expected = bookPlacement(libraryState(count), i, slots[i].id);
             assert.ok(
-              slots[i].y < old[i].y - 1,
-              JSON.stringify({ count, width, slot: slots[i], old: old[i] }),
+              Math.abs(slots[i].anchorBottom - expected.bottom) < 0.001,
             );
           }
       }

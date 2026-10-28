@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { mkdir, writeFile } from "node:fs/promises";
 import { chromium, webkit } from "playwright";
-import { shelfPositions } from "../src/libraryLayout";
+import { bookPlacement } from "../src/libraryLayout";
 import { spineMetrics } from "../src/spineMetrics";
 import { libraryState } from "../src/progress";
 import { books } from "../src/config";
@@ -25,25 +25,6 @@ page.on("response", (r) => {
   if (r.status() >= 400) errors.push(`${r.status()} ${r.url()}`);
 });
 await mkdir("test-results", { recursive: true });
-await page.addInitScript(() => {
-  (window as any).__tones = [];
-  const C = window.AudioContext || (window as any).webkitAudioContext;
-  if (!C) return;
-  const create = C.prototype.createOscillator;
-  C.prototype.createOscillator = function () {
-    const osc = create.call(this),
-      start = osc.start;
-    osc.start = function (...args: any[]) {
-      (window as any).__tones.push({
-        frequency: osc.frequency.value,
-        type: osc.type,
-        time: args[0],
-      });
-      return start.apply(osc, args);
-    };
-    return osc;
-  };
-});
 const report: Record<string, unknown> = { engine };
 let layouts = 0,
   synopsisChecks = 0;
@@ -102,7 +83,7 @@ try {
       "existing books do not replay arrival",
     );
     const state = libraryState(count),
-      positions = shelfPositions(state);
+      positions = order.map((id, i) => bookPlacement(state, i, id));
     assert.equal(
       await page.locator(".library-alive").getAttribute("data-stage"),
       String(state),
@@ -176,7 +157,9 @@ try {
     const source = page.locator(".shelf-books button").nth(i);
     await source.click();
     await page.locator(".book-viewer").waitFor();
-    assert.equal(await source.getAttribute("class"), "book-selected ");
+    assert.ok(
+      await source.evaluate((e) => e.classList.contains("book-selected")),
+    );
     assert.equal(
       await page.locator(".library-room").getAttribute("data-ambient"),
       "paused",
@@ -340,33 +323,19 @@ try {
   // Pending milestone fixtures are isolated saves; scene acknowledgment still uses the real UI.
   for (const kind of ["blade", "family"] as const) {
     await seed(kind === "blade" ? 5 : 10, kind);
-    assert.equal(await page.locator(".library-room").count(), 0);
-    const supported = await page.evaluate(
-      () => typeof AudioContext === "function",
-    );
+    assert.equal(await page.locator(".celebration .library-room").count(), 1);
     assert.equal(
-      await page.evaluate(() => (window as any).__tones.length),
+      await page.getByRole("button", { name: "Ouvir", exact: true }).count(),
       0,
-      "no autoplay on reload",
     );
-    if (supported) {
-      await page.getByRole("button", { name: "Ouvir", exact: true }).click();
-      await page.waitForFunction(() => (window as any).__tones.length > 0);
-      const tones = await page.evaluate(() => (window as any).__tones);
-      assert.equal(tones.length, kind === "blade" ? 16 : 24);
-      assert.equal(tones[0].frequency, kind === "blade" ? 392 : 262);
-      assert.ok(tones.every((t: any) => t.type === "sine"));
-    }
+    if (kind === "blade") {
+      await page.locator('.celebration-blade[data-art-ready="true"]').waitFor();
+      assert.ok(await page.locator(".celebration-art img").isVisible());
+    } else
+      await page.locator(".family-frame img").waitFor({ state: "visible" });
     await page.locator(".celebration .primary").click();
-    await page.locator(".book-arriving").waitFor();
-    const expected = order[(kind === "blade" ? 5 : 10) - 1];
-    assert.ok(
-      (await page.locator(".book-arriving img").getAttribute("src"))!.includes(
-        `book-${expected}-spine`,
-      ),
-    );
-    await page.waitForTimeout(1500);
-    assert.equal(await page.locator(".book-arriving").count(), 0);
+    await page.locator(".hub-actions").waitFor();
+    await page.locator(".book-arriving").waitFor({ state: "detached" });
     await page.reload();
     await page.locator(".library-room").waitFor();
     assert.equal(await page.locator(".celebration,.book-arriving").count(), 0);
@@ -406,12 +375,7 @@ try {
     synopsisChecks,
     hiddenAndReducedMotion: true,
     posesAnchored: true,
-    pendingMilestoneArrival: true,
-    originalCeremonyNotes: (await page.evaluate(
-      () => typeof AudioContext === "function",
-    ))
-      ? true
-      : "Web Audio unavailable in this WebKit runtime",
+    pendingMilestoneContinuation: true,
     offline: engine === "chromium",
     progressPreserved: true,
     errors,

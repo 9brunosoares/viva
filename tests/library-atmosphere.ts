@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFile, writeFile } from "node:fs/promises";
 import { chromium, webkit } from "playwright";
 import { waitForCache } from "./boardHelper";
-import { shelfPositions } from "../src/libraryLayout";
+import { bookPlacement } from "../src/libraryLayout";
 
 const engine = process.env.BROWSER_ENGINE === "webkit" ? "webkit" : "chromium";
 const browser = await (engine === "webkit" ? webkit : chromium).launch({
@@ -205,8 +205,9 @@ try {
           })),
         );
       actual.forEach((p, i) => {
-        assert.ok(Math.abs(p.left - shelfPositions(stage)[i].left) < 0.001);
-        assert.ok(Math.abs(p.bottom - shelfPositions(stage)[i].bottom) < 0.001);
+        const expected = bookPlacement(stage, i, order[i]);
+        assert.ok(Math.abs(p.left - expected.left) < 0.001);
+        assert.ok(Math.abs(p.bottom - expected.bottom) < 0.001);
       });
       if (width === 393) {
         await page.waitForTimeout(1450);

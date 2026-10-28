@@ -148,6 +148,18 @@ try {
       (p) => "assets/premium6/" + p + ".webp",
     );
     paths.push(
+      ...Array.from(
+        { length: 4 },
+        (_, i) => `assets/library-shelf-depth-${i}.webp`,
+      ),
+    );
+    paths.push(
+      ...Array.from(
+        { length: 10 },
+        (_, i) => `assets/book-${i + 1}-spine.webp`,
+      ),
+    );
+    paths.push(
       ...["nunito", "fraunces", "caveat"].flatMap((f) =>
         ["latin", "latin-ext"].map(
           (s) => "assets/fonts/" + f + "-" + s + ".woff2",

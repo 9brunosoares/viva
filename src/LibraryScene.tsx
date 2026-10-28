@@ -1,7 +1,7 @@
 import { asset, books } from "./config";
 import { useEffect, useState } from "react";
 import { libraryState } from "./progress";
-import { shelfPositions } from "./libraryLayout";
+import { bookPlacement } from "./libraryLayout";
 import { spineMetrics } from "./spineMetrics";
 import BladeCompanion from "./BladeCompanion";
 import LibraryAtmosphere, { useLibraryActivity } from "./LibraryAtmosphere";
@@ -22,8 +22,7 @@ type Props = {
   cinematic?: boolean;
 };
 export default function LibraryScene(p: Props) {
-  const stage = libraryState(p.completed.length),
-    positions = shelfPositions(stage);
+  const stage = libraryState(p.completed.length);
   const [ready, setReady] = useState(false);
   useEffect(() => {
     let active = true;
@@ -69,7 +68,7 @@ export default function LibraryScene(p: Props) {
         />
         <div className="shelf-books">
           {p.acquired.map((id, i) => {
-            const slot = positions[i],
+            const slot = bookPlacement(stage, i, id),
               m = spineMetrics[id];
             return (
               <button
@@ -81,8 +80,11 @@ export default function LibraryScene(p: Props) {
                     left: `${slot.left}%`,
                     bottom: `${slot.bottom}%`,
                     height: `${slot.height}%`,
-                    width: `${(((slot.height * 756) / 496) * m.artWidth) / m.artHeight}%`,
-                    "--lean": `${[0, -1, 0, 1, 0, -1, 0, 1, 0, 0][i]}deg`,
+                    width: `${slot.width}%`,
+                    "--lean": `${slot.lean}deg`,
+                    "--contact-x": `${slot.contactX}%`,
+                    "--contact-y": `${slot.contactY}%`,
+                    "--contact-angle": `${slot.shadowAngle}deg`,
                   } as React.CSSProperties
                 }
                 onClick={(e) => {
