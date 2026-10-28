@@ -131,3 +131,6 @@ if (root/'source-assets/campaign-evolution/originals.json').exists():
     import subprocess,sys
     subprocess.run([sys.executable,str(root/'scripts/prepare_campaign_assets.py')],check=True)
     subprocess.run([sys.executable,str(root/'scripts/prepare_shelf_depth.py')],check=True)
+# Keep the approved chow-chow pigmentation when assets are regenerated locally.
+from correct_blade_tongue import correct_assets
+correct_assets(use_current=True)

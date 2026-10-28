@@ -29,7 +29,9 @@ await writeFile(
   `const CACHE='viva-${version}';
 const RETIRED=${JSON.stringify(["petals", "tail", "diploma", "drawing", "caipirinha", "belt", "candle", "album", "speaker", "tattoo-frame"].map((name) => "/assets/premium6/" + name + ".webp"))};
 const FILES=${JSON.stringify(["./", ...files.map((f) => "./" + f.slice(root.length + 1))])};
-self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES))));
+// Unversioned art can change while its previous HTTP response is still fresh.
+// Revalidate installation requests; localStorage/progress and adoption rules stay untouched.
+self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES.map(file=>new Request(file,{cache:'reload'}))))));
 self.addEventListener('message',event=>{
   if(event.data?.type!=='ACTIVATE_VIVA')return;
   event.waitUntil(self.clients.matchAll({type:'window',includeUncontrolled:true}).then(clients=>{

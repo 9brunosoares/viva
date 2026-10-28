@@ -7,10 +7,17 @@ import { tile, moves } from "../src/engine";
 import { levels } from "../src/config";
 import { balancedLevel } from "../src/difficulty";
 import { waitForCache } from "./boardHelper";
+import { createHash } from "node:crypto";
 
 const root = resolve("dist"),
   template = await readFile(resolve(root, "sw.js"), "utf8");
 let version = 1;
+const oldBlade = await readFile(
+  resolve("source-assets/blade-tongue/originals/blade-4.webp"),
+);
+const newBlade = await readFile(resolve(root, "assets/blade-4.webp"));
+const bladeDigest = (bytes: Buffer) =>
+  createHash("sha256").update(bytes).digest("hex");
 const mime: Record<string, string> = {
   ".html": "text/html",
   ".js": "text/javascript",
@@ -32,6 +39,11 @@ const server = createServer(async (req, res) => {
       mime[extname(path)] || "application/octet-stream",
     );
     res.setHeader("Cache-Control", "no-store");
+    if (path === "assets/blade-4.webp") {
+      res.setHeader("Cache-Control", "public, max-age=3600");
+      res.end(version === 1 ? oldBlade : newBlade);
+      return;
+    }
     if (path === "sw.js") {
       const list = JSON.parse(/const FILES=(.*);/.exec(template)![1]);
       if (version === 1) list.push("./assets/previous-00000001.js");
@@ -103,6 +115,15 @@ const savedState = () =>
       difficulty: localStorage.getItem("viva-difficulty-v1"),
     };
   });
+const cachedBlade = () =>
+  page.evaluate(async () => {
+    const bytes = await (await fetch("assets/blade-4.webp")).arrayBuffer();
+    return Array.from(
+      new Uint8Array(await crypto.subtle.digest("SHA-256", bytes)),
+    )
+      .map((n) => n.toString(16).padStart(2, "0"))
+      .join("");
+  });
 async function waiting() {
   await page.waitForFunction(
     async () => !!(await navigator.serviceWorker.getRegistration())?.waiting,
@@ -119,6 +140,7 @@ try {
   await page.goto(url);
   await waitForCache(page);
   await page.waitForFunction(() => !!navigator.serviceWorker.controller);
+  assert.equal(await cachedBlade(), bladeDigest(oldBlade));
   await page.evaluate(() => {
     localStorage.setItem(
       "viva-progress-v1",
@@ -209,6 +231,11 @@ try {
     .getByRole("button", { name: "Voltar à biblioteca", exact: true })
     .click();
   await release(page, 2);
+  assert.equal(
+    await cachedBlade(),
+    bladeDigest(newBlade),
+    "new cache must replace pink art even with a fresh one-hour HTTP cache",
+  );
   assert.deepEqual(await savedState(), stored);
   assert.equal(
     await page.evaluate(async () => {
@@ -275,6 +302,7 @@ try {
     String(balancedLevel(levels[4], "medium").moves - 1),
   );
   assert.equal(await page.locator("html").getAttribute("data-release"), "3");
+  assert.equal(await cachedBlade(), bladeDigest(newBlade));
   assert.deepEqual(errors, []);
   const report = {
     engine,
@@ -287,6 +315,7 @@ try {
     twoCachesOnly: true,
     retiredArtPurgedFromPreviousCache: true,
     newVersionOffline: true,
+    correctedBladeReplacesFreshHttpCache: true,
     errors,
   };
   await writeFile(
