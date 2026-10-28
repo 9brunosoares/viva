@@ -1,5 +1,7 @@
 import { asset, Level } from "./config";
 import { stories } from "./stories";
+import FlatIcon from "./FlatIcon";
+import { obstacleHint } from "./obstacles";
 
 export default function StageIntro({
   level,
@@ -20,7 +22,7 @@ export default function StageIntro({
         aria-label="Voltar à biblioteca"
         onClick={onBack}
       >
-        <img src={asset("control-back")} alt="" />
+        <FlatIcon kind="back" />
       </button>
       <div className="intro-editorial">
         <span className="intro-number">
@@ -36,6 +38,9 @@ export default function StageIntro({
         </span>
         <h1>{level.name}</h1>
         <p>{stories[level.id - 1]}</p>
+        {obstacleHint(level) && (
+          <p className="obstacle-intro">{obstacleHint(level)}</p>
+        )}
         <div className="intro-pieces" aria-hidden="true">
           {level.targets.map((t) => (
             <img

@@ -128,7 +128,7 @@ test("each evolution has deterministic shelf support, bounded art and exactly te
     [3, 10],
   ]) {
     const p = shelfPositions(state);
-    assert.equal(p.length, count);
+    assert.equal(p.length, 10); // Ten reserved destinations in every evolution.
     assert.deepEqual(p, shelfPositions(state));
     for (const slot of p) {
       assert.ok(slot.left > 45 && slot.left < 90);

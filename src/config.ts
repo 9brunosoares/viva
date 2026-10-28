@@ -88,6 +88,7 @@ export const names = [
   ["Coração vermelho", "Casa", "Mãos dadas", "Xícara de café", "Flor", "Laço"],
 ];
 export type Level = {
+  obstacles?: import("./obstacles").ObstacleSpec;
   id: number;
   name: string;
   moves: number;

@@ -1,0 +1,698 @@
+:root {
+  --font-body: "Nunito", sans-serif;
+  --font-display: "Fraunces", serif;
+  --type-small: 13px;
+  --type-body: 16px;
+  --type-title: clamp(23px, 6vw, 30px);
+}
+body,
+button,
+input,
+select,
+textarea,
+.app {
+  font-family: var(--font-body);
+}
+h1,
+h2,
+h3,
+.victory-word,
+.book-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+}
+.intro-editorial > p,
+.ceremony-caption,
+.room-label {
+  font-family: var(--font-body);
+}
+.book-back h3,
+.book-ornament {
+  font-family: var(--font-display);
+}
+.bruno-signature {
+  font-family: "Caveat", cursive;
+  font-size: clamp(25px, 6.5vw, 34px);
+  line-height: 1.25;
+}
+.moves,
+.objectives strong,
+.collection-link {
+  font-variant-numeric: tabular-nums;
+}
+button,
+a {
+  text-decoration: none !important;
+}
+.round,
+.audio-toggle,
+.atlas-control {
+  background: #fff2d6 !important;
+  border: 1px solid #c7a467 !important;
+  border-radius: 50%;
+  color: #214a37 !important;
+  min-width: 44px;
+  min-height: 44px;
+  box-shadow: 0 2px 5px #281b1520;
+  padding: 10px;
+}
+.round svg,
+.audio-toggle svg {
+  width: 24px;
+  height: 24px;
+  display: block;
+  margin: auto;
+}
+.round img {
+  display: none;
+}
+.primary {
+  font-family: var(--font-body);
+  background: linear-gradient(#54834b, #315d36) !important;
+  border: 2px solid #cfb575 !important;
+  color: #fff7dd;
+  border-radius: 20px;
+  font-weight: 800;
+}
+.text-button,
+.collection-link,
+.ceremony-audio {
+  min-height: 44px;
+  border: 1px solid #c4a46c;
+  border-radius: 22px;
+  padding: 7px 16px;
+  background: #fff0d8;
+  color: #254c38;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+.text-button.light {
+  background: #173c30;
+  color: #fff0d8;
+  border-color: #a6ae8a;
+}
+.collection-link {
+  font-size: 13px;
+  min-height: 32px;
+  padding: 3px 10px;
+  background: #193b2ec9;
+  color: #fff1d3;
+  border-color: #d6c28b88;
+}
+.game-header h1 {
+  font-size: clamp(22px, 5.5vw, 28px);
+}
+.game-message[hidden],
+.game-tools[hidden] {
+  display: none;
+}
+.victory-word {
+  background: #fff0d0;
+  color: #21492f;
+  border: 2px solid #d1ab56;
+  font-family: var(--font-display);
+  font-size: clamp(30px, 8vw, 39px);
+  box-shadow: 0 6px 22px #12332270;
+  animation: premium-victory 450ms cubic-bezier(0.2, 0.75, 0.3, 1) both;
+}
+.victory-light > img {
+  display: none;
+}
+.victory-shine .board-wrap,
+.victory-leave .board-wrap {
+  isolation: auto;
+}
+.victory-light {
+  z-index: 9;
+}
+.objectives {
+  flex-wrap: wrap;
+  gap: 5px;
+  max-width: 100%;
+}
+.objectives > div {
+  min-height: 40px;
+  padding: 3px 6px;
+  gap: 3px;
+}
+.objectives strong {
+  font-size: 13px;
+}
+.game-screen:has([data-obstacle-objective]) .board-wrap {
+  width: min(
+    100%,
+    420px,
+    calc(
+      (var(--vh, 1dvh) * 100 - 280px - var(--safe-top) - var(--safe-bottom)) *
+        7 / 8
+    )
+  );
+}
+.game-screen:has([data-obstacle-objective]) .objectives {
+  max-width: 420px;
+  align-self: center;
+}
+.obstacle-intro {
+  font-size: 14px !important;
+  line-height: 1.35 !important;
+  margin-top: 12px !important;
+}
+.board {
+  position: relative;
+  z-index: auto;
+}
+.petal-grid {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  grid-template-rows: repeat(8, minmax(0, 1fr));
+  gap: 3px;
+  padding: 8px;
+  pointer-events: none;
+  z-index: 3;
+}
+.petal-grid span {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+}
+.petal-grid img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0.85;
+}
+.tile .tile-visual {
+  position: relative;
+  z-index: 4;
+}
+.petals-swept {
+  animation: petal-sweep 280ms ease-out both;
+}
+.tile[data-role="gift"],
+.tile[data-role="gift"]:nth-child(odd) {
+  background: #654a32 !important;
+  opacity: 1;
+}
+.tile[data-role="gift"] img {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 2px 1px #24130490);
+}
+.tile[data-gift-hit] img {
+  animation: gift-shake 280ms ease-in-out both;
+}
+.tile[data-role="keepsake"] {
+  background: #ddc47c !important;
+  box-shadow: inset 0 0 0 2px #f8df9c;
+}
+.tile[data-role="keepsake"] img {
+  width: 98%;
+  height: 98%;
+}
+.tile[data-brought] img {
+  animation: ingredient-flight 320ms ease-in both;
+}
+.tail-peek {
+  position: absolute;
+  right: -1.5%;
+  top: -18%;
+  width: 22%;
+  height: 27%;
+  z-index: 0;
+  pointer-events: none;
+  animation: tail-enter 1600ms ease-in-out both;
+  transform-origin: 45% 100%;
+}
+.tail-peek img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform-origin: 45% 100%;
+  animation: tail-wag 500ms 120ms ease-in-out 3;
+}
+.game-screen .objectives,
+.game-screen .game-header {
+  position: relative;
+  z-index: 3;
+}
+.petal-grid {
+  inset: 5px;
+  padding: 8px;
+}
+.room-keepsakes {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+.room-keepsakes img {
+  position: absolute;
+  object-fit: contain;
+  object-position: bottom;
+  filter: brightness(0.93) sepia(0.07) drop-shadow(1px 2px 1px #32180b70);
+}
+.arrival-hidden {
+  visibility: hidden !important;
+}
+.library-alive .shelf-books button {
+  transform: perspective(250px) rotateY(-4deg) rotate(var(--lean, 0deg));
+  background: transparent !important;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  opacity: 1;
+}
+.library-alive .shelf-books button img {
+  filter: brightness(0.89) sepia(0.08) drop-shadow(1px 1px 1px #2a160c90);
+}
+.library-alive .shelf-books button::after {
+  height: 2px;
+  bottom: 0;
+  filter: blur(0.8px);
+  background: #311b10bb;
+}
+.shelf-books button:disabled {
+  pointer-events: none;
+}
+.reward-in-room {
+  isolation: isolate;
+  justify-content: center;
+  overflow: hidden;
+  padding: calc(var(--safe-top) + 14px) 22px calc(var(--safe-bottom) + 16px);
+}
+.reward-shade,
+.ceremony-dim {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 42%, #17352796, #102d25d9);
+  animation: room-dim 700ms ease-out both;
+}
+.reward-content {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 10px;
+  max-height: 100%;
+  max-width: 360px;
+  color: #fff1d7;
+  animation: reward-rise 450ms ease-out both;
+}
+.reward-content h1 {
+  font-size: clamp(25px, 7vw, 34px);
+  margin: 0;
+}
+.reward-content h2 {
+  font-size: clamp(20px, 5.6vw, 27px);
+  margin: 0;
+  color: #fff1d7;
+}
+.reward-content p {
+  margin: 0;
+  line-height: 1.4;
+  color: #fff1d7;
+}
+.reward-content .reward-book {
+  width: auto;
+  height: min(31dvh, 250px);
+  max-width: 65vw;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 15px #071c1690);
+  margin: 4px 0;
+}
+.reward-content .reward-badge {
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+  margin: 0;
+}
+.reward-content .author {
+  font-size: 16px;
+  color: #eadfc7;
+}
+.reward-content .primary {
+  min-height: 50px;
+  margin-top: 8px;
+  width: 100%;
+}
+.reward-content .reward-intro {
+  min-height: 0;
+  background: none;
+  box-shadow: none;
+  padding: 0;
+  color: inherit;
+}
+.reward-flight {
+  position: fixed;
+  z-index: 1000;
+  pointer-events: none;
+  object-fit: contain;
+  transform-origin: center;
+  filter: drop-shadow(0 4px 8px #28190c60);
+}
+.ceremony-in-room {
+  isolation: isolate;
+  overflow: hidden;
+  justify-content: center;
+  padding: calc(var(--safe-top) + 32px) 22px calc(var(--safe-bottom) + 16px);
+  gap: 14px;
+  background: #163b2e;
+}
+.ceremony-in-room > .library-stage {
+  z-index: 0;
+}
+.ceremony-in-room > small,
+.ceremony-in-room > h1,
+.ceremony-in-room > p,
+.ceremony-in-room > button {
+  position: relative;
+  z-index: 5;
+  color: #fff1d3;
+}
+.ceremony-in-room > h1 {
+  font-size: clamp(26px, 7vw, 36px);
+  line-height: 1.15;
+  max-width: 370px;
+  margin: 0;
+}
+.ceremony-in-room > small {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+}
+.ceremony-in-room > .ceremony-light {
+  display: none;
+}
+.ceremony-in-room .celebration-art {
+  position: relative;
+  z-index: 5;
+}
+.ceremony-in-room.celebration-blade .celebration-art {
+  height: 18dvh;
+  visibility: hidden;
+}
+.ceremony-in-room.celebration-blade .blade {
+  animation: blade-in-room 1100ms 250ms ease-out both;
+}
+.ceremony-in-room.celebration-family .celebration-art {
+  height: 25dvh;
+  min-height: 100px;
+  margin: 0;
+  visibility: hidden;
+}
+.ceremony-in-room.celebration-family .ceremony-dim {
+  background: radial-gradient(ellipse at 34% 72%, #281b0b30, #0c241dd9 80%);
+  animation: room-dim 1500ms ease-in both;
+}
+.cinematic-stage .library-room {
+  animation: family-camera 2800ms 1500ms ease-in-out both;
+  transform-origin: 34% 76%;
+}
+.celebration-family .family-frame {
+  animation: portrait-reveal 900ms 1400ms ease-out both;
+}
+.celebration-family .family-frame img {
+  filter: drop-shadow(0 0 9px #ffe7a366);
+}
+.celebration-family > h1 {
+  animation: ceremony-copy 800ms 3300ms ease-out both;
+}
+.celebration-family > small {
+  animation: ceremony-copy 650ms 3000ms ease-out both;
+}
+.celebration-family .bruno-signature {
+  max-width: 370px;
+  margin: 0;
+  text-shadow: 0 1px 4px #071e16;
+}
+.celebration-family .bruno-signature span {
+  display: block;
+  animation: ceremony-copy 800ms 3900ms ease-out both;
+}
+.celebration-family .bruno-signature span:nth-child(2) {
+  animation-delay: 4400ms;
+}
+.celebration-family .bruno-signature span:nth-child(3) {
+  animation-delay: 4900ms;
+}
+.celebration-family > .primary,
+.celebration-family > .ceremony-audio {
+  animation: ceremony-copy 600ms 5500ms ease-out both;
+}
+.ceremony-in-room > small {
+  position: absolute;
+  top: calc(var(--safe-top) + 24px);
+  left: 20px;
+  right: 20px;
+}
+.ceremony-in-room > h1 {
+  position: absolute;
+  top: calc(var(--safe-top) + 57px);
+  left: 24px;
+  right: 24px;
+  margin: auto;
+}
+.ceremony-in-room > p {
+  position: absolute;
+  top: 31%;
+  left: 24px;
+  right: 24px;
+  max-width: 370px;
+  margin: 0 auto;
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.45;
+}
+.ceremony-in-room .bruno-signature,
+.portrait-modal .bruno-signature {
+  font-family: "Caveat", cursive !important;
+  font-size: clamp(27px, 7.2vw, 36px) !important;
+  font-weight: 500 !important;
+  line-height: 1.2 !important;
+}
+.ceremony-in-room > .primary {
+  position: absolute;
+  bottom: calc(var(--safe-bottom) + 24px);
+  left: 24px;
+  right: 24px;
+  width: calc(100% - 48px);
+  max-width: 350px;
+  margin: 0 auto;
+  min-height: 52px;
+  font-size: 17px;
+}
+.ceremony-in-room > .ceremony-audio {
+  position: absolute;
+  top: auto;
+  bottom: calc(var(--safe-bottom) + 89px);
+  left: calc(50% - 48px);
+  right: auto;
+  transform: none;
+  color: #254c38 !important;
+  background: #fff0d8;
+  width: 96px;
+  margin: 0;
+  min-width: 80px;
+}
+.ceremony-in-room[data-paused="true"] * {
+  animation-play-state: paused !important;
+}
+.library-room[data-ready="false"],
+.library-room[data-ready="false"] * {
+  animation-play-state: paused !important;
+}
+.ceremony-in-room .celebration-art {
+  display: none;
+}
+.immersive .hub-infinite {
+  top: calc(var(--safe-top) + 104px);
+  bottom: auto;
+  left: 16px;
+  right: auto;
+  min-height: 44px;
+  padding: 8px 15px;
+  background: #173d30e8;
+  border: 1px solid #d5b87a;
+  color: #fff0d4;
+  border-radius: 24px;
+  z-index: 6;
+}
+.immersive .family-frame {
+  bottom: 14%;
+  left: 23%;
+  width: 37%;
+  height: 19%;
+  opacity: 1;
+}
+.immersive .family-frame:disabled {
+  pointer-events: none;
+}
+@keyframes room-dim {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes reward-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes blade-in-room {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes family-camera {
+  to {
+    transform: scale(1.15) translate(1.5%, 1%);
+  }
+}
+@keyframes portrait-reveal {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes ceremony-copy {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes tail-enter {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translateY(42%) rotate(10deg);
+  }
+  15%,
+  85% {
+    opacity: 1;
+    transform: translateY(0) rotate(10deg);
+  }
+}
+@keyframes tail-wag {
+  0%,
+  100% {
+    transform: rotate(-9deg);
+  }
+  50% {
+    transform: rotate(12deg);
+  }
+}
+@keyframes petal-sweep {
+  to {
+    opacity: 0;
+    transform: translate(5px, -7px) rotate(17deg) scale(1.12);
+  }
+}
+@keyframes gift-shake {
+  25% {
+    transform: rotate(-4deg);
+  }
+  75% {
+    transform: rotate(4deg);
+  }
+}
+@keyframes ingredient-flight {
+  to {
+    opacity: 0;
+    transform: translateY(-100px) scale(0.2);
+  }
+}
+@keyframes premium-victory {
+  from {
+    opacity: 0;
+    transform: scale(0.86);
+  }
+  70% {
+    transform: scale(1.03);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@media (max-height: 740px) {
+  .game-screen:has([data-obstacle-objective]) {
+    gap: 4px;
+  }
+  .game-screen:has([data-obstacle-objective]) .game-message {
+    min-height: 24px;
+  }
+  .game-screen:has([data-obstacle-objective]) .objectives {
+    flex-wrap: nowrap;
+    gap: 4px;
+    width: 100%;
+  }
+  .game-screen:has([data-obstacle-objective]) .objectives > div {
+    flex: 1;
+    min-width: 0;
+    flex-direction: column;
+    gap: 0;
+    padding: 3px 4px;
+    min-height: 44px;
+  }
+  .game-screen:has([data-obstacle-objective]) .objectives img {
+    width: 24px;
+    height: 24px;
+  }
+  .game-screen:has([data-obstacle-objective]) .objectives strong {
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  .game-screen:has([data-obstacle-objective]) .objectives span {
+    font-size: 9px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tail-peek {
+    display: none;
+  }
+  .petals-swept,
+  .tile[data-gift-hit] img,
+  .tile[data-brought] img,
+  .victory-word,
+  .reward-content,
+  .ceremony-in-room * {
+    animation: none !important;
+  }
+  .cinematic-stage .library-room {
+    transform: none;
+  }
+  .reward-shade,
+  .ceremony-dim {
+    animation: none !important;
+  }
+}

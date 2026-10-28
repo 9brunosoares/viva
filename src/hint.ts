@@ -1,4 +1,5 @@
 import { matches, moves, swap, type Board } from "./engine";
+import { obstacleMoveScore, type ObstacleState } from "./obstacles";
 
 /** Pure and deterministic: looking for a hint never draws refills or creates tile IDs. */
 export function chooseHint(
@@ -6,6 +7,7 @@ export function chooseHint(
   targets: { kind: number; amount: number }[],
   counts: number[],
   needsPowers = false,
+  obstacles?: ObstacleState,
 ): number[] {
   let best: number[] = [],
     bestScore = -Infinity;
@@ -23,6 +25,7 @@ export function chooseHint(
     );
     const active = Number(!!next[a].special) + Number(!!next[b].special);
     const score =
+      obstacleMoveScore(next, cells, obstacles) +
       useful * 3 +
       cells.size +
       groups.reduce(

@@ -8,10 +8,12 @@ export type GameSnapshot = {
   powers: number;
   cascades: number;
   round: number;
+  obstacles?: import("./obstacles").ObstacleState;
+  won?: boolean;
 };
 export type GameSession = {
   version: 1;
-  campaignVersion?: 2;
+  campaignVersion?: 2 | 3;
   campaign: string;
   completedCount: number;
   stage: number;
@@ -33,8 +35,12 @@ export function validSnapshot(s: unknown): s is GameSnapshot {
     v.board.every(
       (t) =>
         t &&
-        integer(t.kind) &&
-        t.kind < 7 &&
+        (t.role === undefined
+          ? integer(t.kind) && t.kind < 7
+          : t.kind === -1 &&
+            t.special === undefined &&
+            ((t.role === "keepsake" && t.hp === undefined) ||
+              (t.role === "gift" && (t.hp === 1 || t.hp === 2)))) &&
         (t.special === undefined ||
           ["row", "column", "area", "color"].includes(t.special)),
     ) &&
@@ -47,7 +53,20 @@ export function validSnapshot(s: unknown): s is GameSnapshot {
     integer(v.powers) &&
     integer(v.cascades) &&
     integer(v.round) &&
-    v.round > 0
+    v.round > 0 &&
+    (v.won === undefined || typeof v.won === "boolean") &&
+    (v.obstacles === undefined
+      ? v.board.every((t) => !t.role)
+      : Array.isArray(v.obstacles.petals) &&
+        v.obstacles.petals.length === 56 &&
+        v.obstacles.petals.every((p) => typeof p === "boolean") &&
+        [
+          v.obstacles.swept,
+          v.obstacles.opened,
+          v.obstacles.brought,
+          v.obstacles.spawned,
+        ].every(integer) &&
+        v.obstacles.brought <= v.obstacles.spawned)
   );
 }
 export function readSession(p: Progress): GameSession | null {
@@ -57,7 +76,9 @@ export function readSession(p: Progress): GameSession | null {
     ) as GameSession | null;
     return v &&
       v.version === 1 &&
-      (v.campaignVersion === undefined || v.campaignVersion === 2) &&
+      (v.campaignVersion === undefined ||
+        v.campaignVersion === 2 ||
+        v.campaignVersion === 3) &&
       !p.pendingCelebration &&
       v.campaign === p.order.join(",") &&
       v.completedCount === p.completed.length &&
@@ -70,6 +91,7 @@ export function readSession(p: Progress): GameSession | null {
       ["intro", "game"].includes(v.phase) &&
       (v.snapshot === undefined ||
         (validSnapshot(v.snapshot) &&
+          (v.campaignVersion === 3 || !v.snapshot.obstacles) &&
           (v.stage === 9 || v.snapshot.board.every((t) => t.kind < 6))))
       ? v
       : null;

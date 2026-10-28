@@ -158,7 +158,7 @@ class BoardVfx {
           size: j % 3 === 0 ? cellSize * 0.18 : 3 + this.random() * 3,
           rotation: angle,
           spin: (this.random() - 0.5) * 6,
-          color: colors[kind],
+          color: colors[kind] ?? "#f5d58c",
           sprite: kind,
         });
       }
@@ -210,7 +210,7 @@ class BoardVfx {
             cy: (p.y + to.y) / 2 - 30,
             life: 0.42,
             size: 4,
-            color: colors[board[i].kind],
+            color: colors[board[i].kind] ?? "#f5d58c",
             target: -1,
           });
         }

@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { asset, books, levels, legacyLevels, names } from "./config";
 import {
   complete,
@@ -23,11 +29,13 @@ import SoundToggle from "./SoundToggle";
 import { restartJourney } from "./restart";
 import { useReducedMotion } from "./useReducedMotion";
 import { BRUNO_SIGNATURE } from "./narrative";
-import { spineMetrics } from "./spineMetrics";
 import { useDialog } from "./useDialog";
-import { shelfPositions } from "./libraryLayout";
 import Celebration from "./Celebration";
 import BookViewer from "./BookViewer";
+import FlatIcon from "./FlatIcon";
+import LibraryScene from "./LibraryScene";
+import RewardFlight, { type Flight } from "./RewardFlight";
+import { obstacleSpec } from "./obstacles";
 import {
   balancedLevel,
   Difficulty,
@@ -35,9 +43,7 @@ import {
   readDifficulty,
 } from "./difficulty";
 import { usePortrait } from "./usePortrait";
-import BladeCompanion from "./BladeCompanion";
 import StageIntro from "./StageIntro";
-import LibraryAtmosphere, { useLibraryActivity } from "./LibraryAtmosphere";
 import DifficultySelector from "./DifficultySelector";
 import { useSceneTransition } from "./useSceneTransition";
 import { useDialogExit } from "./useDialogExit";
@@ -59,6 +65,18 @@ type Screen =
   | "game"
   | "reward"
   | "celebration";
+function preparedLevel(
+  base: import("./config").Level,
+  mode: Difficulty,
+  endless: boolean,
+  edition?: number,
+) {
+  const level = balancedLevel(base, mode, endless);
+  return {
+    ...level,
+    obstacles: edition === 3 ? obstacleSpec(level, mode, endless) : undefined,
+  };
+}
 export default function App() {
   const [journey, setJourney] = useState(0);
   return <Journey key={journey} onRestarted={() => setJourney((n) => n + 1)} />;
@@ -72,6 +90,8 @@ function Journey({ onRestarted }: { onRestarted: () => void }) {
   const [difficultyOpen, setDifficultyOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [firstGift, setFirstGift] = useState(false);
+  const [flight, setFlight] = useState<Flight | null>(null);
+  const [bookFlying, setBookFlying] = useState(false);
   const [giftIntro, setGiftIntro] = useState(false);
   const [bladePose, setBladePose] = useState(5);
   const initial = useRef<ReturnType<typeof load> | null>(null);
@@ -93,11 +113,11 @@ function Journey({ onRestarted }: { onRestarted: () => void }) {
   const saved = useRef({ progress: true, session: true });
   const [playingLevel, setPlayingLevel] = useState(() =>
     activeSession
-      ? balancedLevel(
+      ? preparedLevel(
           {
-            ...(activeSession.campaignVersion === 2 ? levels : legacyLevels)[
-              activeSession.stage - 1
-            ],
+            ...((activeSession.campaignVersion ?? 0) >= 2
+              ? levels
+              : legacyLevels)[activeSession.stage - 1],
             name:
               activeSession.stage === 5 &&
               isRevealed(initial.current!.progress, "blade")
@@ -106,6 +126,7 @@ function Journey({ onRestarted }: { onRestarted: () => void }) {
           },
           activeSession.difficulty,
           activeSession.endless,
+          activeSession.campaignVersion,
         )
       : levels[0],
   );
@@ -162,12 +183,10 @@ function Journey({ onRestarted }: { onRestarted: () => void }) {
     if (screen === "reward" && reward !== null && !giftIntro)
       sound(true, "book");
   }, [screen, reward, giftIntro]);
-  const positions = shelfPositions(libraryState(count));
   const bladeKnown = isRevealed(progress, "blade"),
     familyKnown = isRevealed(progress, "family");
   const titleFor = (id: number) =>
     id === 5 && bladeKnown ? "Blade" : levels[id - 1].name;
-  const libraryActivity = useLibraryActivity(screen === "library", reduced);
   const [arrivingBook, setArrivingBook] = useState<number | null>(
     () => initial.current!.progress.pendingCelebration?.bookId ?? null,
   );
@@ -225,7 +244,9 @@ function Journey({ onRestarted }: { onRestarted: () => void }) {
       )?.scrollIntoView({ block: "center", behavior: "instant" });
     }
   }, [screen]);
-  useEffect(() => {
+  useLayoutEffect(() => {
+    // Commit the existing milestone step before its new screen becomes interactive.
+    // A reload immediately after acceptance must never observe the previous step.
     try {
       saved.current.progress = save(progress, localStorage);
       if (!saved.current.progress)
@@ -244,7 +265,8 @@ function Journey({ onRestarted }: { onRestarted: () => void }) {
       !settingsOpen &&
       !progress.pendingCelebration &&
       arrivingBook === null &&
-      bookArrival === null,
+      bookArrival === null &&
+      flight === null,
     screen,
     persist: () => {
       try {
@@ -273,7 +295,14 @@ function Journey({ onRestarted }: { onRestarted: () => void }) {
                 ),
                 asset("vfx/sequences"),
               ]
-            : [];
+            : screen === "game"
+              ? [
+                  asset(`library-${libraryState(Math.min(10, count + 1))}`),
+                  asset(
+                    `book-${progress.order[count] ?? progress.order[9]}-cover`,
+                  ),
+                ]
+              : [];
     for (const path of paths) {
       const image = new Image();
       image.src = path;
@@ -294,7 +323,7 @@ function Journey({ onRestarted }: { onRestarted: () => void }) {
       (!endless && !storySeen(progress, id) ? "intro" : "game");
     const metadata: GameSession = resume ?? {
       version: 1,
-      campaignVersion: 2,
+      campaignVersion: 3,
       campaign: progress.order.join(","),
       completedCount: progress.completed.length,
       stage: id,
@@ -307,13 +336,16 @@ function Journey({ onRestarted }: { onRestarted: () => void }) {
     saved.current.session = writeSession(metadata);
     setStage(id);
     setPlayingLevel(
-      balancedLevel(
+      preparedLevel(
         {
-          ...(metadata.campaignVersion === 2 ? levels : legacyLevels)[id - 1],
+          ...((metadata.campaignVersion ?? 0) >= 2 ? levels : legacyLevels)[
+            id - 1
+          ],
           name: titleFor(id),
         },
         mode,
         endless,
+        metadata.campaignVersion,
       ),
     );
     setInfinite(endless);
@@ -352,6 +384,39 @@ function Journey({ onRestarted }: { onRestarted: () => void }) {
     setScreen("library");
   }
   function acceptReward() {
+    if (reward && !reduced) {
+      const from = document
+        .querySelector(".reward-book")
+        ?.getBoundingClientRect();
+      const to = document
+        .querySelector(`[data-book-id="${reward}"]`)
+        ?.getBoundingClientRect();
+      const keepsake = document
+        .querySelector(`[data-keepsake="${stage}"]`)
+        ?.getBoundingClientRect();
+      if (from && to) {
+        setBookFlying(true);
+        setFlight({
+          book: reward,
+          stage,
+          from: {
+            x: from.x,
+            y: from.y,
+            width: from.width,
+            height: from.height,
+          },
+          to: { x: to.x, y: to.y, width: to.width, height: to.height },
+          keepsake: keepsake
+            ? {
+                x: keepsake.x,
+                y: keepsake.y,
+                width: keepsake.width,
+                height: keepsake.height,
+              }
+            : undefined,
+        });
+      }
+    }
     if (progress.pendingCelebration) {
       setProgress(acceptMilestoneBook);
       setScreen("celebration");
@@ -396,6 +461,25 @@ function Journey({ onRestarted }: { onRestarted: () => void }) {
           kind={progress.pendingCelebration?.kind ?? "blade"}
           audio={!audioPrefs.muted && audioPrefs.effects > 0}
           onFinish={finishCelebration}
+          scene={
+            <LibraryScene
+              completed={progress.completed}
+              acquired={acquired}
+              blade={
+                bladeKnown || progress.pendingCelebration?.kind === "blade"
+              }
+              family={
+                familyKnown || progress.pendingCelebration?.kind === "family"
+              }
+              reduced={reduced}
+              pose={bladePose}
+              onPose={setBladePose}
+              hiddenBook={bookFlying ? flight?.book : null}
+              hiddenKeepsake={flight?.stage}
+              focused
+              cinematic={progress.pendingCelebration?.kind === "family"}
+            />
+          }
         />
       ) : screen === "home" ? (
         <section
@@ -535,191 +619,130 @@ function Journey({ onRestarted }: { onRestarted: () => void }) {
               Modo infinito
             </button>
           )}
-          <div className="library-stage">
-            <div
-              className={`library-room library-alive ${bladeKnown ? "has-blade" : ""}`}
-              data-stage={libraryState(count)}
-              data-ambient={
-                libraryActivity.active &&
-                book === null &&
-                !portrait &&
-                !difficultyOpen
-                  ? "active"
-                  : "paused"
-              }
-              data-motion={libraryActivity.mode}
-              data-attention={
-                book !== null || portrait || difficultyOpen ? "focused" : "room"
-              }
-            >
-              <img
-                className="room-image"
-                src={asset(`library-${libraryState(count)}`)}
-                width={496}
-                height={756}
-                alt={`Seu recanto de leitura, evolução ${libraryState(count) + 1} de 4`}
-              />
-              <LibraryAtmosphere
-                stage={libraryState(count)}
-                limited={libraryActivity.mode !== "full"}
-                still={libraryActivity.mode === "still"}
-              />
-              <div className="shelf-books">
-                {acquired.map((id, i) => (
-                  <button
-                    key={id}
-                    className={`${book === id ? "book-selected" : ""} ${bookArrival === id ? "book-arriving" : ""}`}
-                    style={{
-                      left: `${positions[i].left}%`,
-                      bottom: `${positions[i].bottom}%`,
-                      height: `${positions[i].height}%`,
-                      width: `${(((positions[i].height * 756) / 496) * spineMetrics[id].artWidth) / spineMetrics[id].artHeight}%`,
-                    }}
-                    onClick={(e) => {
-                      e.currentTarget.focus({ preventScroll: true });
-                      setBook(id);
-                    }}
-                    aria-label={`Abrir ${books[id - 1].title}`}
-                  >
-                    <img
-                      src={asset(`book-${id}-spine`)}
-                      alt=""
-                      width={60}
-                      height={160}
-                      style={{
-                        position: "absolute",
-                        width: `${(spineMetrics[id].width / spineMetrics[id].artWidth) * 100}%`,
-                        height: `${(spineMetrics[id].height / spineMetrics[id].artHeight) * 100}%`,
-                        left: `${(-spineMetrics[id].left / spineMetrics[id].artWidth) * 100}%`,
-                        top: `${(-spineMetrics[id].top / spineMetrics[id].artHeight) * 100}%`,
-                      }}
-                    />
-                  </button>
-                ))}
-              </div>
-              <img
-                className="shelf-depth"
-                src={asset(`library-shelf-depth-${libraryState(count)}`)}
-                alt=""
-                aria-hidden="true"
-              />
-              {bladeKnown && (
-                <BladeCompanion
-                  reduced={reduced}
-                  pose={bladePose}
-                  onPose={setBladePose}
-                />
-              )}
-              <img
-                className="library-foreground"
-                src={asset("library-foreground")}
-                alt=""
-                aria-hidden="true"
-              />
-              {familyKnown && (
-                <button
-                  className="family-frame"
-                  onClick={(e) => {
-                    e.currentTarget.focus({ preventScroll: true });
-                    setPortrait(true);
-                  }}
-                  aria-label="Ampliar retrato da família"
-                >
-                  <img
-                    src={asset("family-object")}
-                    alt="Retrato da família apoiado na mesa em primeiro plano"
-                  />
-                </button>
-              )}
-              <span className="room-label">
-                {
-                  [
-                    "Um lugar para começar",
-                    "As primeiras histórias",
-                    "Aconchego e companhia",
-                    "Um cantinho cheio de vida",
-                  ][libraryState(count)]
-                }
-              </span>
-            </div>
-          </div>
+          <LibraryScene
+            completed={progress.completed}
+            acquired={acquired}
+            blade={bladeKnown}
+            family={familyKnown}
+            reduced={reduced}
+            pose={bladePose}
+            onPose={setBladePose}
+            selected={book}
+            arrival={bookArrival}
+            hiddenBook={bookFlying ? flight?.book : null}
+            hiddenKeepsake={flight?.stage}
+            onBook={setBook}
+            onPortrait={() => setPortrait(true)}
+            focused={
+              book !== null || portrait || difficultyOpen || settingsOpen
+            }
+          />
         </section>
       ) : (
-        <section className="page reward">
-          {giftIntro ? (
-            <div className="reward-intro">
-              <img src={asset("reward-5")} alt="Emblema floral de conquista" />
-              <h1>Uma surpresa pra você!</h1>
-              <p className="collection-intro">
-                Cada fase concluída revela um novo livro para sua coleção. São
-                dez histórias esperando por você na sua biblioteca.
-              </p>
-              <button
-                className="primary"
-                onClick={() => {
-                  setGiftIntro(false);
-                }}
-              >
-                Descobrir meu livro
-              </button>
-            </div>
-          ) : (
-            <>
-              <img
-                className="reward-badge"
-                src={asset("reward-5")}
-                alt="Emblema floral de conquista"
-              />
-
-              <h1>Fase concluída!</h1>
-              {reward && (
+        <section className="page reward library immersive reward-in-room">
+          <LibraryScene
+            completed={progress.completed}
+            acquired={acquired}
+            blade={bladeKnown}
+            family={familyKnown}
+            reduced={reduced}
+            pose={bladePose}
+            onPose={setBladePose}
+            hiddenBook={reward}
+            hiddenKeepsake={reward ? stage : null}
+            focused
+          />
+          <div className="reward-shade" aria-hidden="true" />
+          <div className="reward-content">
+            {giftIntro ? (
+              <div className="reward-intro">
+                <img
+                  src={asset("reward-5")}
+                  alt="Emblema floral de conquista"
+                />
+                <h1>Uma surpresa pra você!</h1>
                 <p className="collection-intro">
-                  {firstGift
-                    ? "Sua primeira história chegou!"
-                    : [
-                        "Mais uma história para sua coleção!",
-                        "Um novo livro chegou!",
-                        "Tem uma nova história esperando por você.",
-                      ][(count - 1) % 3]}
+                  Cada fase concluída revela um novo livro para sua coleção. São
+                  dez histórias esperando por você na sua biblioteca.
                 </p>
-              )}
-              {reward ? (
-                <>
-                  <img
-                    className="reward-book"
-                    src={asset(`book-${reward}-cover`)}
-                    alt={`Capa de ${books[reward - 1].title}`}
-                  />
-                  <h2>{books[reward - 1].title}</h2>
-                  <p className="author">{books[reward - 1].author}</p>
-                </>
-              ) : (
-                <p>
-                  {infinite
-                    ? "Que bom ter um momento só seu. Vamos a mais uma?"
-                    : "É sempre bom revisitar um lugar querido."}
-                </p>
-              )}
-              <button
-                className="primary"
-                onClick={() =>
-                  infinite && !reward
-                    ? start(1 + Math.floor(Math.random() * 10), true)
-                    : acceptReward()
-                }
-              >
-                {reward
-                  ? "Guardar na biblioteca"
-                  : infinite
-                    ? "Mais um momento"
-                    : "Voltar à biblioteca"}
-              </button>
-              {infinite && (
-                <button onClick={visitLibrary}>Voltar à biblioteca</button>
-              )}
-            </>
-          )}
+                <button
+                  className="primary"
+                  onClick={() => {
+                    setGiftIntro(false);
+                  }}
+                >
+                  Descobrir meu livro
+                </button>
+              </div>
+            ) : (
+              <>
+                <img
+                  className="reward-badge"
+                  src={asset("reward-5")}
+                  alt="Emblema floral de conquista"
+                />
+
+                <h1>Fase concluída!</h1>
+                {reward && (
+                  <p className="collection-intro">
+                    {firstGift
+                      ? "Sua primeira história chegou!"
+                      : [
+                          "Mais uma história para sua coleção!",
+                          "Um novo livro chegou!",
+                          "Tem uma nova história esperando por você.",
+                        ][(count - 1) % 3]}
+                  </p>
+                )}
+                {reward ? (
+                  <>
+                    <img
+                      className={`reward-book ${bookFlying ? "arrival-hidden" : ""}`}
+                      src={asset(`book-${reward}-cover`)}
+                      alt={`Capa de ${books[reward - 1].title}`}
+                    />
+                    <h2>{books[reward - 1].title}</h2>
+                    <p className="author">{books[reward - 1].author}</p>
+                  </>
+                ) : (
+                  <p>
+                    {infinite
+                      ? "Que bom ter um momento só seu. Vamos a mais uma?"
+                      : "É sempre bom revisitar um lugar querido."}
+                  </p>
+                )}
+                <button
+                  className="primary"
+                  onClick={() =>
+                    infinite && !reward
+                      ? start(1 + Math.floor(Math.random() * 10), true)
+                      : acceptReward()
+                  }
+                >
+                  {reward
+                    ? "Guardar na biblioteca"
+                    : infinite
+                      ? "Mais um momento"
+                      : "Voltar à biblioteca"}
+                </button>
+                {infinite && (
+                  <button onClick={visitLibrary}>Voltar à biblioteca</button>
+                )}
+              </>
+            )}
+          </div>
         </section>
+      )}
+      {flight && (
+        <RewardFlight
+          flight={flight}
+          reduced={reduced}
+          onBookSettled={() => setBookFlying(false)}
+          onFinish={() => {
+            setFlight(null);
+            setBookFlying(false);
+          }}
+        />
       )}
       {warning && (
         <div className="storage-warning" role="alert">
@@ -797,7 +820,7 @@ function PageHeader({
   return (
     <header className="page-header">
       <button className="round" onClick={back} aria-label="Voltar à biblioteca">
-        <img src={asset("control-back")} alt="" />
+        <FlatIcon kind="back" />
       </button>
       <div>
         <h1>{title}</h1>

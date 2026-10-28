@@ -1,7 +1,20 @@
 export const COLS = 7,
   ROWS = 8;
 export type Special = "row" | "column" | "area" | "color";
-export type Tile = { id: number; kind: number; special?: Special };
+export type Tile = {
+  id: number;
+  kind: number;
+  special?: Special;
+  role?: "gift" | "keepsake";
+  hp?: 1 | 2;
+};
+export const isPiece = (t: Tile) => !t.role;
+export const gift = (hp: 1 | 2 = 2): Tile => ({
+  ...tile(-1),
+  role: "gift",
+  hp,
+});
+export const keepsake = (): Tile => ({ ...tile(-1), role: "keepsake" });
 export type Board = Tile[];
 export type Match = { cells: number[]; axis: "row" | "column" };
 export type Rng = () => number;
@@ -34,11 +47,15 @@ export function matches(b: Board): Match[] {
       let run: number[] = [];
       for (let c = 0; c <= inner; c++) {
         const i = axis === "row" ? a * COLS + c : c * COLS + a;
-        if (c < inner && (!run.length || b[i].kind === b[run[0]].kind))
+        if (
+          c < inner &&
+          isPiece(b[i]) &&
+          (!run.length || b[i].kind === b[run[0]].kind)
+        )
           run.push(i);
         else {
           if (run.length >= 3) found.push({ cells: run, axis });
-          run = c < inner ? [i] : [];
+          run = c < inner && isPiece(b[i]) ? [i] : [];
         }
       }
     }
@@ -66,7 +83,10 @@ export function swap(b: Board, a: number, c: number) {
 export function validSwap(b: Board, a: number, c: number) {
   return (
     adjacent(a, c) &&
-    (!!b[a].special || !!b[c].special || matches(swap(b, a, c)).length > 0)
+    b[a].role !== "gift" &&
+    b[c].role !== "gift" &&
+    ((isPiece(b[a]) && isPiece(b[c]) && (!!b[a].special || !!b[c].special)) ||
+      matches(swap(b, a, c)).length > 0)
   );
 }
 export function moves(b: Board): [number, number][] {
@@ -99,6 +119,9 @@ export type Wave = {
   collected: number[];
   powers: number;
   effects: { index: number; type: Special }[];
+  affected?: number[];
+  giftHits?: number[];
+  giftsOpened?: number[];
 };
 export function resolveWave(
   b: Board,
@@ -145,7 +168,12 @@ export function resolveWave(
           (s === "area" &&
             Math.abs((j % COLS) - (i % COLS)) <= 1 &&
             Math.abs(Math.floor(j / COLS) - Math.floor(i / COLS)) <= 1) ||
-          (s === "color" && b[j].kind === (colorKind ?? b[i].kind))
+          (s === "color" &&
+            isPiece(b[j]) &&
+            b[j].kind ===
+              (colorKind !== undefined && colorKind >= 0
+                ? colorKind
+                : b[i].kind))
         )
           clear.add(j);
       }
@@ -153,11 +181,31 @@ export function resolveWave(
   }
   const collected = Array(Math.max(6, ...b.map((t) => t.kind + 1))).fill(0);
   const next = b.slice();
+  const affected = [...clear];
+  const matched = new Set(groups.flatMap((g) => g.cells));
+  const giftHits = b.flatMap((t, i) =>
+    t.role === "gift" &&
+    (clear.has(i) || [...matched].some((j) => adjacent(i, j)))
+      ? [i]
+      : [],
+  );
+  const giftsOpened: number[] = [];
+  for (const i of giftHits) {
+    if (b[i].hp === 2) next[i] = { ...b[i], hp: 1 };
+    else {
+      giftsOpened.push(i);
+      clear.add(i);
+    }
+  }
+  for (const i of [...clear])
+    if (b[i].role) {
+      if (!giftsOpened.includes(i)) clear.delete(i);
+    }
   for (const i of clear) {
     if (created.has(i) && !fired.has(i) && !activated.includes(i)) {
       next[i] = tile(b[i].kind, created.get(i));
     } else {
-      collected[b[i].kind]++;
+      if (isPiece(b[i])) collected[b[i].kind]++;
       created.delete(i);
     }
   }
@@ -168,6 +216,9 @@ export function resolveWave(
     collected,
     powers,
     effects: [...fired].map((index) => ({ index, type: b[index].special! })),
+    affected: [...new Set([...affected, ...giftsOpened])],
+    giftHits,
+    giftsOpened,
   };
 }
 export function fall(
@@ -192,5 +243,32 @@ export function ensurePlayable(
   rng: Rng = Math.random,
   rules?: BoardRules,
 ) {
-  return moves(b).length ? b : createBoard(rng, rules);
+  if (moves(b).length) return b;
+  return reshuffle(b, rng, rules);
+}
+/** Preserve ingredients, gift health and their occupied cells during recovery. */
+export function reshuffle(
+  b: Board,
+  rng: Rng = Math.random,
+  rules?: BoardRules,
+): Board {
+  if (b.every(isPiece)) return createBoard(rng, rules);
+  const indices = b.flatMap((t, i) => (isPiece(t) ? [i] : []));
+  const pieces = indices.map((i) => b[i]);
+  for (let attempt = 0; attempt < 500; attempt++) {
+    for (let j = pieces.length - 1; j > 0; j--) {
+      const k = Math.floor(rng() * (j + 1));
+      [pieces[j], pieces[k]] = [pieces[k], pieces[j]];
+    }
+    const next = b.slice();
+    indices.forEach((i, j) => (next[i] = pieces[j]));
+    if (!matches(next).length && moves(next).length) return next;
+  }
+  // Bounded regeneration touches ordinary pieces only, never saved obstacles.
+  for (let attempt = 0; attempt < 500; attempt++) {
+    const fresh = createBoard(rng, rules),
+      next = b.map((t, i) => (isPiece(t) ? fresh[i] : t));
+    if (!matches(next).length && moves(next).length) return next;
+  }
+  throw Error("Unable to recover a playable board while preserving obstacles");
 }

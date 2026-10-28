@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { asset, Level, names } from "./config";
+import { asset, Level, names, themes } from "./config";
 import {
   Board,
   createBoard,
@@ -14,6 +14,7 @@ import {
   Wave,
   tile,
   adjacent,
+  reshuffle,
 } from "./engine";
 import type { GameSnapshot } from "./session";
 import { sound, waveSound } from "./audio";
@@ -26,6 +27,15 @@ import { feedbackProfile, fallWait } from "./vfx";
 import { TurnSequence } from "./TurnSequence";
 import { useBoardInput } from "./useBoardInput";
 import { chooseHint } from "./hint";
+import FlatIcon from "./FlatIcon";
+import TailPeek from "./TailPeek";
+import {
+  newObstacles,
+  sweepObstacles,
+  spawnKeepsake,
+  bottomKeepsakes,
+  obstaclesDone,
+} from "./obstacles";
 
 type TurnPhase =
   | "idle"
@@ -60,10 +70,21 @@ export default function Game({
     Array(
       Math.max(6, ...(rules?.kinds ?? [0, 1, 2, 3, 4, 5]).map((k) => k + 1)),
     ).fill(0) as number[];
+  const [setup] = useState(() =>
+    newObstacles(
+      initialSnapshot ? initialSnapshot.board : createBoard(Math.random, rules),
+      initialSnapshot ? undefined : level.obstacles,
+    ),
+  );
+  const [obstacles, setObstacles] = useState(
+    initialSnapshot?.obstacles ?? setup.state,
+  );
+  const [giftHits, setGiftHits] = useState<number[]>([]);
+  const [brought, setBrought] = useState<number[]>([]);
   const [board, setBoard] = useState<Board>(() =>
     initialSnapshot
-      ? initialSnapshot.board.map((t) => tile(t.kind, t.special))
-      : createBoard(Math.random, rules),
+      ? initialSnapshot.board.map((t) => ({ ...t, ...tile(t.kind, t.special) }))
+      : setup.board,
   );
   const current = useRef(board);
   const [selected, setSelected] = useState<number | null>(null),
@@ -85,7 +106,9 @@ export default function Game({
   const [powers, setPowers] = useState(initialSnapshot?.powers ?? 0),
     [cascades, setCascades] = useState(initialSnapshot?.cascades ?? 0),
     [paused, pause] = useState(false),
-    [lost, setLost] = useState(!endless && initialSnapshot?.remaining === 0),
+    [lost, setLost] = useState(
+      !endless && !initialSnapshot?.won && initialSnapshot?.remaining === 0,
+    ),
     [message, setMessage] = useState("Combine 3 peças iguais. Sem pressa.");
   const [hint, setHint] = useState<number[]>([]),
     [invalid, setInvalid] = useState<number[]>([]);
@@ -103,6 +126,66 @@ export default function Game({
   const [effectCount, setEffectCount] = useState(0);
   const [clearDelays, setClearDelays] = useState<Record<number, number>>({});
   const [victory, setVictory] = useState<"" | "shine" | "leave">("");
+  const [finaleBoard, setFinaleBoard] = useState<Board | null>(null);
+  const skipVictory = useRef<(() => void) | null>(null);
+  const finaleTimers = useRef(new Set<ReturnType<typeof setTimeout>>());
+  const motionNow = useRef(motion);
+  motionNow.current = motion;
+  function clearFinale() {
+    finaleTimers.current.forEach(clearTimeout);
+    finaleTimers.current.clear();
+    setFinaleBoard(null);
+  }
+  async function contemplate(
+    stable: Board,
+    left: number,
+    depth: number,
+    turn: number,
+  ) {
+    // Display copy only: never show(), collect objectives, or call audio here.
+    if (motionNow.current && left > 0) {
+      let copy = stable.map((t) => ({ ...t }));
+      const available = copy.flatMap((t, i) => (!t.role ? [i] : []));
+      let seed = (Math.floor(performance.now()) + left * 7919) >>> 0;
+      for (let n = 0; n < Math.min(8, left, available.length); n++) {
+        seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+        const i = available.splice(seed % available.length, 1)[0];
+        const timer = setTimeout(
+          () => {
+            finaleTimers.current.delete(timer);
+            if (
+              !alive.current ||
+              document.hidden ||
+              !sequence.current.current(turn) ||
+              !motionNow.current
+            )
+              return;
+            copy = copy.map((t, j) =>
+              j === i ? { ...t, special: n % 2 ? "row" : "column" } : t,
+            );
+            setFinaleBoard(copy);
+            const wave = resolveWave(copy, i, [i], undefined, rules);
+            vfx.current?.wave(copy, wave, 0, []);
+          },
+          150 + n * 215,
+        );
+        finaleTimers.current.add(timer);
+      }
+    }
+    const skipped = new Promise<boolean>((resolve) => {
+      skipVictory.current = () => resolve(sequence.current.current(turn));
+    });
+    const result = await Promise.race([
+      sequence.current.wait(depth >= 4 ? 2600 : 2200, turn),
+      skipped,
+    ]);
+    skipVictory.current = null;
+    clearFinale();
+    return result;
+  }
+  useEffect(() => {
+    if (!motion) clearFinale();
+  }, [motion]);
   const [lastItems, setLastItems] = useState<{ index: number; kind: number }[]>(
     [],
   );
@@ -145,8 +228,23 @@ export default function Game({
   }, [created, audio, motion]);
   useEffect(() => {
     alive.current = true;
+    if (initialSnapshot?.won && !endless) {
+      const turn = sequence.current.begin();
+      lock.current = true;
+      setPhase("completing");
+      setVictory("shine");
+      void (async () => {
+        if (
+          await contemplate(current.current, initialSnapshot.remaining, 0, turn)
+        ) {
+          setPhase("transitioning");
+          setVictory("leave");
+          if (await wait(320, turn)) onWin();
+        }
+      })();
+    }
     // A legacy or interrupted save may contain a stable board with no legal move.
-    if (!lost && !moves(current.current).length) {
+    if (!initialSnapshot?.won && !lost && !moves(current.current).length) {
       const turn = sequence.current.begin();
       lock.current = true;
       setPhase("recovering");
@@ -166,12 +264,23 @@ export default function Game({
     return () => {
       alive.current = false;
       sequence.current.cancel();
+      finaleTimers.current.forEach(clearTimeout);
+      finaleTimers.current.clear();
+      skipVictory.current = null;
     };
   }, []);
   useDialog(paused || lost, paused ? () => pause(false) : undefined);
   useEffect(() => {
-    if (!lock.current && !busy && !victory)
-      onSnapshot?.({ board, remaining, counts, powers, cascades, round });
+    if (!initialSnapshot?.won && !lock.current && !busy && !victory)
+      onSnapshot?.({
+        board,
+        remaining,
+        counts,
+        powers,
+        cascades,
+        round,
+        ...(level.obstacles ? { obstacles } : {}),
+      });
   }, [
     board,
     remaining,
@@ -182,6 +291,7 @@ export default function Game({
     busy,
     victory,
     onSnapshot,
+    obstacles,
   ]);
   const wait = (ms: number, turn: number) =>
     sequence.current.wait(motion ? ms : 25, turn);
@@ -205,6 +315,7 @@ export default function Game({
             level.targets,
             counts,
             powers < level.powers,
+            level.obstacles ? obstacles : undefined,
           ),
         );
         fade = setTimeout(() => setHint([]), 1600);
@@ -236,6 +347,7 @@ export default function Game({
     counts,
     powers,
     level,
+    obstacles,
   ]);
   function show(b: Board) {
     current.current = b;
@@ -246,7 +358,14 @@ export default function Game({
     sequence.current.cancel();
     setRecovery(null);
     motionPhase.current = { kind: "reset", depth: 0 };
-    show(createBoard(Math.random, rules));
+    const fresh = newObstacles(
+      createBoard(Math.random, rules),
+      level.obstacles,
+    );
+    show(fresh.board);
+    setObstacles(fresh.state);
+    setGiftHits([]);
+    setBrought([]);
     setRemaining(level.moves);
     setCounts(freshCounts());
     setPowers(0);
@@ -266,7 +385,15 @@ export default function Game({
     setMessage("Um novo começo. Vamos juntas!");
   }
   async function play(a: number, b: number) {
-    if (lock.current || paused || lost || !adjacent(a, b)) return;
+    if (
+      lock.current ||
+      paused ||
+      lost ||
+      !adjacent(a, b) ||
+      current.current[a].role === "gift" ||
+      current.current[b].role === "gift"
+    )
+      return;
     const turn = sequence.current.begin();
     lock.current = true;
     setPhase("swapping");
@@ -320,7 +447,34 @@ export default function Game({
       power = powers,
       chain = cascades,
       depth = 0;
-    while (matches(next).length || active.length) {
+    let obstacleState = obstacles;
+    let spawnedThisTurn = false;
+    for (;;) {
+      if (!matches(next).length && !active.length) {
+        if (!spawnedThisTurn && level.obstacles) {
+          const spawned = spawnKeepsake(next, obstacleState, level.obstacles);
+          next = spawned.board;
+          obstacleState = spawned.state;
+          spawnedThisTurn = true;
+          setObstacles(obstacleState);
+          show(next);
+        }
+        const bottom = bottomKeepsakes(next);
+        if (!bottom.length) break;
+        setBrought(bottom);
+        if (!(await wait(320, turn))) return;
+        obstacleState = {
+          ...obstacleState,
+          brought: obstacleState.brought + bottom.length,
+        };
+        setObstacles(obstacleState);
+        setBrought([]);
+        next = fall(next, bottom, Math.random, rules);
+        motionPhase.current = { kind: "fall", depth };
+        show(next);
+        if (!(await wait(430, turn))) return;
+        continue;
+      }
       setPhase("resolving");
       const wave = resolveWave(
         next,
@@ -330,6 +484,8 @@ export default function Game({
         rules,
       );
       const profile = feedbackProfile(wave.board, wave, depth);
+      const swept = sweepObstacles(obstacleState, wave);
+      setGiftHits(wave.giftHits ?? []);
       setWaveVisual({
         id: ++waveSerial.current,
         tier: profile.tier,
@@ -350,6 +506,7 @@ export default function Game({
       if (wave.clear.length)
         setLastItems(
           wave.clear
+            .filter((index) => !next[index].role)
             .slice(0, 8)
             .map((index) => ({ index, kind: next[index].kind })),
         );
@@ -366,6 +523,9 @@ export default function Game({
       }
       setClearDelays(delays);
       if (!(await wait(profile.clearMs, turn))) return;
+      obstacleState = swept;
+      setObstacles(obstacleState);
+      setGiftHits([]);
       total = total.map((n, i) => n + (wave.collected[i] ?? 0));
       power += wave.powers;
       if (depth > 0) chain++;
@@ -415,7 +575,7 @@ export default function Game({
         setPhase("recovering");
         setRecovery("in");
         motionPhase.current = { kind: "reset", depth: 0 };
-        next = createBoard(Math.random, rules);
+        next = reshuffle(next, Math.random, rules);
         show(next);
         setMessage("Peças novas, novas chances.");
         if (!(await wait(390, turn))) return;
@@ -440,14 +600,25 @@ export default function Game({
     const won =
       level.targets.every((t) => total[t.kind] >= t.amount) &&
       power >= level.powers &&
-      chain >= level.cascades;
+      chain >= level.cascades &&
+      obstaclesDone(obstacleState, level.obstacles);
     if (won) {
       setPhase("completing");
       sound(audio, "win");
       setVictory("shine");
       setMessage("Conseguiu!");
-      if (!(await sequence.current.wait(depth >= 4 ? 2600 : 2200, turn)))
-        return;
+      if (!endless)
+        onSnapshot?.({
+          board: playable,
+          remaining: left,
+          counts: total,
+          powers: power,
+          cascades: chain,
+          round,
+          won: true,
+          ...(level.obstacles ? { obstacles: obstacleState } : {}),
+        });
+      if (!(await contemplate(playable, left, depth, turn))) return;
       if (endless) {
         setCounts(freshCounts());
         setPowers(0);
@@ -467,7 +638,8 @@ export default function Game({
     setPhase("idle");
   }
   function tap(i: number) {
-    if (lock.current || paused || lost) return;
+    if (lock.current || paused || lost || current.current[i].role === "gift")
+      return;
     const selected = selection.current;
     sound(audio, "select");
     if (selected === null) {
@@ -494,6 +666,9 @@ export default function Game({
       className={`game-screen ${victory ? `victory-${victory}` : ""}`}
       data-phase={phase}
       data-recovery={recovery}
+      onClickCapture={() => {
+        if (victory) skipVictory.current?.();
+      }}
       style={{
         backgroundImage: `linear-gradient(#102e2980,#102e29b0),url('${asset(`scene-${level.id}`)}')`,
       }}
@@ -509,7 +684,7 @@ export default function Game({
           }}
           aria-label="Pausar partida"
         >
-          <img src={asset("control-pause")} alt="" />
+          <FlatIcon kind="pause" />
         </button>
         <div>
           <h1>{level.name}</h1>
@@ -523,6 +698,48 @@ export default function Game({
         </div>
       </header>
       <div className="objectives" aria-label="Objetivos">
+        {level.obstacles &&
+          [
+            {
+              key: "petals",
+              name: "Varrer pétalas",
+              amount: level.obstacles.petals,
+              value: obstacles.swept,
+              icon: "petals",
+            },
+            {
+              key: "gifts",
+              name: "Abrir presentes",
+              amount: level.obstacles.gifts,
+              value: obstacles.opened,
+              icon: "gift-wrapped",
+            },
+            {
+              key: "keepsakes",
+              name: "Levar a lembrança até o fundo",
+              amount: level.obstacles.keepsakes,
+              value: obstacles.brought,
+              icon: level.obstacles.keepsake,
+            },
+          ]
+            .filter((t) => t.amount > 0)
+            .map((t) => (
+              <div
+                key={t.key}
+                data-obstacle-objective={t.key}
+                className={t.value >= t.amount ? "done" : ""}
+                role="progressbar"
+                aria-label={t.name}
+                aria-valuemin={0}
+                aria-valuemax={t.amount}
+                aria-valuenow={Math.min(t.value, t.amount)}
+              >
+                <img src={asset(`premium6/${t.icon}`)} alt="" />
+                <strong>
+                  {Math.min(t.value, t.amount)}/{t.amount}
+                </strong>
+              </div>
+            ))}
         {level.targets.map((t) => (
           <div
             data-objective-kind={t.kind}
@@ -577,6 +794,33 @@ export default function Game({
       <div
         className={`board-wrap ${effects.length ? "power-active" : ""} ${effectCount > 1 ? "powers-combined" : ""}`}
       >
+        <TailPeek
+          enabled={
+            themes[level.id - 1] === "Meu Pet" &&
+            !endless &&
+            motion &&
+            !busy &&
+            !paused &&
+            !lost &&
+            !victory &&
+            selected === null &&
+            input.pressed === null
+          }
+          motion={motion}
+        />
+        <div className="petal-grid" aria-hidden="true">
+          {obstacles.petals.map((p, i) => (
+            <span key={i}>
+              {p && (
+                <img
+                  className={clearing.includes(i) ? "petals-swept" : ""}
+                  src={asset("premium6/petals")}
+                  alt=""
+                />
+              )}
+            </span>
+          ))}
+        </div>
         <div
           ref={grid}
           className="board"
@@ -584,7 +828,7 @@ export default function Game({
           aria-label="Tabuleiro de 7 colunas e 8 linhas"
           aria-busy={busy}
         >
-          {board.map((t, i) => (
+          {(finaleBoard ?? board).map((t, i) => (
             <button
               key={t.id}
               className={`tile ${t.special ? "special special-" + t.special : ""} ${created.includes(i) ? "power-born" : ""} ${effects.length && clearing.includes(i) ? "power-hit" : ""} ${selected === i ? "selected" : ""} ${input.pressed === i ? "pressed" : ""} ${clearing.includes(i) ? "clearing" : ""} ${hint.includes(i) ? "hint" : ""} ${invalid.includes(i) ? "invalid" : ""}`}
@@ -594,11 +838,15 @@ export default function Game({
                 } as React.CSSProperties
               }
               data-kind={t.kind}
+              data-role={t.role}
+              data-hp={t.hp}
+              data-gift-hit={giftHits.includes(i) || undefined}
+              data-brought={brought.includes(i) || undefined}
               data-special={t.special}
-              aria-label={`${names[level.id - 1][t.kind]}${t.special ? ", poder " + { row: "horizontal", column: "vertical", area: "em área", color: "de cores" }[t.special] : ""}, linha ${Math.floor(i / COLS) + 1}, coluna ${(i % COLS) + 1}`}
+              aria-label={`${t.role === "gift" ? (t.hp === 2 ? "presente fechado" : "presente sem laço") : t.role === "keepsake" ? "lembrança" : names[level.id - 1][t.kind]}${obstacles.petals[i] ? ", com pétalas" : ""}${t.special ? ", poder " + { row: "horizontal", column: "vertical", area: "em área", color: "de cores" }[t.special] : ""}, linha ${Math.floor(i / COLS) + 1}, coluna ${(i % COLS) + 1}`}
               aria-pressed={selected === i}
-              aria-disabled={busy || paused || lost}
-              disabled={paused || lost}
+              aria-disabled={busy || paused || lost || t.role === "gift"}
+              disabled={paused || lost || t.role === "gift"}
               onClick={(e) => input.click(e, i)}
               onPointerDown={(e) => input.down(e, i)}
               onPointerMove={input.move}
@@ -610,9 +858,13 @@ export default function Game({
                 <img
                   draggable="false"
                   src={asset(
-                    t.special
-                      ? `power-${{ row: 0, column: 1, area: 2, color: 3 }[t.special]}`
-                      : `tile-${level.id}-${t.kind}`,
+                    t.role === "gift"
+                      ? `premium6/gift-${clearing.includes(i) ? "open" : t.hp === 2 ? "wrapped" : "unwrapped"}`
+                      : t.role === "keepsake"
+                        ? `premium6/${level.obstacles?.keepsake}`
+                        : t.special
+                          ? `power-${{ row: 0, column: 1, area: 2, color: 3 }[t.special]}`
+                          : `tile-${level.id}-${t.kind}`,
                   )}
                   alt=""
                 />
@@ -642,7 +894,7 @@ export default function Game({
           />
         )}
         {victory && (
-          <div className="victory-light" aria-hidden="true">
+          <div className="victory-light" role="status">
             <span className="victory-sweep" />
             {lastItems.map(({ index, kind }) => (
               <img
@@ -663,10 +915,10 @@ export default function Game({
         )}
       </div>
       <canvas ref={canvas} className="game-vfx" aria-hidden="true" />
-      <p className="game-message" role="status">
+      <p className="game-message" role="status" hidden={!!victory}>
         {message}
       </p>
-      <div className="game-tools">
+      <div className="game-tools" hidden={!!victory}>
         {(import.meta.env.DEV || import.meta.env.VITE_ENABLE_QA === "true") &&
           !endless && (
             <button
@@ -696,6 +948,7 @@ export default function Game({
                 level.targets,
                 counts,
                 powers < level.powers,
+                level.obstacles ? obstacles : undefined,
               ),
             );
             setMessage("Troque as peças que brilham.");
