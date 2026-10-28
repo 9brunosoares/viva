@@ -1386,61 +1386,6 @@
     "purpose": "book"
   },
   {
-    "name": "library-0",
-    "file": "assets/library-0.webp",
-    "category": "library",
-    "dimensions": [
-      496,
-      756
-    ],
-    "stage": null,
-    "purpose": "library"
-  },
-  {
-    "name": "library-1",
-    "file": "assets/library-1.webp",
-    "category": "library",
-    "dimensions": [
-      496,
-      756
-    ],
-    "stage": null,
-    "purpose": "library"
-  },
-  {
-    "name": "library-2",
-    "file": "assets/library-2.webp",
-    "category": "library",
-    "dimensions": [
-      496,
-      756
-    ],
-    "stage": null,
-    "purpose": "library"
-  },
-  {
-    "name": "library-3",
-    "file": "assets/library-3.webp",
-    "category": "library",
-    "dimensions": [
-      496,
-      756
-    ],
-    "stage": null,
-    "purpose": "library"
-  },
-  {
-    "name": "library-foreground",
-    "file": "assets/library-foreground.webp",
-    "category": "library",
-    "dimensions": [
-      496,
-      756
-    ],
-    "stage": null,
-    "purpose": "library"
-  },
-  {
     "name": "family",
     "file": "assets/family.webp",
     "category": "family",
@@ -1562,5 +1507,322 @@
       160
     ],
     "source": "tattoo-tiles.jpg"
+  },
+  {
+    "name": "premium6/petals",
+    "file": "assets/premium6/petals.webp",
+    "size": [
+      256,
+      256
+    ],
+    "bytes": 25710,
+    "category": "premium6"
+  },
+  {
+    "name": "premium6/gift-wrapped",
+    "file": "assets/premium6/gift-wrapped.webp",
+    "size": [
+      256,
+      256
+    ],
+    "bytes": 20532,
+    "category": "premium6"
+  },
+  {
+    "name": "premium6/gift-unwrapped",
+    "file": "assets/premium6/gift-unwrapped.webp",
+    "size": [
+      256,
+      256
+    ],
+    "bytes": 21206,
+    "category": "premium6"
+  },
+  {
+    "name": "premium6/gift-open",
+    "file": "assets/premium6/gift-open.webp",
+    "size": [
+      256,
+      256
+    ],
+    "bytes": 27312,
+    "category": "premium6"
+  },
+  {
+    "name": "premium6/tail",
+    "file": "assets/premium6/tail.webp",
+    "size": [
+      384,
+      384
+    ],
+    "bytes": 22840,
+    "category": "premium6"
+  },
+  {
+    "name": "premium6/diploma",
+    "file": "assets/premium6/diploma.webp",
+    "size": [
+      256,
+      231
+    ],
+    "bytes": 18756,
+    "sourceRect": [
+      0,
+      0,
+      320,
+      320
+    ],
+    "category": "premium6"
+  },
+  {
+    "name": "premium6/drawing",
+    "file": "assets/premium6/drawing.webp",
+    "size": [
+      256,
+      235
+    ],
+    "bytes": 19608,
+    "sourceRect": [
+      320,
+      0,
+      640,
+      320
+    ],
+    "category": "premium6"
+  },
+  {
+    "name": "premium6/caipirinha",
+    "file": "assets/premium6/caipirinha.webp",
+    "size": [
+      244,
+      256
+    ],
+    "bytes": 21922,
+    "sourceRect": [
+      640,
+      0,
+      960,
+      320
+    ],
+    "category": "premium6"
+  },
+  {
+    "name": "premium6/belt",
+    "file": "assets/premium6/belt.webp",
+    "size": [
+      212,
+      256
+    ],
+    "bytes": 18068,
+    "sourceRect": [
+      960,
+      0,
+      1280,
+      320
+    ],
+    "category": "premium6"
+  },
+  {
+    "name": "premium6/candle",
+    "file": "assets/premium6/candle.webp",
+    "size": [
+      206,
+      256
+    ],
+    "bytes": 14820,
+    "sourceRect": [
+      0,
+      296,
+      320,
+      640
+    ],
+    "category": "premium6"
+  },
+  {
+    "name": "premium6/album",
+    "file": "assets/premium6/album.webp",
+    "size": [
+      256,
+      232
+    ],
+    "bytes": 24724,
+    "sourceRect": [
+      320,
+      320,
+      640,
+      640
+    ],
+    "category": "premium6"
+  },
+  {
+    "name": "premium6/speaker",
+    "file": "assets/premium6/speaker.webp",
+    "size": [
+      256,
+      205
+    ],
+    "bytes": 19122,
+    "sourceRect": [
+      640,
+      320,
+      960,
+      640
+    ],
+    "category": "premium6"
+  },
+  {
+    "name": "premium6/tattoo-frame",
+    "file": "assets/premium6/tattoo-frame.webp",
+    "size": [
+      244,
+      256
+    ],
+    "bytes": 22776,
+    "sourceRect": [
+      960,
+      320,
+      1280,
+      640
+    ],
+    "category": "premium6"
+  },
+  {
+    "name": "library-0",
+    "file": "assets/library-0.webp",
+    "size": [
+      496,
+      756
+    ],
+    "sourceRect": [
+      0,
+      0,
+      419,
+      634
+    ],
+    "deliveredResolution": [
+      853,
+      1280
+    ],
+    "note": "Actual supplied resolution; lower floor restored from supplied empty room to avoid baked-in Blade.",
+    "bytes": 123976,
+    "category": "premium6"
+  },
+  {
+    "name": "library-1",
+    "file": "assets/library-1.webp",
+    "size": [
+      496,
+      756
+    ],
+    "sourceRect": [
+      434,
+      0,
+      853,
+      634
+    ],
+    "deliveredResolution": [
+      853,
+      1280
+    ],
+    "note": "Actual supplied resolution; lower floor restored from supplied empty room to avoid baked-in Blade.",
+    "bytes": 123976,
+    "category": "premium6"
+  },
+  {
+    "name": "library-2",
+    "file": "assets/library-2.webp",
+    "size": [
+      496,
+      756
+    ],
+    "sourceRect": [
+      0,
+      645,
+      419,
+      1280
+    ],
+    "deliveredResolution": [
+      853,
+      1280
+    ],
+    "note": "Actual supplied resolution; lower floor restored from supplied empty room to avoid baked-in Blade.",
+    "bytes": 112982,
+    "category": "premium6"
+  },
+  {
+    "name": "library-3",
+    "file": "assets/library-3.webp",
+    "size": [
+      496,
+      756
+    ],
+    "sourceRect": [
+      434,
+      645,
+      853,
+      1280
+    ],
+    "deliveredResolution": [
+      853,
+      1280
+    ],
+    "note": "Actual supplied resolution; lower floor restored from supplied empty room to avoid baked-in Blade.",
+    "bytes": 117132,
+    "category": "premium6"
+  },
+  {
+    "name": "library-foreground",
+    "file": "assets/library-foreground.webp",
+    "size": [
+      496,
+      756
+    ],
+    "bytes": 45552,
+    "note": "Retouched-room foreground pixels; no replacement illustration.",
+    "category": "premium6"
+  },
+  {
+    "name": "library-shelf-depth-0",
+    "file": "assets/library-shelf-depth-0.webp",
+    "size": [
+      496,
+      756
+    ],
+    "bytes": 2180,
+    "note": "Retouched-room foreground pixels; no replacement illustration.",
+    "category": "premium6"
+  },
+  {
+    "name": "library-shelf-depth-1",
+    "file": "assets/library-shelf-depth-1.webp",
+    "size": [
+      496,
+      756
+    ],
+    "bytes": 2180,
+    "note": "Retouched-room foreground pixels; no replacement illustration.",
+    "category": "premium6"
+  },
+  {
+    "name": "library-shelf-depth-2",
+    "file": "assets/library-shelf-depth-2.webp",
+    "size": [
+      496,
+      756
+    ],
+    "bytes": 2364,
+    "note": "Retouched-room foreground pixels; no replacement illustration.",
+    "category": "premium6"
+  },
+  {
+    "name": "library-shelf-depth-3",
+    "file": "assets/library-shelf-depth-3.webp",
+    "size": [
+      496,
+      756
+    ],
+    "bytes": 2632,
+    "note": "Retouched-room foreground pixels; no replacement illustration.",
+    "category": "premium6"
   }
 ]

@@ -1,0 +1,393 @@
+{
+  "originals": [
+    {
+      "file": "petals.jpg",
+      "original": "2-Foto-2.jpg",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "bytes": 206520,
+      "sha256": "5d1a7c3bb8a595432ccf1f45ac8594280d95dd5797726280f47c5003e75d1250"
+    },
+    {
+      "file": "room-empty.jpg",
+      "original": "3-Foto-3.jpg",
+      "size": [
+        503,
+        757
+      ],
+      "mode": "RGB",
+      "bytes": 132989,
+      "sha256": "352a5dd28d2f9c0772a61d213aa726dc595569de2a198ddfc7d58e3f87ed7a3a"
+    },
+    {
+      "file": "gift-wrapped.jpg",
+      "original": "4-Foto-4.jpg",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "bytes": 314396,
+      "sha256": "9511214db6751599066a35b4400da26d14ff32ca1fd684826774d97fea0e7be5"
+    },
+    {
+      "file": "gift-unwrapped.jpg",
+      "original": "5-Foto-5.jpg",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "bytes": 321686,
+      "sha256": "b833a9fe5487d0d5190124ba8f0daa402bdee5e6f041c1be7ba3dea6c0a4a32d"
+    },
+    {
+      "file": "gift-open.jpg",
+      "original": "6-Foto-6.jpg",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "bytes": 321616,
+      "sha256": "9423b584fcb6a4c1474c00d543e1fd9c3b5b9a31d53adc8845da125f92b14424"
+    },
+    {
+      "file": "keepsakes.jpg",
+      "original": "7-Foto-7.jpg",
+      "size": [
+        1280,
+        640
+      ],
+      "mode": "RGB",
+      "bytes": 187184,
+      "sha256": "c3e8c6afe6a5de2d4a8f1d786eeb305f9053597c0e488736abecad28c57fd275"
+    },
+    {
+      "file": "tail.jpg",
+      "original": "8-Foto-8.jpg",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "bytes": 132619,
+      "sha256": "6dd774bcd93dc35777eba04c8ea47b84d73d9f62a88c530ba2d866be28cb6dca"
+    },
+    {
+      "file": "room-stages.jpg",
+      "original": "9-Foto-9.jpg",
+      "size": [
+        853,
+        1280
+      ],
+      "mode": "RGB",
+      "bytes": 349339,
+      "sha256": "ba5b0cd77915f6a43ba060668e86edde9f315be9b8b0dfd7c18b7708c2ee8d75"
+    }
+  ],
+  "exports": [
+    {
+      "name": "premium6/petals",
+      "file": "assets/premium6/petals.webp",
+      "size": [
+        256,
+        256
+      ],
+      "bytes": 25710
+    },
+    {
+      "name": "premium6/gift-wrapped",
+      "file": "assets/premium6/gift-wrapped.webp",
+      "size": [
+        256,
+        256
+      ],
+      "bytes": 20532
+    },
+    {
+      "name": "premium6/gift-unwrapped",
+      "file": "assets/premium6/gift-unwrapped.webp",
+      "size": [
+        256,
+        256
+      ],
+      "bytes": 21206
+    },
+    {
+      "name": "premium6/gift-open",
+      "file": "assets/premium6/gift-open.webp",
+      "size": [
+        256,
+        256
+      ],
+      "bytes": 27312
+    },
+    {
+      "name": "premium6/tail",
+      "file": "assets/premium6/tail.webp",
+      "size": [
+        384,
+        384
+      ],
+      "bytes": 22840
+    },
+    {
+      "name": "premium6/diploma",
+      "file": "assets/premium6/diploma.webp",
+      "size": [
+        256,
+        231
+      ],
+      "bytes": 18756,
+      "sourceRect": [
+        0,
+        0,
+        320,
+        320
+      ]
+    },
+    {
+      "name": "premium6/drawing",
+      "file": "assets/premium6/drawing.webp",
+      "size": [
+        256,
+        235
+      ],
+      "bytes": 19608,
+      "sourceRect": [
+        320,
+        0,
+        640,
+        320
+      ]
+    },
+    {
+      "name": "premium6/caipirinha",
+      "file": "assets/premium6/caipirinha.webp",
+      "size": [
+        244,
+        256
+      ],
+      "bytes": 21922,
+      "sourceRect": [
+        640,
+        0,
+        960,
+        320
+      ]
+    },
+    {
+      "name": "premium6/belt",
+      "file": "assets/premium6/belt.webp",
+      "size": [
+        212,
+        256
+      ],
+      "bytes": 18068,
+      "sourceRect": [
+        960,
+        0,
+        1280,
+        320
+      ]
+    },
+    {
+      "name": "premium6/candle",
+      "file": "assets/premium6/candle.webp",
+      "size": [
+        206,
+        256
+      ],
+      "bytes": 14820,
+      "sourceRect": [
+        0,
+        296,
+        320,
+        640
+      ]
+    },
+    {
+      "name": "premium6/album",
+      "file": "assets/premium6/album.webp",
+      "size": [
+        256,
+        232
+      ],
+      "bytes": 24724,
+      "sourceRect": [
+        320,
+        320,
+        640,
+        640
+      ]
+    },
+    {
+      "name": "premium6/speaker",
+      "file": "assets/premium6/speaker.webp",
+      "size": [
+        256,
+        205
+      ],
+      "bytes": 19122,
+      "sourceRect": [
+        640,
+        320,
+        960,
+        640
+      ]
+    },
+    {
+      "name": "premium6/tattoo-frame",
+      "file": "assets/premium6/tattoo-frame.webp",
+      "size": [
+        244,
+        256
+      ],
+      "bytes": 22776,
+      "sourceRect": [
+        960,
+        320,
+        1280,
+        640
+      ]
+    },
+    {
+      "name": "library-0",
+      "file": "assets/library-0.webp",
+      "size": [
+        496,
+        756
+      ],
+      "sourceRect": [
+        0,
+        0,
+        419,
+        634
+      ],
+      "deliveredResolution": [
+        853,
+        1280
+      ],
+      "note": "Actual supplied resolution; lower floor restored from supplied empty room to avoid baked-in Blade.",
+      "bytes": 123976
+    },
+    {
+      "name": "library-1",
+      "file": "assets/library-1.webp",
+      "size": [
+        496,
+        756
+      ],
+      "sourceRect": [
+        434,
+        0,
+        853,
+        634
+      ],
+      "deliveredResolution": [
+        853,
+        1280
+      ],
+      "note": "Actual supplied resolution; lower floor restored from supplied empty room to avoid baked-in Blade.",
+      "bytes": 123976
+    },
+    {
+      "name": "library-2",
+      "file": "assets/library-2.webp",
+      "size": [
+        496,
+        756
+      ],
+      "sourceRect": [
+        0,
+        645,
+        419,
+        1280
+      ],
+      "deliveredResolution": [
+        853,
+        1280
+      ],
+      "note": "Actual supplied resolution; lower floor restored from supplied empty room to avoid baked-in Blade.",
+      "bytes": 112982
+    },
+    {
+      "name": "library-3",
+      "file": "assets/library-3.webp",
+      "size": [
+        496,
+        756
+      ],
+      "sourceRect": [
+        434,
+        645,
+        853,
+        1280
+      ],
+      "deliveredResolution": [
+        853,
+        1280
+      ],
+      "note": "Actual supplied resolution; lower floor restored from supplied empty room to avoid baked-in Blade.",
+      "bytes": 117132
+    },
+    {
+      "name": "library-foreground",
+      "file": "assets/library-foreground.webp",
+      "size": [
+        496,
+        756
+      ],
+      "bytes": 45552,
+      "note": "Retouched-room foreground pixels; no replacement illustration."
+    },
+    {
+      "name": "library-shelf-depth-0",
+      "file": "assets/library-shelf-depth-0.webp",
+      "size": [
+        496,
+        756
+      ],
+      "bytes": 2180,
+      "note": "Retouched-room foreground pixels; no replacement illustration."
+    },
+    {
+      "name": "library-shelf-depth-1",
+      "file": "assets/library-shelf-depth-1.webp",
+      "size": [
+        496,
+        756
+      ],
+      "bytes": 2180,
+      "note": "Retouched-room foreground pixels; no replacement illustration."
+    },
+    {
+      "name": "library-shelf-depth-2",
+      "file": "assets/library-shelf-depth-2.webp",
+      "size": [
+        496,
+        756
+      ],
+      "bytes": 2364,
+      "note": "Retouched-room foreground pixels; no replacement illustration."
+    },
+    {
+      "name": "library-shelf-depth-3",
+      "file": "assets/library-shelf-depth-3.webp",
+      "size": [
+        496,
+        756
+      ],
+      "bytes": 2632,
+      "note": "Retouched-room foreground pixels; no replacement illustration."
+    }
+  ],
+  "limitations": [
+    "Expected ~1008x1536 separate backgrounds were not supplied. Empty room is 503x757; four-stage montage is 853x1280.",
+    "Stages 0/1 use supplied empty room; stages 2/3 use retouched montage upper art. Embedded Blade is removed via the supplied empty lower room, preserving the interactive original sprites."
+  ]
+}

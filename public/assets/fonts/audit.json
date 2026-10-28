@@ -1,0 +1,48 @@
+{
+  "cssSource": "https://fonts.googleapis.com/css2?family=Fraunces:wght@600..700&family=Nunito:wght@400..800&family=Caveat:wght@500..700&display=swap",
+  "license": "SIL Open Font License 1.1",
+  "fonts": [
+    {
+      "family": "Caveat",
+      "subset": "latin-ext",
+      "file": "caveat-latin-ext.woff2",
+      "source": "https://fonts.gstatic.com/s/caveat/v23/Wnz6HAc5bAfYB2Q7aDYYmg8.woff2",
+      "bytes": 29472
+    },
+    {
+      "family": "Caveat",
+      "subset": "latin",
+      "file": "caveat-latin.woff2",
+      "source": "https://fonts.gstatic.com/s/caveat/v23/Wnz6HAc5bAfYB2Q7ZjYY.woff2",
+      "bytes": 74932
+    },
+    {
+      "family": "Fraunces",
+      "subset": "latin-ext",
+      "file": "fraunces-latin-ext.woff2",
+      "source": "https://fonts.gstatic.com/s/fraunces/v38/6NUu8FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk_WBq8U_9v0c2Wa0K7iN7hzFUPJH58nib14c1qv86Rg.woff2",
+      "bytes": 33584
+    },
+    {
+      "family": "Fraunces",
+      "subset": "latin",
+      "file": "fraunces-latin.woff2",
+      "source": "https://fonts.gstatic.com/s/fraunces/v38/6NUu8FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk_WBq8U_9v0c2Wa0K7iN7hzFUPJH58nib14c7qv8.woff2",
+      "bytes": 36620
+    },
+    {
+      "family": "Nunito",
+      "subset": "latin-ext",
+      "file": "nunito-latin-ext.woff2",
+      "source": "https://fonts.gstatic.com/s/nunito/v32/XRXV3I6Li01BKofIO-aBXso.woff2",
+      "bytes": 35588
+    },
+    {
+      "family": "Nunito",
+      "subset": "latin",
+      "file": "nunito-latin.woff2",
+      "source": "https://fonts.gstatic.com/s/nunito/v32/XRXV3I6Li01BKofINeaB.woff2",
+      "bytes": 39128
+    }
+  ]
+}
